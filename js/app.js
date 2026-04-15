@@ -42,6 +42,7 @@ function renderCurrentPage() {
   const backBtn = document.getElementById('header-back');
   const fab = document.getElementById('fab-container');
   const title = document.getElementById('header-title');
+  const resetModuleBtn = document.getElementById('reset-module-btn');
 
   closeFab();
 
@@ -50,12 +51,14 @@ function renderCurrentPage() {
     backBtn.style.display = 'none';
     fab.style.display = 'none';
     title.textContent = t('appTitle');
+    if (resetModuleBtn) resetModuleBtn.style.display = 'none';
   } else {
     content.innerHTML = renderModule(currentPage);
     backBtn.style.display = 'flex';
     fab.style.display = 'flex';
     const mod = MODULES.find(m => m.id === currentPage);
     title.textContent = mod ? t(mod.titleKey) : t('appTitle');
+    if (resetModuleBtn) resetModuleBtn.style.display = 'flex';
 
     // Module-specific init
     if (currentPage === 'brain') {
@@ -122,13 +125,44 @@ function closeHelpOutside(event) {
   if (event.target === event.currentTarget) closeHelp();
 }
 
+function openBackupMenu() {
+  const modal = document.getElementById('backup-modal');
+  if (modal) modal.style.display = 'flex';
+}
+
+function closeBackupMenu() {
+  const modal = document.getElementById('backup-modal');
+  if (modal) modal.style.display = 'none';
+}
+
+function closeBackupOutside(event) {
+  if (event.target === event.currentTarget) closeBackupMenu();
+}
+
+function triggerBackupDownload() {
+  exportJSON();
+  closeBackupMenu();
+}
+
+function resetCurrentModule() {
+  if (currentPage === 'home') return;
+  if (!confirm(t('confirmResetCurrent'))) return;
+  saveModuleData(currentPage, []);
+  showToast(t('toastResetDone'));
+  renderCurrentPage();
+}
+
+function resetAllData() {
+  if (!confirm(t('confirmResetAll'))) return;
+  saveAllData(getDefaultData());
+  showToast(t('toastResetAllDone'));
+  renderCurrentPage();
+}
+
 /* ===== Init ===== */
 function initApp() {
   initTheme();
-
-  // Set initial language label
-  const labels = { ko: 'KO', en: 'EN', ja: 'JP' };
-  document.getElementById('lang-label').textContent = labels[currentLang] || 'KO';
+  setLang(currentLang);
 
   // Handle hash routing
   const hash = window.location.hash.slice(1);

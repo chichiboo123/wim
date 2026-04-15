@@ -38,6 +38,7 @@ function getDefaultData() {
 }
 
 function restoreData() {
+  if (typeof closeBackupMenu === 'function') closeBackupMenu();
   document.getElementById('restore-file-input').click();
 }
 

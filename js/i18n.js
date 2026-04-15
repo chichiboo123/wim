@@ -4,6 +4,9 @@ const TRANSLATIONS = {
     appTitle: "What's In My",
     subtitle: "나를 탐색하는 8가지 테마",
     helpTitle: "사용법 안내",
+    backupTitle: "백업 / 복원",
+    backupDownload: "백업 다운로드 (JSON)",
+    backupUpload: "백업 업로드 (JSON)",
     clipboard: "복사",
 
     // Dashboard
@@ -29,6 +32,7 @@ const TRANSLATIONS = {
     addText: "텍스트 추가",
     addEmoji: "이모지 추가",
     addImage: "이미지 추가",
+    emojiPick: "이모지 고르기",
     textPlaceholder: "텍스트 입력...",
     emojiPlaceholder: "이모지 입력...",
 
@@ -111,12 +115,19 @@ const TRANSLATIONS = {
     toastAlreadyAdded: "이미 추가된 항목입니다",
     toastInvalidBackup: "유효하지 않은 백업 파일입니다",
     timeModeToggle: "12시간/24시간 모드 전환",
+    confirmResetCurrent: "현재 탭의 데이터를 모두 삭제할까요?",
+    confirmResetAll: "전체 데이터를 모두 삭제할까요?",
+    toastResetDone: "현재 탭 데이터가 초기화되었습니다",
+    toastResetAllDone: "전체 데이터가 초기화되었습니다",
   },
 
   en: {
     appTitle: "What's In My",
     subtitle: "8 themes to explore yourself",
     helpTitle: "How to Use",
+    backupTitle: "Backup / Restore",
+    backupDownload: "Download Backup (JSON)",
+    backupUpload: "Upload Backup (JSON)",
     clipboard: "Copy",
 
     bagTitle: "Bag",
@@ -140,6 +151,7 @@ const TRANSLATIONS = {
     addText: "Add Text",
     addEmoji: "Add Emoji",
     addImage: "Add Image",
+    emojiPick: "Pick Emoji",
     textPlaceholder: "Enter text...",
     emojiPlaceholder: "Enter emoji...",
 
@@ -213,12 +225,19 @@ const TRANSLATIONS = {
     toastAlreadyAdded: "This item is already added",
     toastInvalidBackup: "Invalid backup file",
     timeModeToggle: "Toggle 12/24-hour mode",
+    confirmResetCurrent: "Clear all data in this tab?",
+    confirmResetAll: "Clear all app data?",
+    toastResetDone: "This tab has been reset",
+    toastResetAllDone: "All data has been reset",
   },
 
   ja: {
     appTitle: "What's In My",
     subtitle: "自分を探る8つのテーマ",
     helpTitle: "使い方ガイド",
+    backupTitle: "バックアップ / 復元",
+    backupDownload: "バックアップをダウンロード (JSON)",
+    backupUpload: "バックアップをアップロード (JSON)",
     clipboard: "コピー",
 
     bagTitle: "バッグ (Bag)",
@@ -242,6 +261,7 @@ const TRANSLATIONS = {
     addText: "テキスト追加",
     addEmoji: "絵文字追加",
     addImage: "画像追加",
+    emojiPick: "絵文字を選ぶ",
     textPlaceholder: "テキスト入力...",
     emojiPlaceholder: "絵文字入力...",
 
@@ -315,6 +335,10 @@ const TRANSLATIONS = {
     toastAlreadyAdded: "すでに追加されています",
     toastInvalidBackup: "無効なバックアップファイルです",
     timeModeToggle: "12時間/24時間モード切替",
+    confirmResetCurrent: "このタブのデータをすべて削除しますか？",
+    confirmResetAll: "アプリの全データを削除しますか？",
+    toastResetDone: "このタブを初期化しました",
+    toastResetAllDone: "全データを初期化しました",
   }
 };
 
@@ -326,14 +350,17 @@ function t(key) {
 
 function cycleLang() {
   const langs = ['ko', 'en', 'ja'];
-  const labels = { ko: 'KO', en: 'EN', ja: 'JP' };
   const idx = langs.indexOf(currentLang);
-  currentLang = langs[(idx + 1) % langs.length];
+  setLang(langs[(idx + 1) % langs.length]);
+}
+
+function setLang(lang) {
+  currentLang = ['ko', 'en', 'ja'].includes(lang) ? lang : 'ko';
   localStorage.setItem('wim-lang', currentLang);
-  document.getElementById('lang-label').textContent = labels[currentLang];
   document.documentElement.lang = currentLang === 'ja' ? 'ja' : currentLang === 'en' ? 'en' : 'ko';
+  const select = document.getElementById('lang-select');
+  if (select) select.value = currentLang;
   applyI18n();
-  // Re-render current page
   if (typeof renderCurrentPage === 'function') renderCurrentPage();
 }
 

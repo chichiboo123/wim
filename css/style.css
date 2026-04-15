@@ -87,70 +87,19 @@ input, textarea, select {
   gap: 8px;
 }
 
-.theme-chips {
+.header-selects {
   display: flex;
-  gap: 5px;
-  align-items: center;
+  gap: 6px;
 }
 
-.color-chip {
-  position: relative;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  cursor: pointer;
-  border: 2px solid transparent;
-  transition: transform 0.2s, border-color 0.2s;
-}
-
-.color-chip:hover {
-  transform: scale(1.2);
-}
-
-.color-chip.active {
-  border-color: var(--text);
-  transform: scale(1.15);
-}
-
-.color-chip.active::after {
-  content: '✓';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 11px;
-  font-weight: 900;
-  color: rgba(255, 255, 255, 0.95);
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
-  line-height: 1;
-  pointer-events: none;
-}
-
-.chip-blue { background: #A8D8EA; }
-.chip-green { background: #B5E8C3; }
-.chip-pink { background: #F4B6C2; }
-.chip-yellow { background: #FDE68A; }
-
-.lang-toggle {
-  display: flex;
-  align-items: center;
-  gap: 2px;
-  padding: 4px 8px;
-  border-radius: 20px;
+.header-select {
+  border: 1px solid var(--border);
+  border-radius: 10px;
   background: var(--card-bg);
-  cursor: pointer;
+  color: var(--text);
+  padding: 6px 10px;
   font-size: 0.8rem;
   font-weight: 600;
-  transition: background 0.2s;
-  user-select: none;
-}
-
-.lang-toggle:hover {
-  background: var(--hover);
-}
-
-.lang-toggle .material-icons {
-  font-size: 18px;
 }
 
 .icon-btn {
@@ -441,6 +390,12 @@ button.module-card {
   margin-bottom: 4px;
 }
 
+.backup-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
 /* ===== Form Elements ===== */
 .form-row {
   display: flex;
@@ -479,12 +434,11 @@ button.module-card {
 
 button:focus-visible,
 .icon-btn:focus-visible,
-.lang-toggle:focus-visible,
 .module-card:focus-visible,
 .chip:focus-visible,
-.color-chip:focus-visible,
 .toggle-switch:focus-visible,
-.form-input:focus-visible {
+.form-input:focus-visible,
+.header-select:focus-visible {
   outline: 3px solid var(--primary);
   outline-offset: 2px;
 }
@@ -686,18 +640,14 @@ button.chip {
     font-size: 0.95rem;
   }
 
-  .theme-chips {
+  .header-selects {
+    flex-direction: column;
     gap: 4px;
   }
 
-  .color-chip {
-    width: 18px;
-    height: 18px;
-  }
-
-  .lang-toggle {
-    padding: 4px 6px;
-    font-size: 0.75rem;
+  .header-select {
+    padding: 4px 8px;
+    font-size: 0.72rem;
   }
 
   .icon-btn {
@@ -794,13 +744,8 @@ button.chip {
     gap: 4px;
   }
 
-  .color-chip {
-    width: 16px;
-    height: 16px;
-  }
-
-  .lang-toggle span:last-child {
-    display: none;
+  .header-select {
+    padding: 4px 6px;
   }
 
   .module-grid {
