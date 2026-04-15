@@ -2,9 +2,8 @@
 function setTheme(theme) {
   document.body.setAttribute('data-theme', theme);
   localStorage.setItem('wim-theme', theme);
-  document.querySelectorAll('.color-chip').forEach(chip => {
-    chip.classList.toggle('active', chip.dataset.theme === theme);
-  });
+  const selector = document.getElementById('theme-select');
+  if (selector) selector.value = theme;
 }
 
 function initTheme() {
