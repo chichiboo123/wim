@@ -393,8 +393,8 @@
 }
 
 .word-term {
-  font-family: 'Black Han Sans', sans-serif;
   font-size: 1.1rem;
+  font-weight: 700;
   color: var(--primary);
   margin-bottom: 6px;
 }
@@ -457,7 +457,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: 'Black Han Sans', sans-serif;
+  font-weight: 700;
   font-size: 0.9rem;
   z-index: 10;
   box-shadow: 0 2px 8px var(--shadow);
@@ -541,30 +541,99 @@
 }
 
 /* ===== Module-specific responsive ===== */
+@media (max-width: 768px) {
+  .rel-canvas {
+    max-width: 420px;
+  }
+
+  .palette-grid {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  }
+}
+
 @media (max-width: 600px) {
+  /* Time */
   .time-container {
     flex-direction: column;
+    align-items: center;
+  }
+
+  .time-chart-wrap {
+    width: 100%;
+    justify-content: center;
   }
 
   .time-chart {
-    width: 260px;
-    height: 260px;
+    width: 240px;
+    height: 240px;
   }
 
+  .time-list-wrap {
+    width: 100%;
+  }
+
+  /* Bag */
   .bag-canvas {
-    height: 350px;
+    height: 320px;
   }
 
+  .bag-toolbar {
+    gap: 6px;
+  }
+
+  .bag-toolbar .form-input {
+    max-width: 100%;
+    font-size: 16px; /* iOS zoom 방지 */
+  }
+
+  /* Brain */
+  .brain-canvas {
+    min-height: 280px;
+  }
+
+  /* Mind */
+  .mind-room {
+    min-height: 260px;
+  }
+
+  .emotion-picker {
+    gap: 5px;
+  }
+
+  /* Relationship */
   .rel-canvas {
-    max-width: 340px;
+    max-width: 100%;
   }
 
+  .rel-center {
+    width: 44px;
+    height: 44px;
+    font-size: 0.8rem;
+  }
+
+  .rel-node-circle {
+    width: 36px;
+    height: 36px;
+  }
+
+  /* Palette */
   .palette-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 
+  /* Music */
   .music-item {
-    flex-direction: column;
-    text-align: center;
+    flex-direction: row;
+    align-items: flex-start;
+  }
+
+  .music-thumb {
+    width: 48px;
+    height: 48px;
+  }
+
+  /* Word */
+  .word-item {
+    padding: 12px;
   }
 }

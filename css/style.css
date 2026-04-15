@@ -15,12 +15,15 @@ body {
   background: var(--bg);
   color: var(--text);
   min-height: 100vh;
+  height: 100%;
   display: flex;
   flex-direction: column;
   transition: background 0.3s, color 0.3s;
+  overflow-x: hidden; /* 모바일 수평 스크롤 방지 */
 }
 
-h1, h2, h3, .title-font {
+/* Black Han Sans: 페이지 타이틀 전용 */
+.title-font {
   font-family: 'Black Han Sans', sans-serif;
 }
 
@@ -72,7 +75,7 @@ input, textarea, select {
 }
 
 .header-title {
-  font-family: 'Black Han Sans', sans-serif;
+  font-family: 'Black Han Sans', sans-serif; /* 헤더 타이틀 */
   font-size: 1.3rem;
   color: var(--primary);
   flex-shrink: 0;
@@ -153,20 +156,23 @@ input, textarea, select {
 /* ===== Main Content ===== */
 #app-content {
   flex: 1;
-  padding: 20px 16px 80px;
-  max-width: 900px;
+  padding: 40px 24px 100px;
+  max-width: 960px;
   width: 100%;
   margin: 0 auto;
+  display: flex;
+  flex-direction: column;
 }
 
 /* ===== Dashboard ===== */
 .dashboard-header {
   text-align: center;
-  margin-bottom: 32px;
-  padding-top: 20px;
+  margin-bottom: 36px;
+  padding-top: 16px;
 }
 
 .dashboard-header h1 {
+  font-family: 'Black Han Sans', sans-serif; /* 대시보드 메인 타이틀 */
   font-size: 2rem;
   color: var(--primary);
   margin-bottom: 8px;
@@ -181,6 +187,7 @@ input, textarea, select {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 16px;
+  align-content: start;
 }
 
 .module-card {
@@ -208,8 +215,8 @@ input, textarea, select {
 }
 
 .module-card h3 {
-  font-family: 'Black Han Sans', sans-serif;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
+  font-weight: 700;
   margin-bottom: 6px;
   color: var(--text);
 }
@@ -231,7 +238,7 @@ input, textarea, select {
 }
 
 .module-title {
-  font-family: 'Black Han Sans', sans-serif;
+  font-family: 'Black Han Sans', sans-serif; /* 모듈 페이지 타이틀 */
   font-size: 1.6rem;
   color: var(--primary);
   margin-bottom: 20px;
@@ -373,6 +380,7 @@ input, textarea, select {
 
 .modal-header h2 {
   font-size: 1.3rem;
+  font-weight: 700;
   color: var(--primary);
 }
 
@@ -383,7 +391,7 @@ input, textarea, select {
 }
 
 .modal-body h3 {
-  font-family: 'Black Han Sans', sans-serif;
+  font-weight: 700;
   color: var(--primary);
   margin: 16px 0 8px;
   font-size: 1.05rem;
@@ -600,13 +608,137 @@ input, textarea, select {
 }
 
 /* ===== Responsive ===== */
+
+/* 중간 화면 (태블릿) */
+@media (max-width: 768px) {
+  #app-content {
+    padding: 28px 16px 90px;
+  }
+
+  .module-grid {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 14px;
+  }
+}
+
+/* 모바일 */
 @media (max-width: 600px) {
+  /* 헤더 */
+  #app-header {
+    padding: 8px 10px;
+    gap: 6px;
+  }
+
   .header-title {
-    font-size: 1rem;
+    font-size: 0.95rem;
   }
 
   .theme-chips {
-    gap: 3px;
+    gap: 4px;
+  }
+
+  .color-chip {
+    width: 18px;
+    height: 18px;
+  }
+
+  .lang-toggle {
+    padding: 4px 6px;
+    font-size: 0.75rem;
+  }
+
+  .icon-btn {
+    width: 34px;
+    height: 34px;
+  }
+
+  /* 컨텐츠 */
+  #app-content {
+    padding: 20px 12px 90px;
+  }
+
+  /* 대시보드 */
+  .dashboard-header {
+    margin-bottom: 24px;
+    padding-top: 8px;
+  }
+
+  .dashboard-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .dashboard-header p {
+    font-size: 0.85rem;
+  }
+
+  .module-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .module-card {
+    padding: 16px 10px;
+  }
+
+  .module-card .material-icons {
+    font-size: 36px;
+    margin-bottom: 8px;
+  }
+
+  .module-card h3 {
+    font-size: 0.95rem;
+  }
+
+  .module-card p {
+    font-size: 0.75rem;
+  }
+
+  /* 모듈 페이지 */
+  .module-title {
+    font-size: 1.3rem;
+    margin-bottom: 14px;
+  }
+
+  .work-area {
+    padding: 14px;
+    min-height: 300px;
+  }
+
+  /* 폼 */
+  .form-row {
+    flex-direction: column;
+  }
+
+  .form-input {
+    font-size: 16px; /* iOS 자동 줌 방지 */
+  }
+
+  /* FAB */
+  #fab-container {
+    bottom: 50px;
+    right: 14px;
+  }
+
+  .fab-main {
+    width: 50px;
+    height: 50px;
+  }
+
+  .fab-item {
+    padding: 7px 12px;
+    font-size: 0.8rem;
+  }
+
+  /* 토글 */
+  .toggle-container {
+    justify-content: center;
+  }
+}
+
+/* 매우 작은 화면 */
+@media (max-width: 380px) {
+  .header-right {
+    gap: 4px;
   }
 
   .color-chip {
@@ -614,32 +746,12 @@ input, textarea, select {
     height: 16px;
   }
 
+  .lang-toggle span:last-child {
+    display: none;
+  }
+
   .module-grid {
     grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
-  }
-
-  .module-card {
-    padding: 16px 12px;
-  }
-
-  .module-card .material-icons {
-    font-size: 36px;
-  }
-
-  .work-area {
-    padding: 16px;
-  }
-
-  #app-content {
-    padding: 12px 12px 80px;
-  }
-
-  .dashboard-header h1 {
-    font-size: 1.5rem;
-  }
-
-  .form-row {
-    flex-direction: column;
+    gap: 8px;
   }
 }

@@ -23,7 +23,7 @@ async function exportJPG() {
   closeFab();
   try {
     const target = getCaptureTarget();
-    const canvas = await html2canvas(target, { useCORS: true, backgroundColor: '#ffffff', scale: 2 });
+    const canvas = await html2canvas(target, { useCORS: true, allowTaint: true, backgroundColor: '#ffffff', scale: 2 });
     const link = document.createElement('a');
     link.download = `whats-in-my-${currentPage}-${Date.now()}.jpg`;
     link.href = canvas.toDataURL('image/jpeg', 0.95);
@@ -38,7 +38,7 @@ async function exportPDF() {
   closeFab();
   try {
     const target = getCaptureTarget();
-    const canvas = await html2canvas(target, { useCORS: true, backgroundColor: '#ffffff', scale: 2 });
+    const canvas = await html2canvas(target, { useCORS: true, allowTaint: true, backgroundColor: '#ffffff', scale: 2 });
     const { jsPDF } = window.jspdf;
     const imgData = canvas.toDataURL('image/jpeg', 0.95);
     const pdf = new jsPDF({
@@ -58,7 +58,7 @@ async function exportClipboard() {
   closeFab();
   try {
     const target = getCaptureTarget();
-    const canvas = await html2canvas(target, { useCORS: true, backgroundColor: '#ffffff', scale: 2 });
+    const canvas = await html2canvas(target, { useCORS: true, allowTaint: true, backgroundColor: '#ffffff', scale: 2 });
     canvas.toBlob(async (blob) => {
       try {
         await navigator.clipboard.write([

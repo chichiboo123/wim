@@ -39,15 +39,21 @@ function initBrainCanvas() {
   const canvas = document.getElementById('brain-canvas');
   if (!canvas) return;
 
-  // Try loading Google Drive image, fall back to SVG
+  // 먼저 Google Drive URL을 직접 배경으로 설정 (CSS background는 CORS 제약 없음)
+  canvas.style.backgroundImage = `url('${BRAIN_IMAGE_URL}')`;
+  canvas.style.backgroundSize = 'contain';
+  canvas.style.backgroundRepeat = 'no-repeat';
+  canvas.style.backgroundPosition = 'center';
+
+  // 실제 로드 여부 확인 후 실패시 SVG 폴백 사용
   const img = new Image();
-  img.crossOrigin = 'anonymous';
   img.onload = () => {
-    canvas.style.backgroundImage = `url(${BRAIN_IMAGE_URL})`;
+    // 정상 로드 — 현재 URL 유지
   };
   img.onerror = () => {
     canvas.style.backgroundImage = `url("${BRAIN_FALLBACK_SVG}")`;
   };
+  // crossOrigin 없이 로드 (display 목적은 CORS 불필요)
   img.src = BRAIN_IMAGE_URL;
 }
 
