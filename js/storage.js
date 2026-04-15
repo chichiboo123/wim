@@ -38,6 +38,7 @@ function getDefaultData() {
 }
 
 function restoreData() {
+  if (typeof closeBackupMenu === 'function') closeBackupMenu();
   document.getElementById('restore-file-input').click();
 }
 
@@ -48,6 +49,10 @@ function handleRestore(event) {
   reader.onload = function(e) {
     try {
       const data = JSON.parse(e.target.result);
+      if (!isValidRestoreData(data)) {
+        showToast(t('toastInvalidBackup'));
+        return;
+      }
       saveAllData(data);
       showToast(t('toastRestored'));
       if (typeof renderCurrentPage === 'function') renderCurrentPage();
@@ -57,4 +62,10 @@ function handleRestore(event) {
   };
   reader.readAsText(file);
   event.target.value = '';
+}
+
+function isValidRestoreData(data) {
+  if (!data || typeof data !== 'object' || Array.isArray(data)) return false;
+  const defaultData = getDefaultData();
+  return Object.keys(defaultData).every((key) => Array.isArray(data[key]));
 }

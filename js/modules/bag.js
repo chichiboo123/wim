@@ -1,6 +1,9 @@
 /* ===== BAG MODULE ===== */
 function renderBag() {
   const data = getModuleData('bag');
+  const quickEmoji = BAG_EMOJI_PRESET.map((em) =>
+    `<button class="chip" onclick="addPresetBagEmoji('${em}')" aria-label="${em}">${em}</button>`
+  ).join('');
   return `
     <div class="module-page">
       <h2 class="module-title">${t('bagPageTitle')}</h2>
@@ -9,8 +12,12 @@ function renderBag() {
         <button class="btn btn-primary btn-sm" onclick="addBagText()">${t('addText')}</button>
         <input type="text" class="form-input" id="bag-emoji-input" placeholder="${t('emojiPlaceholder')}" maxlength="4" style="max-width:100px;" onkeydown="if(event.key==='Enter') addBagEmoji()">
         <button class="btn btn-primary btn-sm" onclick="addBagEmoji()">${t('addEmoji')}</button>
+        <button class="btn btn-secondary btn-sm" onclick="toggleBagEmojiPicker()">${t('emojiPick')}</button>
         <button class="btn btn-secondary btn-sm" onclick="document.getElementById('bag-img-input').click()">${t('addImage')}</button>
         <input type="file" id="bag-img-input" accept="image/*" style="display:none" onchange="addBagImage(event)">
+      </div>
+      <div class="emoji-preset-wrap" id="emoji-preset-wrap" style="display:none;">
+        ${quickEmoji}
       </div>
       <div class="work-area">
         <div class="bag-canvas" id="bag-canvas">
@@ -25,6 +32,25 @@ function renderBag() {
       </div>
     </div>
   `;
+}
+
+const BAG_EMOJI_PRESET = [
+  '😀','😄','😁','😂','🥹','😍','🥰','😎','🤩','😇','🤔','😴',
+  '🥳','😢','😭','😡','😱','😌','🫶','👍','🙏','💪','🎒','📚',
+  '✏️','🧠','🎵','🎨','🌈','⭐','🔥','💡','🌱','🍀','🍎','🍰',
+  '⚽','🏀','🎮','🎧','🐶','🐱','🦊','🐻','🌸','🌙','☀️','☁️'
+];
+
+function toggleBagEmojiPicker() {
+  const wrap = document.getElementById('emoji-preset-wrap');
+  if (!wrap) return;
+  wrap.style.display = wrap.style.display === 'none' ? 'flex' : 'none';
+}
+
+function addPresetBagEmoji(emoji) {
+  const input = document.getElementById('bag-emoji-input');
+  if (input) input.value = emoji;
+  addBagEmoji();
 }
 
 function renderBagItem(item, index) {

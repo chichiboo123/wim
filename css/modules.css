@@ -94,6 +94,19 @@
   max-width: 200px;
 }
 
+.emoji-preset-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.emoji-preset-wrap .chip {
+  font-size: 1.1rem;
+  line-height: 1;
+  padding: 6px 9px;
+}
+
 /* ===== TIME MODULE ===== */
 .time-container {
   display: flex;
@@ -151,7 +164,7 @@
 
 .brain-text-box {
   position: absolute;
-  background: rgba(255,255,255,0.85);
+  background: rgba(255,255,255,0.95);
   border: 1px solid var(--primary);
   border-radius: 8px;
   padding: 6px 10px;
@@ -160,6 +173,14 @@
   cursor: grab;
   z-index: 5;
   color: var(--text);
+}
+
+.brain-cloud {
+  border-radius: 999px;
+  box-shadow:
+    -10px 8px 0 -3px rgba(255,255,255,0.95),
+    12px 8px 0 -5px rgba(255,255,255,0.95),
+    0 2px 10px var(--shadow);
 }
 
 .brain-text-box:active {
@@ -635,5 +656,15 @@
   /* Word */
   .word-item {
     padding: 12px;
+  }
+}
+
+@media (hover: none) {
+  .bag-item .delete-handle,
+  .brain-text-box .delete-handle,
+  .mind-chip-inside .delete-handle,
+  .rel-node .delete-handle,
+  .palette-slot .delete-btn {
+    display: flex;
   }
 }

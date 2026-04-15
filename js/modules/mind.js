@@ -48,7 +48,7 @@ function renderMind() {
       </p>
       <div class="emotion-picker">
         ${emotions.map((em, i) => `
-          <span class="chip ${selectedEmotions.has(em) ? 'selected' : ''}" onclick="addMindEmotion('${em}', ${i})">${em}</span>
+          <button class="chip ${selectedEmotions.has(em) ? 'selected' : ''}" onclick="addMindEmotion('${em}', ${i})" aria-pressed="${selectedEmotions.has(em)}">${em}</button>
         `).join('')}
       </div>
       <div class="work-area">
@@ -71,6 +71,10 @@ function renderMind() {
 
 function addMindEmotion(emotion, colorIndex) {
   const data = getModuleData('mind');
+  if (data.some(item => item.text === emotion)) {
+    showToast(t('toastAlreadyAdded'));
+    return;
+  }
   data.push({
     text: emotion,
     color: EMOTION_COLORS[colorIndex % EMOTION_COLORS.length]

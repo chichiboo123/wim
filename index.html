@@ -27,23 +27,32 @@
 
   <!-- Header -->
   <header id="app-header">
-    <div class="header-left" id="header-back" style="display:none;" onclick="navigateTo('home')">
+    <button class="header-left icon-btn" id="header-back" style="display:none;" onclick="navigateTo('home')" aria-label="홈으로 이동">
       <span class="material-icons">arrow_back</span>
-    </div>
+    </button>
     <div class="header-title" id="header-title" data-i18n="appTitle">What's In My</div>
     <div class="header-right">
-      <div class="theme-chips">
-        <span class="color-chip chip-blue active" data-theme="blue" onclick="setTheme('blue')"></span>
-        <span class="color-chip chip-green" data-theme="green" onclick="setTheme('green')"></span>
-        <span class="color-chip chip-pink" data-theme="pink" onclick="setTheme('pink')"></span>
-        <span class="color-chip chip-yellow" data-theme="yellow" onclick="setTheme('yellow')"></span>
+      <div class="header-selects">
+        <select id="theme-select" class="header-select" onchange="setTheme(this.value)" aria-label="테마 선택">
+          <option value="blue">Blue</option>
+          <option value="green">Green</option>
+          <option value="pink">Pink</option>
+          <option value="yellow">Yellow</option>
+        </select>
+        <select id="lang-select" class="header-select" onchange="setLang(this.value)" aria-label="언어 선택">
+          <option value="ko">KO</option>
+          <option value="en">EN</option>
+          <option value="ja">JP</option>
+        </select>
       </div>
-      <div class="lang-toggle" onclick="cycleLang()">
-        <span class="material-icons">translate</span>
-        <span id="lang-label">KO</span>
-      </div>
-      <button class="icon-btn" onclick="restoreData()" title="데이터 복원">
-        <span class="material-icons">folder_open</span>
+      <button class="icon-btn" onclick="openBackupMenu()" title="백업/복원">
+        <span class="material-icons">sync_alt</span>
+      </button>
+      <button class="icon-btn" id="reset-module-btn" onclick="resetCurrentModule()" title="현재 탭 초기화" style="display:none;">
+        <span class="material-icons">restart_alt</span>
+      </button>
+      <button class="icon-btn" onclick="resetAllData()" title="전체 초기화">
+        <span class="material-icons">delete_sweep</span>
       </button>
       <button class="icon-btn" onclick="showHelp()" title="도움말">
         <span class="material-icons">help_outline</span>
@@ -101,6 +110,20 @@
 
   <!-- Hidden file input for data restore -->
   <input type="file" id="restore-file-input" accept=".json" style="display:none;" onchange="handleRestore(event)">
+
+  <!-- Backup Menu Modal -->
+  <div id="backup-modal" class="modal-overlay" style="display:none;" onclick="closeBackupOutside(event)">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 data-i18n="backupTitle">백업 / 복원</h2>
+        <button class="icon-btn" onclick="closeBackupMenu()"><span class="material-icons">close</span></button>
+      </div>
+      <div class="modal-body backup-actions">
+        <button class="btn btn-primary" onclick="triggerBackupDownload()" data-i18n="backupDownload">백업 다운로드 (JSON)</button>
+        <button class="btn btn-secondary" onclick="restoreData()" data-i18n="backupUpload">백업 업로드 (JSON)</button>
+      </div>
+    </div>
+  </div>
 
   <!-- App Scripts -->
   <script src="js/i18n.js"></script>

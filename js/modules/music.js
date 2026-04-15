@@ -1,6 +1,7 @@
 /* ===== MUSIC MODULE ===== */
 function renderMusic() {
   const data = getModuleData('music');
+  const isEditing = musicEditingIndex !== -1;
   return `
     <div class="module-page">
       <h2 class="module-title">${t('musicPageTitle')}</h2>
@@ -17,7 +18,8 @@ function renderMusic() {
               ${t('thumbnail')}
             </button>
             <input type="file" id="music-thumb-input" accept="image/*" style="display:none" onchange="setMusicThumb(event)">
-            <button class="btn btn-primary btn-sm" onclick="addMusic()">${t('addSong')}</button>
+            <button class="btn btn-primary btn-sm" onclick="addMusic()">${isEditing ? t('saveEdit') : t('addSong')}</button>
+            ${isEditing ? `<button class="btn btn-secondary btn-sm" onclick="cancelMusicEdit()">${t('cancelEdit')}</button>` : ''}
           </div>
         </div>
         <div id="music-thumb-preview" style="display:none;margin-bottom:12px;font-size:0.8rem;color:var(--text-secondary);">
@@ -56,6 +58,7 @@ function renderMusic() {
 }
 
 let pendingMusicThumb = null;
+let musicEditingIndex = -1;
 
 function setMusicThumb(event) {
   const file = event.target.files[0];
@@ -78,12 +81,22 @@ function addMusic() {
   const song = document.getElementById('music-song').value.trim();
   const artist = document.getElementById('music-artist').value.trim();
   const reason = document.getElementById('music-reason').value.trim();
-  if (!song) return;
+  if (!song) {
+    showToast(t('toastNeedSongName'));
+    return;
+  }
 
   const data = getModuleData('music');
-  data.push({ song, artist, reason, thumb: pendingMusicThumb || null });
+  const payload = { song, artist, reason, thumb: pendingMusicThumb || null };
+  if (musicEditingIndex !== -1) {
+    data[musicEditingIndex] = payload;
+    musicEditingIndex = -1;
+  } else {
+    data.push(payload);
+  }
   saveModuleData('music', data);
   pendingMusicThumb = null;
+  showToast(t('toastSaved'));
   renderCurrentPage();
 }
 
@@ -92,7 +105,9 @@ function editMusic(index) {
   const item = data[index];
   if (!item) return;
 
-  // Populate fields
+  musicEditingIndex = index;
+  pendingMusicThumb = item.thumb;
+  renderCurrentPage();
   setTimeout(() => {
     const songEl = document.getElementById('music-song');
     const artistEl = document.getElementById('music-artist');
@@ -100,28 +115,19 @@ function editMusic(index) {
     if (songEl) songEl.value = item.song;
     if (artistEl) artistEl.value = item.artist;
     if (reasonEl) reasonEl.value = item.reason || '';
-    pendingMusicThumb = item.thumb;
-
-    // Remove and re-add on next submission
-    data.splice(index, 1);
-    saveModuleData('music', data);
-    renderCurrentPage();
-
-    // Re-populate after re-render
-    setTimeout(() => {
-      const s = document.getElementById('music-song');
-      const a = document.getElementById('music-artist');
-      const r = document.getElementById('music-reason');
-      if (s) s.value = item.song;
-      if (a) a.value = item.artist;
-      if (r) r.value = item.reason || '';
-    }, 50);
-  }, 0);
+  }, 50);
 }
 
 function deleteMusic(index) {
   const data = getModuleData('music');
   data.splice(index, 1);
   saveModuleData('music', data);
+  if (musicEditingIndex === index) musicEditingIndex = -1;
+  renderCurrentPage();
+}
+
+function cancelMusicEdit() {
+  musicEditingIndex = -1;
+  pendingMusicThumb = null;
   renderCurrentPage();
 }
