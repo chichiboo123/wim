@@ -122,6 +122,20 @@
   <!-- Hidden file input for data restore -->
   <input type="file" id="restore-file-input" accept=".json" style="display:none;" onchange="handleRestore(event)">
 
+  <!-- Backup Menu Modal -->
+  <div id="backup-modal" class="modal-overlay" style="display:none;" onclick="closeBackupOutside(event)">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 data-i18n="backupTitle">백업 / 복원</h2>
+        <button class="icon-btn" onclick="closeBackupMenu()"><span class="material-icons">close</span></button>
+      </div>
+      <div class="modal-body backup-actions">
+        <button class="btn btn-primary" onclick="triggerBackupDownload()" data-i18n="backupDownload">백업 다운로드 (JSON)</button>
+        <button class="btn btn-secondary" onclick="restoreData()" data-i18n="backupUpload">백업 업로드 (JSON)</button>
+      </div>
+    </div>
+  </div>
+
   <!-- App Scripts -->
   <script src="js/i18n.js"></script>
   <script src="js/theme.js"></script>

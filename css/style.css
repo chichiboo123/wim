@@ -472,6 +472,12 @@ button.module-card {
   margin-bottom: 4px;
 }
 
+.backup-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
 /* ===== Form Elements ===== */
 .form-row {
   display: flex;

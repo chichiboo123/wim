@@ -23,6 +23,9 @@ function renderBag() {
       <div class="emoji-preset-wrap" id="emoji-preset-wrap" style="display:none;">
         ${quickEmoji}
       </div>
+      <div class="emoji-preset-wrap" id="emoji-preset-wrap" style="display:none;">
+        ${quickEmoji}
+      </div>
       <div class="work-area">
         <div class="bag-canvas" id="bag-canvas">
           <svg class="bag-svg" viewBox="0 0 400 300">
