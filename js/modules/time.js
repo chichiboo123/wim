@@ -76,21 +76,23 @@ function renderTimeSvg(data, maxHour) {
 
   // Data wedges
   data.forEach(item => {
-    const startAngle = (item.start / maxHour) * 360 - 90;
-    const endAngle = (item.end / maxHour) * 360 - 90;
-    const path = describeArc(cx, cy, r, startAngle, endAngle);
-    svg += `<path d="${path}" fill="${item.color}" opacity="0.7" stroke="white" stroke-width="1"/>`;
+    const segments = splitTimeSegments(item.start, item.end, maxHour);
+    segments.forEach(seg => {
+      const startAngle = (seg.start / maxHour) * 360 - 90;
+      const endAngle = (seg.end / maxHour) * 360 - 90;
+      const path = describeArc(cx, cy, r, startAngle, endAngle);
+      svg += `<path d="${path}" fill="${item.color}" opacity="0.7" stroke="white" stroke-width="1"/>`;
 
-    // Label
-    const midAngle = (startAngle + endAngle) / 2;
-    const labelR = r * 0.65;
-    const lx = cx + labelR * Math.cos(midAngle * Math.PI / 180);
-    const ly = cy + labelR * Math.sin(midAngle * Math.PI / 180);
-    const span = Math.abs(endAngle - startAngle);
-    if (span > 12) {
-      svg += `<text x="${lx}" y="${ly}" text-anchor="middle" dominant-baseline="middle"
-                font-size="${span > 30 ? 10 : 8}" fill="var(--text)" font-weight="600">${escapeHtml(item.task)}</text>`;
-    }
+      const midAngle = (startAngle + endAngle) / 2;
+      const labelR = r * 0.65;
+      const lx = cx + labelR * Math.cos(midAngle * Math.PI / 180);
+      const ly = cy + labelR * Math.sin(midAngle * Math.PI / 180);
+      const span = Math.abs(endAngle - startAngle);
+      if (span > 18) {
+        svg += `<text x="${lx}" y="${ly}" text-anchor="middle" dominant-baseline="middle"
+                  font-size="${span > 30 ? 10 : 8}" fill="var(--text)" font-weight="600">${escapeHtml(item.task)}</text>`;
+      }
+    });
   });
 
   // Hour marks
@@ -117,6 +119,18 @@ function renderTimeSvg(data, maxHour) {
   return svg;
 }
 
+function splitTimeSegments(start, end, maxHour) {
+  const startNorm = ((start % maxHour) + maxHour) % maxHour;
+  const endNorm = ((end % maxHour) + maxHour) % maxHour;
+  if (end <= maxHour && end > start) return [{ start, end }];
+  if (endNorm === startNorm) return [{ start: 0, end: maxHour }];
+  if (endNorm > startNorm) return [{ start: startNorm, end: endNorm }];
+  return [
+    { start: startNorm, end: maxHour },
+    { start: 0, end: endNorm }
+  ];
+}
+
 function describeArc(cx, cy, r, startAngle, endAngle) {
   const start = polarToCartesian(cx, cy, r, endAngle);
   const end = polarToCartesian(cx, cy, r, startAngle);
@@ -131,11 +145,12 @@ function polarToCartesian(cx, cy, r, angleDeg) {
 
 function formatTimeRange(start, end, maxHour) {
   const fmt = (v) => {
-    const h = Math.floor(v);
+    const h = Math.floor(v % maxHour);
     const m = (v % 1) * 60;
     return `${String(h).padStart(2, '0')}:${String(Math.round(m)).padStart(2, '0')}`;
   };
-  return `${fmt(start)} ~ ${fmt(end)}`;
+  const overnight = end > maxHour ? ' (+1)' : '';
+  return `${fmt(start)} ~ ${fmt(end)}${overnight}`;
 }
 
 const TIME_COLORS = [
@@ -146,9 +161,24 @@ const TIME_COLORS = [
 
 function addTimeTask() {
   const start = readTimeValue('time-start-h', 'time-start-m');
-  const end = readTimeValue('time-end-h', 'time-end-m');
+  const rawEnd = readTimeValue('time-end-h', 'time-end-m');
   const task = document.getElementById('time-task').value.trim();
   const maxHour = timeMode24 ? 24 : 12;
+  let end = rawEnd;
+
+  if (isNaN(start) || isNaN(rawEnd)) {
+    showToast(t('toastTimeNeedNumber'));
+    return;
+  }
+  if (!task) {
+    showToast(t('toastNeedTaskName'));
+    return;
+  }
+  if (start < 0 || start >= maxHour || rawEnd < 0 || rawEnd > maxHour) {
+    showToast(t('toastTimeOutOfRange'));
+    return;
+  }
+  if (rawEnd <= start) end = rawEnd + maxHour;
 
   if (isNaN(start) || isNaN(end)) {
     showToast(t('toastTimeNeedNumber'));
@@ -167,7 +197,7 @@ function addTimeTask() {
     return;
   }
   const data = getModuleData('time');
-  const expectedStart = data.length ? data[data.length - 1].end : 0;
+  const expectedStart = data.length ? (data[data.length - 1].end % maxHour) : 0;
   if (Math.abs(start - expectedStart) > 0.001) {
     showToast(t('toastTimeMustBeContinuous'));
     return;
