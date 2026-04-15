@@ -69,19 +69,24 @@ function renderCurrentPage() {
 
 /* ===== Dashboard ===== */
 function renderDashboard() {
+  const allData = loadAllData();
   return `
     <div class="dashboard-header">
       <h1 data-i18n="appTitle">What's In My</h1>
       <p data-i18n="subtitle">${t('subtitle')}</p>
     </div>
     <div class="module-grid">
-      ${MODULES.map(m => `
-        <div class="module-card" onclick="navigateTo('${m.id}')">
-          <span class="material-icons">${m.icon}</span>
-          <h3 data-i18n="${m.titleKey}">${t(m.titleKey)}</h3>
-          <p data-i18n="${m.descKey}">${t(m.descKey)}</p>
-        </div>
-      `).join('')}
+      ${MODULES.map(m => {
+        const count = (allData[m.id] || []).length;
+        return `
+          <div class="module-card" onclick="navigateTo('${m.id}')">
+            <span class="material-icons">${m.icon}</span>
+            <h3 data-i18n="${m.titleKey}">${t(m.titleKey)}</h3>
+            <p data-i18n="${m.descKey}">${t(m.descKey)}</p>
+            ${count > 0 ? `<span class="card-badge">${count}</span>` : ''}
+          </div>
+        `;
+      }).join('')}
     </div>
   `;
 }
@@ -130,6 +135,17 @@ function initApp() {
   if (hash && MODULES.some(m => m.id === hash)) {
     currentPage = hash;
   }
+
+  // ESC 키로 모달/FAB 닫기
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape') return;
+    const modal = document.getElementById('help-modal');
+    if (modal && modal.style.display !== 'none') {
+      closeHelp();
+    } else if (fabOpen) {
+      closeFab();
+    }
+  });
 
   renderCurrentPage();
 }

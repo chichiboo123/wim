@@ -5,7 +5,7 @@ function renderRelationship() {
     <div class="module-page">
       <h2 class="module-title">${t('relPageTitle')}</h2>
       <div class="rel-form">
-        <input type="text" class="form-input" id="rel-name" placeholder="${t('personName')}" maxlength="20" style="max-width:200px;">
+        <input type="text" class="form-input" id="rel-name" placeholder="${t('personName')}" maxlength="20" style="max-width:200px;" onkeydown="if(event.key==='Enter') addRelPerson()">
         <button class="btn btn-primary btn-sm" onclick="addRelPerson()">${t('addPerson')}</button>
       </div>
       <div class="work-area" style="padding:16px;">

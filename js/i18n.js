@@ -89,6 +89,11 @@ const TRANSLATIONS = {
       <p>각 체험 페이지 우측 하단의 버튼으로 JPG, PDF, 클립보드 복사, JSON 저장이 가능합니다.</p>
     `,
 
+    // Empty state hints
+    emptyMusicHint: "음악을 추가해서 나만의 플레이리스트를 만들어 보세요",
+    emptyWordHint: "나를 이루는 단어와 나만의 정의를 추가해 보세요",
+    emptyMindHint: "위에서 감정 단어를 선택하여 마음의 방을 채워 보세요",
+
     // Toast messages
     toastSaved: "저장되었습니다",
     toastCopied: "클립보드에 복사되었습니다",
@@ -176,6 +181,11 @@ const TRANSLATIONS = {
       <p>Use the FAB button on each page to save as JPG, PDF, copy, or JSON.</p>
     `,
 
+    // Empty state hints
+    emptyMusicHint: "Add songs to build your playlist",
+    emptyWordHint: "Add words and definitions that describe you",
+    emptyMindHint: "Select emotion words above to fill your mind room",
+
     toastSaved: "Saved",
     toastCopied: "Copied to clipboard",
     toastRestored: "Data restored",
@@ -261,6 +271,11 @@ const TRANSLATIONS = {
       <h3>📤 エクスポート</h3>
       <p>各ページのFABボタンでJPG、PDF、コピー、JSON保存ができます。</p>
     `,
+
+    // Empty state hints
+    emptyMusicHint: "曲を追加してプレイリストを作ろう",
+    emptyWordHint: "自分を作る言葉と定義を追加しよう",
+    emptyMindHint: "上の感情の言葉を選んで心の部屋を埋めよう",
 
     toastSaved: "保存しました",
     toastCopied: "クリップボードにコピーしました",

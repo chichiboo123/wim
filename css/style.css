@@ -94,6 +94,7 @@ input, textarea, select {
 }
 
 .color-chip {
+  position: relative;
   width: 20px;
   height: 20px;
   border-radius: 50%;
@@ -109,6 +110,20 @@ input, textarea, select {
 .color-chip.active {
   border-color: var(--text);
   transform: scale(1.15);
+}
+
+.color-chip.active::after {
+  content: '✓';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 11px;
+  font-weight: 900;
+  color: rgba(255, 255, 255, 0.95);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+  line-height: 1;
+  pointer-events: none;
 }
 
 .chip-blue { background: #A8D8EA; }
@@ -224,6 +239,21 @@ input, textarea, select {
 .module-card p {
   font-size: 0.82rem;
   color: var(--text-secondary);
+  line-height: 1.4;
+}
+
+.card-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: var(--primary);
+  color: white;
+  border-radius: 12px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 2px 7px;
+  min-width: 20px;
+  text-align: center;
   line-height: 1.4;
 }
 

@@ -39,6 +39,7 @@ const EMOTION_COLORS = [
 function renderMind() {
   const data = getModuleData('mind');
   const emotions = EMOTIONS[currentLang] || EMOTIONS.ko;
+  const selectedEmotions = new Set(data.map(d => d.text));
   return `
     <div class="module-page">
       <h2 class="module-title">${t('mindPageTitle')}</h2>
@@ -47,13 +48,14 @@ function renderMind() {
       </p>
       <div class="emotion-picker">
         ${emotions.map((em, i) => `
-          <span class="chip" onclick="addMindEmotion('${em}', ${i})">${em}</span>
+          <span class="chip ${selectedEmotions.has(em) ? 'selected' : ''}" onclick="addMindEmotion('${em}', ${i})">${em}</span>
         `).join('')}
       </div>
       <div class="work-area">
         <div class="mind-room" id="mind-room">
-          ${data.length === 0 ? `<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:var(--text-secondary);font-size:0.9rem;opacity:0.6;">
-            <span class="material-icons" style="font-size:48px;margin-right:8px;">favorite_border</span>
+          ${data.length === 0 ? `<div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--text-secondary);font-size:0.85rem;opacity:0.7;gap:8px;text-align:center;padding:16px;">
+            <span class="material-icons" style="font-size:48px;">favorite_border</span>
+            <span>${t('emptyMindHint')}</span>
           </div>` : ''}
           ${data.map((item, i) => `
             <div class="mind-chip-inside" style="background:${item.color};color:#333;">

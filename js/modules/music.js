@@ -7,11 +7,11 @@ function renderMusic() {
       <div class="work-area">
         <div style="margin-bottom:16px;">
           <div class="form-row">
-            <input type="text" class="form-input" id="music-song" placeholder="${t('songName')}" maxlength="60">
-            <input type="text" class="form-input" id="music-artist" placeholder="${t('artistName')}" maxlength="40">
+            <input type="text" class="form-input" id="music-song" placeholder="${t('songName')}" maxlength="60" onkeydown="if(event.key==='Enter') document.getElementById('music-artist').focus()">
+            <input type="text" class="form-input" id="music-artist" placeholder="${t('artistName')}" maxlength="40" onkeydown="if(event.key==='Enter') document.getElementById('music-reason').focus()">
           </div>
           <div class="form-row">
-            <input type="text" class="form-input" id="music-reason" placeholder="${t('reason')}" maxlength="100">
+            <input type="text" class="form-input" id="music-reason" placeholder="${t('reason')}" maxlength="100" onkeydown="if(event.key==='Enter') addMusic()">
             <button class="btn btn-secondary btn-sm" onclick="document.getElementById('music-thumb-input').click()">
               <span class="material-icons" style="font-size:16px;vertical-align:middle;">image</span>
               ${t('thumbnail')}
@@ -46,6 +46,7 @@ function renderMusic() {
           ${data.length === 0 ? `
             <div style="text-align:center;padding:40px;color:var(--text-secondary);">
               <span class="material-icons" style="font-size:48px;display:block;margin-bottom:8px;">queue_music</span>
+              <p style="font-size:0.85rem;">${t('emptyMusicHint')}</p>
             </div>
           ` : ''}
         </div>
