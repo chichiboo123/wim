@@ -27,21 +27,21 @@
 
   <!-- Header -->
   <header id="app-header">
-    <div class="header-left" id="header-back" style="display:none;" onclick="navigateTo('home')">
+    <button class="header-left icon-btn" id="header-back" style="display:none;" onclick="navigateTo('home')" aria-label="홈으로 이동">
       <span class="material-icons">arrow_back</span>
-    </div>
+    </button>
     <div class="header-title" id="header-title" data-i18n="appTitle">What's In My</div>
     <div class="header-right">
-      <div class="theme-chips">
-        <span class="color-chip chip-blue active" data-theme="blue" onclick="setTheme('blue')"></span>
-        <span class="color-chip chip-green" data-theme="green" onclick="setTheme('green')"></span>
-        <span class="color-chip chip-pink" data-theme="pink" onclick="setTheme('pink')"></span>
-        <span class="color-chip chip-yellow" data-theme="yellow" onclick="setTheme('yellow')"></span>
+      <div class="theme-chips" role="group" aria-label="테마 색상 선택">
+        <button class="color-chip chip-blue active" data-theme="blue" onclick="setTheme('blue')" aria-label="블루 테마"></button>
+        <button class="color-chip chip-green" data-theme="green" onclick="setTheme('green')" aria-label="그린 테마"></button>
+        <button class="color-chip chip-pink" data-theme="pink" onclick="setTheme('pink')" aria-label="핑크 테마"></button>
+        <button class="color-chip chip-yellow" data-theme="yellow" onclick="setTheme('yellow')" aria-label="옐로우 테마"></button>
       </div>
-      <div class="lang-toggle" onclick="cycleLang()">
+      <button class="lang-toggle" onclick="cycleLang()" aria-label="언어 전환">
         <span class="material-icons">translate</span>
         <span id="lang-label">KO</span>
-      </div>
+      </button>
       <button class="icon-btn" onclick="restoreData()" title="데이터 복원">
         <span class="material-icons">folder_open</span>
       </button>
