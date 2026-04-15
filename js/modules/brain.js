@@ -1,34 +1,5 @@
 /* ===== BRAIN MODULE ===== */
-const BRAIN_BG_SVG = `data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 794 1107">
-  <rect width="100%" height="100%" fill="#ececec"/>
-  <path d="M24 620
-           C36 608, 60 606, 73 590
-           C88 572, 95 546, 98 520
-           C101 482, 108 434, 120 384
-           C136 319, 173 248, 230 198
-           C286 150, 360 122, 434 118
-           C511 114, 589 131, 649 173
-           C700 209, 737 272, 758 346
-           C776 411, 784 484, 783 555
-           C782 624, 772 693, 742 752
-           C718 800, 688 842, 654 876
-           C631 898, 595 930, 570 956
-           C556 972, 555 1000, 572 1024
-           C581 1037, 588 1050, 576 1062
-           C545 1088, 470 1097, 390 1097
-           C333 1096, 289 1092, 255 1082
-           C246 1059, 241 1033, 231 1010
-           C221 987, 207 975, 183 972
-           C146 968, 108 980, 84 976
-           C67 973, 58 964, 50 948
-           C32 911, 22 874, 6 847
-           C-8 824, -6 804, 6 789
-           C20 773, 36 770, 45 751
-           C53 735, 52 721, 44 707
-           C34 690, 24 670, 20 650
-           C18 639, 19 628, 24 620 Z"
-        fill="none" stroke="#000" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>`)}`;
+const BRAIN_IMAGE_URL = 'https://i.ibb.co/6cM2tCNn/1.png';
 
 function renderBrain() {
   const data = getModuleData('brain');
@@ -57,7 +28,7 @@ function initBrainCanvas() {
   const canvas = document.getElementById('brain-canvas');
   if (!canvas) return;
 
-  canvas.style.backgroundImage = `url("${BRAIN_BG_SVG}")`;
+  canvas.style.backgroundImage = `url("${BRAIN_IMAGE_URL}")`;
   canvas.style.backgroundSize = 'contain';
   canvas.style.backgroundRepeat = 'no-repeat';
   canvas.style.backgroundPosition = 'center';

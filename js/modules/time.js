@@ -24,8 +24,22 @@ function renderTime() {
           <div class="time-list-wrap">
             <div class="time-form">
               <div class="form-row">
-                <input type="number" class="form-input" id="time-start" min="0" max="${maxHour - 1}" placeholder="${t('startTime')} (0-${maxHour - 1})" step="0.5">
-                <input type="number" class="form-input" id="time-end" min="0" max="${maxHour}" placeholder="${t('endTime')} (0-${maxHour})" step="0.5">
+                <div class="time-input-group">
+                  <label>${t('startTime')}</label>
+                  <div class="time-boxes">
+                    <input type="number" class="form-input time-box" id="time-start-h" min="0" max="${maxHour - 1}" placeholder="HH">
+                    <span>:</span>
+                    <input type="number" class="form-input time-box" id="time-start-m" min="0" max="59" placeholder="MM">
+                  </div>
+                </div>
+                <div class="time-input-group">
+                  <label>${t('endTime')}</label>
+                  <div class="time-boxes">
+                    <input type="number" class="form-input time-box" id="time-end-h" min="0" max="${maxHour}" placeholder="HH">
+                    <span>:</span>
+                    <input type="number" class="form-input time-box" id="time-end-m" min="0" max="59" placeholder="MM">
+                  </div>
+                </div>
               </div>
               <div class="form-row">
                 <input type="text" class="form-input" id="time-task" placeholder="${t('taskName')}" maxlength="30" onkeydown="if(event.key==='Enter') addTimeTask()">
@@ -131,8 +145,8 @@ const TIME_COLORS = [
 ];
 
 function addTimeTask() {
-  const start = parseFloat(document.getElementById('time-start').value);
-  const end = parseFloat(document.getElementById('time-end').value);
+  const start = readTimeValue('time-start-h', 'time-start-m');
+  const end = readTimeValue('time-end-h', 'time-end-m');
   const task = document.getElementById('time-task').value.trim();
   const maxHour = timeMode24 ? 24 : 12;
 
@@ -152,14 +166,26 @@ function addTimeTask() {
     showToast(t('toastTimeRangeInvalid'));
     return;
   }
-
   const data = getModuleData('time');
+  const expectedStart = data.length ? data[data.length - 1].end : 0;
+  if (Math.abs(start - expectedStart) > 0.001) {
+    showToast(t('toastTimeMustBeContinuous'));
+    return;
+  }
+
   data.push({
     start, end, task,
     color: TIME_COLORS[data.length % TIME_COLORS.length]
   });
   saveModuleData('time', data);
   renderCurrentPage();
+}
+
+function readTimeValue(hourId, minId) {
+  const h = parseInt(document.getElementById(hourId).value, 10);
+  const m = parseInt(document.getElementById(minId).value, 10);
+  if (isNaN(h) || isNaN(m)) return NaN;
+  return h + (m / 60);
 }
 
 function deleteTimeTask(index) {

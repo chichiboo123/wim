@@ -94,6 +94,18 @@
   max-width: 200px;
 }
 
+.bag-size-ctrl {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+}
+
+.bag-item-selected {
+  outline: 2px dashed var(--primary);
+  outline-offset: 2px;
+}
+
 .emoji-preset-wrap {
   display: flex;
   flex-wrap: wrap;
@@ -147,6 +159,29 @@
 
 .time-form .form-row {
   margin-bottom: 0;
+}
+
+.time-input-group {
+  flex: 1;
+  min-width: 170px;
+}
+
+.time-input-group label {
+  display: block;
+  font-size: 0.78rem;
+  margin-bottom: 4px;
+  color: var(--text-secondary);
+}
+
+.time-boxes {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.time-box {
+  width: 72px;
+  text-align: center;
 }
 
 /* ===== BRAIN MODULE ===== */

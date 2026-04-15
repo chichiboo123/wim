@@ -102,6 +102,7 @@ input, textarea, select {
   display: flex;
   align-items: center;
   gap: 8px;
+  margin-left: auto;
 }
 
 .header-selects {
@@ -117,6 +118,70 @@ input, textarea, select {
   padding: 6px 10px;
   font-size: 0.8rem;
   font-weight: 600;
+}
+
+.theme-picker-wrap,
+.backup-picker-wrap {
+  position: relative;
+}
+
+.theme-dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 1px solid rgba(0,0,0,0.2);
+  display: inline-block;
+}
+
+.theme-menu,
+.backup-menu-dropdown {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 6px);
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  box-shadow: 0 8px 18px var(--shadow);
+  padding: 8px;
+  z-index: 180;
+  display: none;
+}
+
+.theme-menu.open,
+.backup-menu-dropdown.open {
+  display: flex;
+}
+
+.theme-menu {
+  gap: 8px;
+}
+
+.theme-color-btn {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid rgba(0,0,0,0.15);
+}
+
+.chip-blue { background: #A8D8EA; }
+.chip-green { background: #B5E8C3; }
+.chip-pink { background: #F4B6C2; }
+.chip-yellow { background: #FDE68A; }
+
+.backup-menu-dropdown {
+  min-width: 180px;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.dropdown-item {
+  text-align: left;
+  padding: 8px 10px;
+  border-radius: 8px;
+}
+
+.dropdown-item:hover {
+  background: var(--hover);
 }
 
 .icon-btn {

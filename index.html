@@ -33,21 +33,32 @@
     <button class="header-title" id="header-title" data-i18n="appTitle" onclick="navigateTo('home')" aria-label="홈으로 이동">What's In My</button>
     <div class="header-right">
       <div class="header-selects">
-        <select id="theme-select" class="header-select" onchange="setTheme(this.value)" aria-label="테마 선택">
-          <option value="blue">Blue</option>
-          <option value="green">Green</option>
-          <option value="pink">Pink</option>
-          <option value="yellow">Yellow</option>
-        </select>
+        <div class="theme-picker-wrap">
+          <button class="icon-btn" id="theme-toggle-btn" onclick="toggleThemeMenu()" title="테마 선택">
+            <span class="theme-dot" id="theme-dot"></span>
+          </button>
+          <div class="theme-menu" id="theme-menu">
+            <button class="theme-color-btn chip-blue" onclick="setThemeFromMenu('blue')" aria-label="Blue"></button>
+            <button class="theme-color-btn chip-green" onclick="setThemeFromMenu('green')" aria-label="Green"></button>
+            <button class="theme-color-btn chip-pink" onclick="setThemeFromMenu('pink')" aria-label="Pink"></button>
+            <button class="theme-color-btn chip-yellow" onclick="setThemeFromMenu('yellow')" aria-label="Yellow"></button>
+          </div>
+        </div>
         <select id="lang-select" class="header-select" onchange="setLang(this.value)" aria-label="언어 선택">
           <option value="ko">KO</option>
           <option value="en">EN</option>
           <option value="ja">JP</option>
         </select>
       </div>
-      <button class="icon-btn" onclick="openBackupMenu()" title="백업/복원">
-        <span class="material-icons">sync_alt</span>
-      </button>
+      <div class="backup-picker-wrap">
+        <button class="icon-btn" onclick="toggleBackupMenu(event)" title="백업/복원">
+          <span class="material-icons">save</span>
+        </button>
+        <div class="backup-menu-dropdown" id="backup-menu-dropdown">
+          <button class="dropdown-item" onclick="triggerBackupDownload()" data-i18n="backupDownload">백업 다운로드 (JSON)</button>
+          <button class="dropdown-item" onclick="restoreData()" data-i18n="backupUpload">백업 업로드 (JSON)</button>
+        </div>
+      </div>
       <button class="icon-btn" id="reset-module-btn" onclick="resetCurrentModule()" title="현재 탭 초기화" style="display:none;">
         <span class="material-icons">restart_alt</span>
       </button>

@@ -16,8 +16,8 @@ const TRANSLATIONS = {
     timeDesc: "나의 24시간을 계획해 보자",
     brainTitle: "브레인 (Brain)",
     brainDesc: "내 머릿속에는 무엇이 있을까?",
-    mindTitle: "마인드 (Mind)",
-    mindDesc: "내 마음의 방을 채워 보자",
+    mindTitle: "감정 (Emotion)",
+    mindDesc: "내 감정의 크기를 시각화해 보자",
     colorTitle: "컬러 (Color)",
     colorDesc: "나만의 색 팔레트를 만들어 보자",
     musicTitle: "뮤직 (Music)",
@@ -50,7 +50,7 @@ const TRANSLATIONS = {
     clickToAdd: "빈 곳을 클릭하여 텍스트를 추가하세요",
 
     // Mind
-    mindPageTitle: "마음의 방",
+    mindPageTitle: "감정 (Emotion)",
     selectEmotion: "감정 단어를 선택하세요",
 
     // Color
@@ -109,6 +109,7 @@ const TRANSLATIONS = {
     toastTimeNeedNumber: "시작/종료 시간을 숫자로 입력하세요",
     toastTimeRangeInvalid: "시작 시간은 종료 시간보다 빨라야 합니다",
     toastTimeOutOfRange: "시간 범위를 확인해 주세요",
+    toastTimeMustBeContinuous: "시간은 앞 일정 종료 시각부터 이어서 입력해 주세요",
     toastNeedTaskName: "할 일을 입력해 주세요",
     toastNeedWordFields: "단어와 정의를 모두 입력해 주세요",
     toastNeedSongName: "곡명을 입력해 주세요",
@@ -136,8 +137,8 @@ const TRANSLATIONS = {
     timeDesc: "Plan my 24 hours",
     brainTitle: "Brain",
     brainDesc: "What's on my mind?",
-    mindTitle: "Mind",
-    mindDesc: "Fill the room of my heart",
+    mindTitle: "Emotion",
+    mindDesc: "Visualize the intensity of your emotions",
     colorTitle: "Color",
     colorDesc: "Create my own color palette",
     musicTitle: "Music",
@@ -166,7 +167,7 @@ const TRANSLATIONS = {
     brainPageTitle: "What's In My Brain?",
     clickToAdd: "Click empty space to add text",
 
-    mindPageTitle: "Room of My Mind",
+    mindPageTitle: "Emotion",
     selectEmotion: "Select emotion words",
 
     colorPageTitle: "My Palette",
@@ -219,6 +220,7 @@ const TRANSLATIONS = {
     toastTimeNeedNumber: "Enter start/end times as numbers",
     toastTimeRangeInvalid: "Start time must be earlier than end time",
     toastTimeOutOfRange: "Check the allowed time range",
+    toastTimeMustBeContinuous: "Time blocks must be continuous from the previous end time",
     toastNeedTaskName: "Please enter a task name",
     toastNeedWordFields: "Please enter both word and definition",
     toastNeedSongName: "Please enter a song name",
@@ -246,8 +248,8 @@ const TRANSLATIONS = {
     timeDesc: "24時間を計画しよう",
     brainTitle: "ブレイン (Brain)",
     brainDesc: "頭の中には何がある？",
-    mindTitle: "マインド (Mind)",
-    mindDesc: "心の部屋を埋めてみよう",
+    mindTitle: "感情 (Emotion)",
+    mindDesc: "感情の強さを可視化しよう",
     colorTitle: "カラー (Color)",
     colorDesc: "自分だけのパレットを作ろう",
     musicTitle: "ミュージック (Music)",
@@ -276,7 +278,7 @@ const TRANSLATIONS = {
     brainPageTitle: "頭の中は？",
     clickToAdd: "空白をクリックしてテキストを追加",
 
-    mindPageTitle: "心の部屋",
+    mindPageTitle: "感情 (Emotion)",
     selectEmotion: "感情の言葉を選んでください",
 
     colorPageTitle: "マイパレット",
@@ -329,6 +331,7 @@ const TRANSLATIONS = {
     toastTimeNeedNumber: "開始/終了時刻を数字で入力してください",
     toastTimeRangeInvalid: "開始時刻は終了時刻より前である必要があります",
     toastTimeOutOfRange: "時刻の範囲を確認してください",
+    toastTimeMustBeContinuous: "時間は前の終了時刻から連続して入力してください",
     toastNeedTaskName: "タスク名を入力してください",
     toastNeedWordFields: "言葉と定義の両方を入力してください",
     toastNeedSongName: "曲名を入力してください",
