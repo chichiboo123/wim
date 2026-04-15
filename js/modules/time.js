@@ -180,6 +180,22 @@ function addTimeTask() {
   }
   if (rawEnd <= start) end = rawEnd + maxHour;
 
+  if (isNaN(start) || isNaN(end)) {
+    showToast(t('toastTimeNeedNumber'));
+    return;
+  }
+  if (!task) {
+    showToast(t('toastNeedTaskName'));
+    return;
+  }
+  if (start < 0 || end > maxHour) {
+    showToast(t('toastTimeOutOfRange'));
+    return;
+  }
+  if (start >= end) {
+    showToast(t('toastTimeRangeInvalid'));
+    return;
+  }
   const data = getModuleData('time');
   const expectedStart = data.length ? (data[data.length - 1].end % maxHour) : 0;
   if (Math.abs(start - expectedStart) > 0.001) {
