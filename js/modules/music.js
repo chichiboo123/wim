@@ -22,9 +22,16 @@ function renderMusic() {
             ${isEditing ? `<button class="btn btn-secondary btn-sm" onclick="cancelMusicEdit()">${t('cancelEdit')}</button>` : ''}
           </div>
         </div>
-        <div id="music-thumb-preview" style="display:none;margin-bottom:12px;font-size:0.8rem;color:var(--text-secondary);">
-          <span class="material-icons" style="font-size:14px;vertical-align:middle;">check_circle</span>
-          <span id="music-thumb-name"></span>
+        <div id="music-thumb-preview" style="display:${pendingMusicThumb ? 'flex' : 'none'};margin-bottom:14px;align-items:center;gap:12px;padding:10px;background:var(--bg);border:1px solid var(--border);border-radius:12px;">
+          <img id="music-thumb-preview-img" src="${pendingMusicThumb || ''}" alt=""
+               style="width:64px;height:64px;object-fit:cover;border-radius:8px;box-shadow:0 2px 8px var(--shadow);flex-shrink:0;">
+          <div>
+            <div style="font-size:0.82rem;font-weight:600;color:var(--text);margin-bottom:3px;">
+              <span class="material-icons" style="font-size:14px;vertical-align:middle;color:var(--primary);">check_circle</span>
+              ${t('thumbnail')}
+            </div>
+            <div id="music-thumb-name" style="font-size:0.75rem;color:var(--text-secondary);max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;"></div>
+          </div>
         </div>
         <div class="list-container" id="music-list">
           ${data.map((item, i) => `
@@ -67,10 +74,12 @@ function setMusicThumb(event) {
   reader.onload = function(e) {
     pendingMusicThumb = e.target.result;
     const preview = document.getElementById('music-thumb-preview');
+    const imgEl = document.getElementById('music-thumb-preview-img');
     const nameEl = document.getElementById('music-thumb-name');
-    if (preview && nameEl) {
-      preview.style.display = 'block';
-      nameEl.textContent = file.name;
+    if (preview) {
+      preview.style.display = 'flex';
+      if (imgEl) imgEl.src = e.target.result;
+      if (nameEl) nameEl.textContent = file.name;
     }
   };
   reader.readAsDataURL(file);
