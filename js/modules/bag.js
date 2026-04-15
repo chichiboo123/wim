@@ -1,6 +1,9 @@
 /* ===== BAG MODULE ===== */
 function renderBag() {
   const data = getModuleData('bag');
+  const quickEmoji = BAG_EMOJI_PRESET.map((em) =>
+    `<button class="chip" onclick="addPresetBagEmoji('${em}')" aria-label="${em}">${em}</button>`
+  ).join('');
   return `
     <div class="module-page">
       <h2 class="module-title">${t('bagPageTitle')}</h2>
@@ -9,8 +12,16 @@ function renderBag() {
         <button class="btn btn-primary btn-sm" onclick="addBagText()">${t('addText')}</button>
         <input type="text" class="form-input" id="bag-emoji-input" placeholder="${t('emojiPlaceholder')}" maxlength="4" style="max-width:100px;" onkeydown="if(event.key==='Enter') addBagEmoji()">
         <button class="btn btn-primary btn-sm" onclick="addBagEmoji()">${t('addEmoji')}</button>
+        <button class="btn btn-secondary btn-sm" onclick="toggleBagEmojiPicker()">${t('emojiPick')}</button>
         <button class="btn btn-secondary btn-sm" onclick="document.getElementById('bag-img-input').click()">${t('addImage')}</button>
         <input type="file" id="bag-img-input" accept="image/*" style="display:none" onchange="addBagImage(event)">
+        <div class="bag-size-ctrl">
+          <span>크기</span>
+          <input type="range" id="bag-size-range" min="0.5" max="2.5" step="0.1" value="${getSelectedBagSize()}" onchange="updateSelectedBagSize(this.value)">
+        </div>
+      </div>
+      <div class="emoji-preset-wrap" id="emoji-preset-wrap" style="display:none;">
+        ${quickEmoji}
       </div>
       <div class="work-area">
         <div class="bag-canvas" id="bag-canvas">
@@ -27,22 +38,62 @@ function renderBag() {
   `;
 }
 
+const BAG_EMOJI_PRESET = [
+  '😀','😄','😁','😂','🥹','😍','🥰','😎','🤩','😇','🤔','😴',
+  '🥳','😢','😭','😡','😱','😌','🫶','👍','🙏','💪','🎒','📚',
+  '✏️','🧠','🎵','🎨','🌈','⭐','🔥','💡','🌱','🍀','🍎','🍰',
+  '⚽','🏀','🎮','🎧','🐶','🐱','🦊','🐻','🌸','🌙','☀️','☁️'
+];
+let bagSelectedIndex = -1;
+
+function getSelectedBagSize() {
+  const data = getModuleData('bag');
+  if (bagSelectedIndex < 0 || !data[bagSelectedIndex]) return 1;
+  return data[bagSelectedIndex].size || 1;
+}
+
+function selectBagItem(index) {
+  bagSelectedIndex = index;
+  renderCurrentPage();
+}
+
+function updateSelectedBagSize(size) {
+  const data = getModuleData('bag');
+  if (bagSelectedIndex < 0 || !data[bagSelectedIndex]) return;
+  data[bagSelectedIndex].size = parseFloat(size);
+  saveModuleData('bag', data);
+  renderCurrentPage();
+}
+
+function toggleBagEmojiPicker() {
+  const wrap = document.getElementById('emoji-preset-wrap');
+  if (!wrap) return;
+  wrap.style.display = wrap.style.display === 'none' ? 'flex' : 'none';
+}
+
+function addPresetBagEmoji(emoji) {
+  const input = document.getElementById('bag-emoji-input');
+  if (input) input.value = emoji;
+  addBagEmoji();
+}
+
 function renderBagItem(item, index) {
-  const style = `left:${item.x}px;top:${item.y}px;`;
+  const style = `left:${item.x}px;top:${item.y}px;transform:scale(${item.size || 1});`;
+  const selectedClass = bagSelectedIndex === index ? ' bag-item-selected' : '';
   if (item.type === 'text') {
-    return `<div class="bag-item bead" style="${style}" data-index="${index}"
+    return `<div class="bag-item bead${selectedClass}" style="${style}" data-index="${index}" onclick="selectBagItem(${index})"
               onmousedown="startDragBag(event,${index})" ontouchstart="startDragBag(event,${index})">
               ${escapeHtml(item.value)}
               <span class="delete-handle" onclick="event.stopPropagation();deleteBagItem(${index})">&times;</span>
             </div>`;
   } else if (item.type === 'emoji') {
-    return `<div class="bag-item emoji" style="${style}" data-index="${index}"
+    return `<div class="bag-item emoji${selectedClass}" style="${style}" data-index="${index}" onclick="selectBagItem(${index})"
               onmousedown="startDragBag(event,${index})" ontouchstart="startDragBag(event,${index})">
               ${item.value}
               <span class="delete-handle" onclick="event.stopPropagation();deleteBagItem(${index})">&times;</span>
             </div>`;
   } else if (item.type === 'image') {
-    return `<div class="bag-item image-item" style="${style}" data-index="${index}"
+    return `<div class="bag-item image-item${selectedClass}" style="${style}" data-index="${index}" onclick="selectBagItem(${index})"
               onmousedown="startDragBag(event,${index})" ontouchstart="startDragBag(event,${index})">
               <img src="${item.value}" alt="">
               <span class="delete-handle" onclick="event.stopPropagation();deleteBagItem(${index})">&times;</span>
@@ -56,7 +107,7 @@ function addBagText() {
   const val = input.value.trim();
   if (!val) return;
   const data = getModuleData('bag');
-  data.push({ type: 'text', value: val, x: 100 + Math.random() * 150, y: 80 + Math.random() * 150 });
+  data.push({ type: 'text', value: val, x: 100 + Math.random() * 150, y: 80 + Math.random() * 150, size: 1 });
   saveModuleData('bag', data);
   input.value = '';
   renderCurrentPage();
@@ -67,7 +118,7 @@ function addBagEmoji() {
   const val = input.value.trim();
   if (!val) return;
   const data = getModuleData('bag');
-  data.push({ type: 'emoji', value: val, x: 100 + Math.random() * 150, y: 80 + Math.random() * 150 });
+  data.push({ type: 'emoji', value: val, x: 100 + Math.random() * 150, y: 80 + Math.random() * 150, size: 1 });
   saveModuleData('bag', data);
   input.value = '';
   renderCurrentPage();
@@ -79,7 +130,7 @@ function addBagImage(event) {
   const reader = new FileReader();
   reader.onload = function(e) {
     const data = getModuleData('bag');
-    data.push({ type: 'image', value: e.target.result, x: 100 + Math.random() * 150, y: 80 + Math.random() * 150 });
+    data.push({ type: 'image', value: e.target.result, x: 100 + Math.random() * 150, y: 80 + Math.random() * 150, size: 1 });
     saveModuleData('bag', data);
     renderCurrentPage();
   };
@@ -90,6 +141,7 @@ function addBagImage(event) {
 function deleteBagItem(index) {
   const data = getModuleData('bag');
   data.splice(index, 1);
+  if (bagSelectedIndex === index) bagSelectedIndex = -1;
   saveModuleData('bag', data);
   renderCurrentPage();
 }

@@ -42,6 +42,7 @@ function renderCurrentPage() {
   const backBtn = document.getElementById('header-back');
   const fab = document.getElementById('fab-container');
   const title = document.getElementById('header-title');
+  const resetModuleBtn = document.getElementById('reset-module-btn');
 
   closeFab();
 
@@ -50,12 +51,14 @@ function renderCurrentPage() {
     backBtn.style.display = 'none';
     fab.style.display = 'none';
     title.textContent = t('appTitle');
+    if (resetModuleBtn) resetModuleBtn.style.display = 'none';
   } else {
     content.innerHTML = renderModule(currentPage);
     backBtn.style.display = 'flex';
     fab.style.display = 'flex';
     const mod = MODULES.find(m => m.id === currentPage);
     title.textContent = mod ? t(mod.titleKey) : t('appTitle');
+    if (resetModuleBtn) resetModuleBtn.style.display = 'flex';
 
     // Module-specific init
     if (currentPage === 'brain') {
@@ -79,12 +82,12 @@ function renderDashboard() {
       ${MODULES.map(m => {
         const count = (allData[m.id] || []).length;
         return `
-          <div class="module-card" onclick="navigateTo('${m.id}')">
+          <button class="module-card" onclick="navigateTo('${m.id}')" aria-label="${t(m.titleKey)}">
             <span class="material-icons">${m.icon}</span>
             <h3 data-i18n="${m.titleKey}">${t(m.titleKey)}</h3>
             <p data-i18n="${m.descKey}">${t(m.descKey)}</p>
             ${count > 0 ? `<span class="card-badge">${count}</span>` : ''}
-          </div>
+          </button>
         `;
       }).join('')}
     </div>
@@ -122,13 +125,59 @@ function closeHelpOutside(event) {
   if (event.target === event.currentTarget) closeHelp();
 }
 
+function openBackupMenu() {
+  const menu = document.getElementById('backup-menu-dropdown');
+  if (menu) menu.classList.add('open');
+}
+
+function closeBackupMenu() {
+  const menu = document.getElementById('backup-menu-dropdown');
+  if (menu) menu.classList.remove('open');
+}
+
+function toggleBackupMenu(event) {
+  event.stopPropagation();
+  const menu = document.getElementById('backup-menu-dropdown');
+  if (!menu) return;
+  menu.classList.toggle('open');
+}
+
+function toggleThemeMenu() {
+  const menu = document.getElementById('theme-menu');
+  if (!menu) return;
+  menu.classList.toggle('open');
+}
+
+function setThemeFromMenu(theme) {
+  setTheme(theme);
+  const menu = document.getElementById('theme-menu');
+  if (menu) menu.classList.remove('open');
+}
+
+function triggerBackupDownload() {
+  exportJSON();
+  closeBackupMenu();
+}
+
+function resetCurrentModule() {
+  if (currentPage === 'home') return;
+  if (!confirm(t('confirmResetCurrent'))) return;
+  saveModuleData(currentPage, []);
+  showToast(t('toastResetDone'));
+  renderCurrentPage();
+}
+
+function resetAllData() {
+  if (!confirm(t('confirmResetAll'))) return;
+  saveAllData(getDefaultData());
+  showToast(t('toastResetAllDone'));
+  renderCurrentPage();
+}
+
 /* ===== Init ===== */
 function initApp() {
   initTheme();
-
-  // Set initial language label
-  const labels = { ko: 'KO', en: 'EN', ja: 'JP' };
-  document.getElementById('lang-label').textContent = labels[currentLang] || 'KO';
+  setLang(currentLang);
 
   // Handle hash routing
   const hash = window.location.hash.slice(1);
@@ -145,6 +194,15 @@ function initApp() {
     } else if (fabOpen) {
       closeFab();
     }
+  });
+
+  document.addEventListener('click', (e) => {
+    const backup = document.getElementById('backup-menu-dropdown');
+    const backupWrap = e.target.closest('.backup-picker-wrap');
+    if (backup && !backupWrap) backup.classList.remove('open');
+    const themeMenu = document.getElementById('theme-menu');
+    const themeWrap = e.target.closest('.theme-picker-wrap');
+    if (themeMenu && !themeWrap) themeMenu.classList.remove('open');
   });
 
   renderCurrentPage();

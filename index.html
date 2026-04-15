@@ -27,23 +27,43 @@
 
   <!-- Header -->
   <header id="app-header">
-    <div class="header-left" id="header-back" style="display:none;" onclick="navigateTo('home')">
+    <button class="header-left icon-btn" id="header-back" style="display:none;" onclick="navigateTo('home')" aria-label="홈으로 이동">
       <span class="material-icons">arrow_back</span>
-    </div>
-    <div class="header-title" id="header-title" data-i18n="appTitle">What's In My</div>
+    </button>
+    <button class="header-title" id="header-title" data-i18n="appTitle" onclick="navigateTo('home')" aria-label="홈으로 이동">What's In My</button>
     <div class="header-right">
-      <div class="theme-chips">
-        <span class="color-chip chip-blue active" data-theme="blue" onclick="setTheme('blue')"></span>
-        <span class="color-chip chip-green" data-theme="green" onclick="setTheme('green')"></span>
-        <span class="color-chip chip-pink" data-theme="pink" onclick="setTheme('pink')"></span>
-        <span class="color-chip chip-yellow" data-theme="yellow" onclick="setTheme('yellow')"></span>
+      <div class="header-selects">
+        <div class="theme-picker-wrap">
+          <button class="icon-btn" id="theme-toggle-btn" onclick="toggleThemeMenu()" title="테마 선택">
+            <span class="theme-dot" id="theme-dot"></span>
+          </button>
+          <div class="theme-menu" id="theme-menu">
+            <button class="theme-color-btn chip-blue" onclick="setThemeFromMenu('blue')" aria-label="Blue"></button>
+            <button class="theme-color-btn chip-green" onclick="setThemeFromMenu('green')" aria-label="Green"></button>
+            <button class="theme-color-btn chip-pink" onclick="setThemeFromMenu('pink')" aria-label="Pink"></button>
+            <button class="theme-color-btn chip-yellow" onclick="setThemeFromMenu('yellow')" aria-label="Yellow"></button>
+          </div>
+        </div>
+        <select id="lang-select" class="header-select" onchange="setLang(this.value)" aria-label="언어 선택">
+          <option value="ko">KO</option>
+          <option value="en">EN</option>
+          <option value="ja">JP</option>
+        </select>
       </div>
-      <div class="lang-toggle" onclick="cycleLang()">
-        <span class="material-icons">translate</span>
-        <span id="lang-label">KO</span>
+      <div class="backup-picker-wrap">
+        <button class="icon-btn" onclick="toggleBackupMenu(event)" title="백업/복원">
+          <span class="material-icons">save</span>
+        </button>
+        <div class="backup-menu-dropdown" id="backup-menu-dropdown">
+          <button class="dropdown-item" onclick="triggerBackupDownload()" data-i18n="backupDownload">백업 다운로드 (JSON)</button>
+          <button class="dropdown-item" onclick="restoreData()" data-i18n="backupUpload">백업 업로드 (JSON)</button>
+        </div>
       </div>
-      <button class="icon-btn" onclick="restoreData()" title="데이터 복원">
-        <span class="material-icons">folder_open</span>
+      <button class="icon-btn" id="reset-module-btn" onclick="resetCurrentModule()" title="현재 탭 초기화" style="display:none;">
+        <span class="material-icons">restart_alt</span>
+      </button>
+      <button class="icon-btn" onclick="resetAllData()" title="전체 초기화">
+        <span class="material-icons">delete_sweep</span>
       </button>
       <button class="icon-btn" onclick="showHelp()" title="도움말">
         <span class="material-icons">help_outline</span>
