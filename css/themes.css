@@ -1,0 +1,75 @@
+/* ===== Pastel Blue Theme (Default) ===== */
+[data-theme="blue"] {
+  --primary: #5BA4CF;
+  --primary-light: #A8D8EA;
+  --primary-pale: #D6EDF8;
+  --bg: #F0F7FB;
+  --card-bg: #FFFFFF;
+  --header-bg: rgba(240, 247, 251, 0.9);
+  --text: #2C3E50;
+  --text-secondary: #7F8C9B;
+  --border: #D0E3F0;
+  --hover: rgba(168, 216, 234, 0.3);
+  --shadow: rgba(91, 164, 207, 0.15);
+  --accent1: #A8D8EA;
+  --accent2: #82C0D8;
+  --accent3: #5BA4CF;
+  --accent4: #3A8ABF;
+}
+
+/* ===== Pastel Green Theme ===== */
+[data-theme="green"] {
+  --primary: #6BBF8A;
+  --primary-light: #B5E8C3;
+  --primary-pale: #DFF5E5;
+  --bg: #F0F9F2;
+  --card-bg: #FFFFFF;
+  --header-bg: rgba(240, 249, 242, 0.9);
+  --text: #2D4A37;
+  --text-secondary: #7A9485;
+  --border: #C5E0CE;
+  --hover: rgba(181, 232, 195, 0.3);
+  --shadow: rgba(107, 191, 138, 0.15);
+  --accent1: #B5E8C3;
+  --accent2: #8DD9A2;
+  --accent3: #6BBF8A;
+  --accent4: #4FA870;
+}
+
+/* ===== Pastel Pink Theme ===== */
+[data-theme="pink"] {
+  --primary: #E08DAC;
+  --primary-light: #F4B6C2;
+  --primary-pale: #FCE4EA;
+  --bg: #FDF2F5;
+  --card-bg: #FFFFFF;
+  --header-bg: rgba(253, 242, 245, 0.9);
+  --text: #4A2C3A;
+  --text-secondary: #9B7A8A;
+  --border: #F0CDD6;
+  --hover: rgba(244, 182, 194, 0.3);
+  --shadow: rgba(224, 141, 172, 0.15);
+  --accent1: #F4B6C2;
+  --accent2: #EA9DAE;
+  --accent3: #E08DAC;
+  --accent4: #D06D90;
+}
+
+/* ===== Pastel Yellow Theme ===== */
+[data-theme="yellow"] {
+  --primary: #D4A843;
+  --primary-light: #FDE68A;
+  --primary-pale: #FEF3C7;
+  --bg: #FEFCF3;
+  --card-bg: #FFFFFF;
+  --header-bg: rgba(254, 252, 243, 0.9);
+  --text: #4A3F2C;
+  --text-secondary: #9B8F7A;
+  --border: #F0E4C5;
+  --hover: rgba(253, 230, 138, 0.3);
+  --shadow: rgba(212, 168, 67, 0.15);
+  --accent1: #FDE68A;
+  --accent2: #FADB5F;
+  --accent3: #D4A843;
+  --accent4: #B8922E;
+}

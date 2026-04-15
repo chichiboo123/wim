@@ -1,0 +1,570 @@
+/* ===== BAG MODULE ===== */
+.bag-canvas {
+  position: relative;
+  width: 100%;
+  height: 450px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--bg);
+  border: 2px dashed var(--border);
+}
+
+.bag-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.bag-item {
+  position: absolute;
+  cursor: grab;
+  user-select: none;
+  z-index: 5;
+  transition: box-shadow 0.2s;
+}
+
+.bag-item:active {
+  cursor: grabbing;
+  z-index: 10;
+}
+
+.bag-item.bead {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 50px;
+  min-height: 50px;
+  padding: 8px 14px;
+  border-radius: 50%;
+  background: var(--primary-light);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text);
+  text-align: center;
+  word-break: break-all;
+  box-shadow: 0 2px 8px var(--shadow);
+}
+
+.bag-item.emoji {
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.bag-item.image-item img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px var(--shadow);
+}
+
+.bag-item .delete-handle {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #f87171;
+  color: white;
+  font-size: 14px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 20;
+  line-height: 1;
+}
+
+.bag-item:hover .delete-handle {
+  display: flex;
+}
+
+.bag-toolbar {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.bag-toolbar .form-input {
+  max-width: 200px;
+}
+
+/* ===== TIME MODULE ===== */
+.time-container {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+
+.time-chart-wrap {
+  flex: 1;
+  min-width: 280px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.time-chart {
+  position: relative;
+  width: 300px;
+  height: 300px;
+}
+
+.time-chart svg {
+  width: 100%;
+  height: 100%;
+}
+
+.time-list-wrap {
+  flex: 1;
+  min-width: 250px;
+}
+
+.time-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.time-form .form-row {
+  margin-bottom: 0;
+}
+
+/* ===== BRAIN MODULE ===== */
+.brain-canvas {
+  position: relative;
+  width: 100%;
+  min-height: 400px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: crosshair;
+}
+
+.brain-text-box {
+  position: absolute;
+  background: rgba(255,255,255,0.85);
+  border: 1px solid var(--primary);
+  border-radius: 8px;
+  padding: 6px 10px;
+  min-width: 60px;
+  font-size: 0.85rem;
+  cursor: grab;
+  z-index: 5;
+  color: var(--text);
+}
+
+.brain-text-box:active {
+  cursor: grabbing;
+}
+
+.brain-text-box .delete-handle {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #f87171;
+  color: white;
+  font-size: 12px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 20;
+  line-height: 1;
+}
+
+.brain-text-box:hover .delete-handle {
+  display: flex;
+}
+
+/* ===== MIND MODULE ===== */
+.mind-room {
+  position: relative;
+  width: 100%;
+  min-height: 350px;
+  background: var(--bg);
+  border-radius: 16px;
+  border: 2px solid var(--border);
+  padding: 20px;
+  overflow: hidden;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: flex-end;
+  gap: 6px;
+}
+
+.mind-chip-inside {
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  animation: chipDrop 0.4s ease;
+  cursor: default;
+  position: relative;
+}
+
+@keyframes chipDrop {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.mind-chip-inside .delete-handle {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #f87171;
+  color: white;
+  font-size: 12px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.mind-chip-inside:hover .delete-handle {
+  display: flex;
+}
+
+.emotion-picker {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+/* ===== COLOR MODULE ===== */
+.palette-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 12px;
+}
+
+.palette-slot {
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: var(--card-bg);
+  transition: transform 0.2s;
+}
+
+.palette-slot:hover {
+  transform: translateY(-2px);
+}
+
+.palette-color-area {
+  height: 100px;
+  cursor: pointer;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.3s;
+}
+
+.palette-color-area .material-icons {
+  font-size: 32px;
+  color: rgba(255,255,255,0.7);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.palette-color-area:hover .material-icons {
+  opacity: 1;
+}
+
+.palette-info {
+  padding: 10px;
+  text-align: center;
+}
+
+.palette-info .color-name {
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 2px;
+  outline: none;
+}
+
+.palette-info .color-hex {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+.palette-slot .delete-btn {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.3);
+  color: white;
+  font-size: 14px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.palette-color-area:hover .delete-btn {
+  display: flex;
+}
+
+/* ===== MUSIC MODULE ===== */
+.music-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px;
+  background: var(--bg);
+  border-radius: 12px;
+  border: 1px solid var(--border);
+}
+
+.music-thumb {
+  width: 56px;
+  height: 56px;
+  border-radius: 10px;
+  object-fit: cover;
+  background: var(--primary-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.music-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.music-thumb .material-icons {
+  font-size: 28px;
+  color: var(--primary);
+}
+
+.music-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.music-info .song-title {
+  font-weight: 700;
+  font-size: 0.95rem;
+  margin-bottom: 2px;
+}
+
+.music-info .artist-name {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  margin-bottom: 4px;
+}
+
+.music-info .reason {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  font-style: italic;
+  line-height: 1.3;
+}
+
+/* ===== WORD MODULE ===== */
+.word-item {
+  padding: 16px;
+  background: var(--bg);
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--primary);
+}
+
+.word-term {
+  font-family: 'Black Han Sans', sans-serif;
+  font-size: 1.1rem;
+  color: var(--primary);
+  margin-bottom: 6px;
+}
+
+.word-definition {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+/* ===== RELATIONSHIP MODULE ===== */
+.rel-canvas {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.rel-circles {
+  position: absolute;
+  inset: 0;
+}
+
+.rel-circle {
+  position: absolute;
+  border-radius: 50%;
+  border: 2px solid var(--border);
+  background: transparent;
+}
+
+.rel-circle-1 {
+  inset: 0;
+  background: var(--primary-pale);
+  opacity: 0.3;
+}
+
+.rel-circle-2 {
+  inset: 16.66%;
+  background: var(--primary-light);
+  opacity: 0.3;
+}
+
+.rel-circle-3 {
+  inset: 33.33%;
+  background: var(--primary);
+  opacity: 0.15;
+}
+
+.rel-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Black Han Sans', sans-serif;
+  font-size: 0.9rem;
+  z-index: 10;
+  box-shadow: 0 2px 8px var(--shadow);
+}
+
+.rel-node {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  cursor: grab;
+  z-index: 15;
+  transform: translate(-50%, -50%);
+  user-select: none;
+}
+
+.rel-node:active {
+  cursor: grabbing;
+  z-index: 20;
+}
+
+.rel-node-circle {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--card-bg);
+  border: 2px solid var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px var(--shadow);
+}
+
+.rel-node-circle .material-icons {
+  font-size: 20px;
+  color: var(--primary);
+}
+
+.rel-node-name {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--text);
+  text-align: center;
+  max-width: 60px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  background: var(--card-bg);
+  padding: 1px 6px;
+  border-radius: 4px;
+}
+
+.rel-node .delete-handle {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #f87171;
+  color: white;
+  font-size: 12px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  line-height: 1;
+  z-index: 30;
+}
+
+.rel-node:hover .delete-handle {
+  display: flex;
+}
+
+.rel-form {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+  justify-content: center;
+}
+
+/* ===== Module-specific responsive ===== */
+@media (max-width: 600px) {
+  .time-container {
+    flex-direction: column;
+  }
+
+  .time-chart {
+    width: 260px;
+    height: 260px;
+  }
+
+  .bag-canvas {
+    height: 350px;
+  }
+
+  .rel-canvas {
+    max-width: 340px;
+  }
+
+  .palette-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .music-item {
+    flex-direction: column;
+    text-align: center;
+  }
+}
