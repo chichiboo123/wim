@@ -1,4 +1,68 @@
 /* ===== COLOR PALETTE MODULE ===== */
+
+function renderPainterPalette(data) {
+  if (data.length === 0) return '';
+
+  // Pre-defined blob positions arranged around the palette rim (up to 15)
+  const spots = [
+    [120, 58], [165, 42], [210, 35], [255, 42], [300, 60],
+    [342, 100], [360, 148], [354, 198],
+    [325, 238], [278, 254], [228, 258], [180, 255], [138, 244],
+    [44, 120], [46, 162]
+  ];
+
+  const blobs = data.slice(0, spots.length).map((item, i) => {
+    const [cx, cy] = spots[i];
+    const label = item.name.length > 7 ? item.name.slice(0, 6) + '…' : item.name;
+    return `<g>
+      <title>${escapeHtml(item.name)}: ${item.color}</title>
+      <circle cx="${cx}" cy="${cy}" r="20" fill="${item.color}"
+              stroke="rgba(0,0,0,0.18)" stroke-width="1.5"
+              style="filter:drop-shadow(0 2px 4px rgba(0,0,0,0.18));"/>
+    </g>`;
+  }).join('');
+
+  // Show extra colors (beyond 15) as a small strip below
+  const extra = data.length > spots.length
+    ? `<div style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:8px;">
+        ${data.slice(spots.length).map(item =>
+          `<div title="${escapeHtml(item.name)}: ${item.color}"
+               style="width:28px;height:28px;border-radius:50%;background:${item.color};border:1px solid rgba(0,0,0,0.15);box-shadow:0 1px 4px rgba(0,0,0,0.12);"></div>`
+        ).join('')}
+       </div>`
+    : '';
+
+  return `
+    <div class="painter-palette-wrap">
+      <svg viewBox="0 0 400 280" class="painter-palette-svg">
+        <defs>
+          <linearGradient id="palWoodGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#F5E8CF;stop-opacity:1"/>
+            <stop offset="100%" style="stop-color:#E2C99A;stop-opacity:1"/>
+          </linearGradient>
+          <filter id="palShadow" x="-5%" y="-5%" width="110%" height="110%">
+            <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="rgba(0,0,0,0.18)"/>
+          </filter>
+        </defs>
+        <!-- Palette body (kidney shape) -->
+        <path d="M198,22 C295,16 388,72 390,156 C392,240 316,264 234,262 C182,260 152,242 122,240 C72,236 16,212 16,156 C16,78 98,26 198,22 Z"
+              fill="url(#palWoodGrad)" stroke="#C4A07A" stroke-width="2" filter="url(#palShadow)"/>
+        <!-- Wood grain lines -->
+        <path d="M100,40 Q200,28 300,50" fill="none" stroke="#D4B07A" stroke-width="0.8" opacity="0.5"/>
+        <path d="M60,80 Q180,65 320,82" fill="none" stroke="#D4B07A" stroke-width="0.8" opacity="0.4"/>
+        <!-- Palette sheen -->
+        <path d="M130,28 Q210,18 310,52" fill="none" stroke="rgba(255,255,255,0.45)" stroke-width="3" stroke-linecap="round"/>
+        <!-- Thumb hole -->
+        <ellipse cx="88" cy="218" rx="30" ry="34"
+                 fill="#E8D5B0" stroke="#C4A07A" stroke-width="2"/>
+        <!-- Color blobs -->
+        ${blobs}
+      </svg>
+      ${extra}
+    </div>
+  `;
+}
+
 function renderColor() {
   const data = getModuleData('color');
   return `
@@ -11,6 +75,7 @@ function renderColor() {
           ${t('refPalette')}
         </button>
       </div>
+      ${renderPainterPalette(data)}
       <div class="work-area">
         <div class="palette-grid" id="palette-grid">
           ${data.map((item, i) => `

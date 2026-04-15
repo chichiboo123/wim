@@ -6,7 +6,6 @@ function renderBag() {
   ).join('');
   return `
     <div class="module-page">
-      <h2 class="module-title">${t('bagPageTitle')}</h2>
       <div class="bag-toolbar">
         <input type="text" class="form-input" id="bag-text-input" placeholder="${t('textPlaceholder')}" maxlength="20" onkeydown="if(event.key==='Enter') addBagText()">
         <button class="btn btn-primary btn-sm" onclick="addBagText()">${t('addText')}</button>

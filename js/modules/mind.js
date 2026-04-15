@@ -36,6 +36,15 @@ const EMOTION_COLORS = [
   '#D7BDE2', '#A3E4D7', '#F9E79F', '#FADBD8', '#D5F5E3'
 ];
 
+function mindChipStyle(item) {
+  const sz = Math.min(item.count || 1, 12);
+  const fontSize = (0.88 + (sz - 1) * 0.2).toFixed(2);
+  const padV = 7 + (sz - 1) * 5;
+  const padH = 13 + (sz - 1) * 9;
+  const weight = sz > 1 ? 700 : 500;
+  return `background:${item.color};color:#333;font-size:${fontSize}rem;padding:${padV}px ${padH}px;font-weight:${weight};`;
+}
+
 function renderMind() {
   const data = getModuleData('mind');
   const emotions = EMOTIONS[currentLang] || EMOTIONS.ko;
@@ -58,8 +67,8 @@ function renderMind() {
             <span>${t('emptyMindHint')}</span>
           </div>` : ''}
           ${data.map((item, i) => `
-            <div class="mind-chip-inside" style="background:${item.color};color:#333;transform:scale(${Math.min(1 + ((item.count || 1) - 1) * 0.12, 2)});">
-              ${escapeHtml(item.text)}${item.count > 1 ? ` (${item.count})` : ''}
+            <div class="mind-chip-inside" style="${mindChipStyle(item)}">
+              ${escapeHtml(item.text)}${(item.count || 1) > 1 ? ` ×${item.count}` : ''}
               <span class="delete-handle" onclick="deleteMindItem(${i})">&times;</span>
             </div>
           `).join('')}
