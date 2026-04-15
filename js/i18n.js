@@ -4,6 +4,9 @@ const TRANSLATIONS = {
     appTitle: "What's In My",
     subtitle: "나를 탐색하는 8가지 테마",
     helpTitle: "사용법 안내",
+    backupTitle: "백업 / 복원",
+    backupDownload: "백업 다운로드 (JSON)",
+    backupUpload: "백업 업로드 (JSON)",
     clipboard: "복사",
 
     // Dashboard
@@ -13,8 +16,8 @@ const TRANSLATIONS = {
     timeDesc: "나의 24시간을 계획해 보자",
     brainTitle: "브레인 (Brain)",
     brainDesc: "내 머릿속에는 무엇이 있을까?",
-    mindTitle: "마인드 (Mind)",
-    mindDesc: "내 마음의 방을 채워 보자",
+    mindTitle: "감정 (Emotion)",
+    mindDesc: "내 감정의 크기를 시각화해 보자",
     colorTitle: "컬러 (Color)",
     colorDesc: "나만의 색 팔레트를 만들어 보자",
     musicTitle: "뮤직 (Music)",
@@ -29,6 +32,7 @@ const TRANSLATIONS = {
     addText: "텍스트 추가",
     addEmoji: "이모지 추가",
     addImage: "이미지 추가",
+    emojiPick: "이모지 고르기",
     textPlaceholder: "텍스트 입력...",
     emojiPlaceholder: "이모지 입력...",
 
@@ -46,7 +50,7 @@ const TRANSLATIONS = {
     clickToAdd: "빈 곳을 클릭하여 텍스트를 추가하세요",
 
     // Mind
-    mindPageTitle: "마음의 방",
+    mindPageTitle: "감정 (Emotion)",
     selectEmotion: "감정 단어를 선택하세요",
 
     // Color
@@ -68,6 +72,8 @@ const TRANSLATIONS = {
     wordTerm: "나를 이루는 단어",
     wordDef: "나만의 정의",
     addWord: "추가",
+    saveEdit: "수정 저장",
+    cancelEdit: "취소",
 
     // Relationship
     relPageTitle: "나의 인간관계",
@@ -100,12 +106,29 @@ const TRANSLATIONS = {
     toastRestored: "데이터가 복원되었습니다",
     toastError: "오류가 발생했습니다",
     toastExported: "내보내기 완료",
+    toastTimeNeedNumber: "시작/종료 시간을 숫자로 입력하세요",
+    toastTimeRangeInvalid: "시작 시간은 종료 시간보다 빨라야 합니다",
+    toastTimeOutOfRange: "시간 범위를 확인해 주세요",
+    toastTimeMustBeContinuous: "시간은 앞 일정 종료 시각부터 이어서 입력해 주세요",
+    toastNeedTaskName: "할 일을 입력해 주세요",
+    toastNeedWordFields: "단어와 정의를 모두 입력해 주세요",
+    toastNeedSongName: "곡명을 입력해 주세요",
+    toastAlreadyAdded: "이미 추가된 항목입니다",
+    toastInvalidBackup: "유효하지 않은 백업 파일입니다",
+    timeModeToggle: "12시간/24시간 모드 전환",
+    confirmResetCurrent: "현재 탭의 데이터를 모두 삭제할까요?",
+    confirmResetAll: "전체 데이터를 모두 삭제할까요?",
+    toastResetDone: "현재 탭 데이터가 초기화되었습니다",
+    toastResetAllDone: "전체 데이터가 초기화되었습니다",
   },
 
   en: {
     appTitle: "What's In My",
     subtitle: "8 themes to explore yourself",
     helpTitle: "How to Use",
+    backupTitle: "Backup / Restore",
+    backupDownload: "Download Backup (JSON)",
+    backupUpload: "Upload Backup (JSON)",
     clipboard: "Copy",
 
     bagTitle: "Bag",
@@ -114,8 +137,8 @@ const TRANSLATIONS = {
     timeDesc: "Plan my 24 hours",
     brainTitle: "Brain",
     brainDesc: "What's on my mind?",
-    mindTitle: "Mind",
-    mindDesc: "Fill the room of my heart",
+    mindTitle: "Emotion",
+    mindDesc: "Visualize the intensity of your emotions",
     colorTitle: "Color",
     colorDesc: "Create my own color palette",
     musicTitle: "Music",
@@ -129,6 +152,7 @@ const TRANSLATIONS = {
     addText: "Add Text",
     addEmoji: "Add Emoji",
     addImage: "Add Image",
+    emojiPick: "Pick Emoji",
     textPlaceholder: "Enter text...",
     emojiPlaceholder: "Enter emoji...",
 
@@ -143,7 +167,7 @@ const TRANSLATIONS = {
     brainPageTitle: "What's In My Brain?",
     clickToAdd: "Click empty space to add text",
 
-    mindPageTitle: "Room of My Mind",
+    mindPageTitle: "Emotion",
     selectEmotion: "Select emotion words",
 
     colorPageTitle: "My Palette",
@@ -162,6 +186,8 @@ const TRANSLATIONS = {
     wordTerm: "A word that defines me",
     wordDef: "My definition",
     addWord: "Add",
+    saveEdit: "Save Edit",
+    cancelEdit: "Cancel",
 
     relPageTitle: "My Relationships",
     personName: "Name",
@@ -191,12 +217,29 @@ const TRANSLATIONS = {
     toastRestored: "Data restored",
     toastError: "An error occurred",
     toastExported: "Export complete",
+    toastTimeNeedNumber: "Enter start/end times as numbers",
+    toastTimeRangeInvalid: "Start time must be earlier than end time",
+    toastTimeOutOfRange: "Check the allowed time range",
+    toastTimeMustBeContinuous: "Time blocks must be continuous from the previous end time",
+    toastNeedTaskName: "Please enter a task name",
+    toastNeedWordFields: "Please enter both word and definition",
+    toastNeedSongName: "Please enter a song name",
+    toastAlreadyAdded: "This item is already added",
+    toastInvalidBackup: "Invalid backup file",
+    timeModeToggle: "Toggle 12/24-hour mode",
+    confirmResetCurrent: "Clear all data in this tab?",
+    confirmResetAll: "Clear all app data?",
+    toastResetDone: "This tab has been reset",
+    toastResetAllDone: "All data has been reset",
   },
 
   ja: {
     appTitle: "What's In My",
     subtitle: "自分を探る8つのテーマ",
     helpTitle: "使い方ガイド",
+    backupTitle: "バックアップ / 復元",
+    backupDownload: "バックアップをダウンロード (JSON)",
+    backupUpload: "バックアップをアップロード (JSON)",
     clipboard: "コピー",
 
     bagTitle: "バッグ (Bag)",
@@ -205,8 +248,8 @@ const TRANSLATIONS = {
     timeDesc: "24時間を計画しよう",
     brainTitle: "ブレイン (Brain)",
     brainDesc: "頭の中には何がある？",
-    mindTitle: "マインド (Mind)",
-    mindDesc: "心の部屋を埋めてみよう",
+    mindTitle: "感情 (Emotion)",
+    mindDesc: "感情の強さを可視化しよう",
     colorTitle: "カラー (Color)",
     colorDesc: "自分だけのパレットを作ろう",
     musicTitle: "ミュージック (Music)",
@@ -220,6 +263,7 @@ const TRANSLATIONS = {
     addText: "テキスト追加",
     addEmoji: "絵文字追加",
     addImage: "画像追加",
+    emojiPick: "絵文字を選ぶ",
     textPlaceholder: "テキスト入力...",
     emojiPlaceholder: "絵文字入力...",
 
@@ -234,7 +278,7 @@ const TRANSLATIONS = {
     brainPageTitle: "頭の中は？",
     clickToAdd: "空白をクリックしてテキストを追加",
 
-    mindPageTitle: "心の部屋",
+    mindPageTitle: "感情 (Emotion)",
     selectEmotion: "感情の言葉を選んでください",
 
     colorPageTitle: "マイパレット",
@@ -253,6 +297,8 @@ const TRANSLATIONS = {
     wordTerm: "自分を作る言葉",
     wordDef: "自分だけの定義",
     addWord: "追加",
+    saveEdit: "編集を保存",
+    cancelEdit: "キャンセル",
 
     relPageTitle: "人間関係マップ",
     personName: "名前",
@@ -282,6 +328,20 @@ const TRANSLATIONS = {
     toastRestored: "データが復元されました",
     toastError: "エラーが発生しました",
     toastExported: "エクスポート完了",
+    toastTimeNeedNumber: "開始/終了時刻を数字で入力してください",
+    toastTimeRangeInvalid: "開始時刻は終了時刻より前である必要があります",
+    toastTimeOutOfRange: "時刻の範囲を確認してください",
+    toastTimeMustBeContinuous: "時間は前の終了時刻から連続して入力してください",
+    toastNeedTaskName: "タスク名を入力してください",
+    toastNeedWordFields: "言葉と定義の両方を入力してください",
+    toastNeedSongName: "曲名を入力してください",
+    toastAlreadyAdded: "すでに追加されています",
+    toastInvalidBackup: "無効なバックアップファイルです",
+    timeModeToggle: "12時間/24時間モード切替",
+    confirmResetCurrent: "このタブのデータをすべて削除しますか？",
+    confirmResetAll: "アプリの全データを削除しますか？",
+    toastResetDone: "このタブを初期化しました",
+    toastResetAllDone: "全データを初期化しました",
   }
 };
 
@@ -293,14 +353,17 @@ function t(key) {
 
 function cycleLang() {
   const langs = ['ko', 'en', 'ja'];
-  const labels = { ko: 'KO', en: 'EN', ja: 'JP' };
   const idx = langs.indexOf(currentLang);
-  currentLang = langs[(idx + 1) % langs.length];
+  setLang(langs[(idx + 1) % langs.length]);
+}
+
+function setLang(lang) {
+  currentLang = ['ko', 'en', 'ja'].includes(lang) ? lang : 'ko';
   localStorage.setItem('wim-lang', currentLang);
-  document.getElementById('lang-label').textContent = labels[currentLang];
   document.documentElement.lang = currentLang === 'ja' ? 'ja' : currentLang === 'en' ? 'en' : 'ko';
+  const select = document.getElementById('lang-select');
+  if (select) select.value = currentLang;
   applyI18n();
-  // Re-render current page
   if (typeof renderCurrentPage === 'function') renderCurrentPage();
 }
 

@@ -48,7 +48,7 @@ function renderMind() {
       </p>
       <div class="emotion-picker">
         ${emotions.map((em, i) => `
-          <span class="chip ${selectedEmotions.has(em) ? 'selected' : ''}" onclick="addMindEmotion('${em}', ${i})">${em}</span>
+          <button class="chip ${selectedEmotions.has(em) ? 'selected' : ''}" onclick="addMindEmotion('${em}', ${i})" aria-pressed="${selectedEmotions.has(em)}">${em}</button>
         `).join('')}
       </div>
       <div class="work-area">
@@ -58,8 +58,8 @@ function renderMind() {
             <span>${t('emptyMindHint')}</span>
           </div>` : ''}
           ${data.map((item, i) => `
-            <div class="mind-chip-inside" style="background:${item.color};color:#333;">
-              ${escapeHtml(item.text)}
+            <div class="mind-chip-inside" style="background:${item.color};color:#333;transform:scale(${Math.min(1 + ((item.count || 1) - 1) * 0.12, 2)});">
+              ${escapeHtml(item.text)}${item.count > 1 ? ` (${item.count})` : ''}
               <span class="delete-handle" onclick="deleteMindItem(${i})">&times;</span>
             </div>
           `).join('')}
@@ -71,9 +71,17 @@ function renderMind() {
 
 function addMindEmotion(emotion, colorIndex) {
   const data = getModuleData('mind');
+  const existing = data.find(item => item.text === emotion);
+  if (existing) {
+    existing.count = (existing.count || 1) + 1;
+    saveModuleData('mind', data);
+    renderCurrentPage();
+    return;
+  }
   data.push({
     text: emotion,
-    color: EMOTION_COLORS[colorIndex % EMOTION_COLORS.length]
+    color: EMOTION_COLORS[colorIndex % EMOTION_COLORS.length],
+    count: 1
   });
   saveModuleData('mind', data);
   renderCurrentPage();

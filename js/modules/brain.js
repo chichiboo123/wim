@@ -1,16 +1,5 @@
 /* ===== BRAIN MODULE ===== */
-const BRAIN_IMAGE_URL = 'https://drive.google.com/uc?export=view&id=1_7Y0K2udyAD7SSKse0udkZfhk68BV_py';
-
-// Fallback brain SVG in case CORS blocks Google Drive image
-const BRAIN_FALLBACK_SVG = `data:image/svg+xml,${encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 400">
-  <ellipse cx="200" cy="200" rx="140" ry="160" fill="#f0e0e8" stroke="#d4a0b0" stroke-width="2"/>
-  <ellipse cx="300" cy="200" rx="140" ry="160" fill="#e0e8f0" stroke="#a0b0d4" stroke-width="2"/>
-  <path d="M200,60 Q160,100 170,150 Q150,180 160,220 Q140,260 170,300 Q190,340 200,360" fill="none" stroke="#c090a0" stroke-width="1.5" opacity="0.5"/>
-  <path d="M300,60 Q340,100 330,150 Q350,180 340,220 Q360,260 330,300 Q310,340 300,360" fill="none" stroke="#90a0c0" stroke-width="1.5" opacity="0.5"/>
-  <path d="M250,50 L250,350" fill="none" stroke="#b0b0b0" stroke-width="1.5" stroke-dasharray="4,4"/>
-  <text x="170" y="190" text-anchor="middle" font-size="12" fill="#a08090" font-family="sans-serif">Left</text>
-  <text x="330" y="190" text-anchor="middle" font-size="12" fill="#8090a0" font-family="sans-serif">Right</text>
-</svg>`)}`;
+const BRAIN_IMAGE_URL = 'https://i.ibb.co/6cM2tCNn/1.png';
 
 function renderBrain() {
   const data = getModuleData('brain');
@@ -23,7 +12,7 @@ function renderBrain() {
       <div class="work-area">
         <div class="brain-canvas" id="brain-canvas" onclick="addBrainText(event)">
           ${data.map((item, i) => `
-            <div class="brain-text-box" style="left:${item.x}%;top:${item.y}%;" data-index="${i}"
+            <div class="brain-text-box brain-cloud" style="left:${item.x}%;top:${item.y}%;" data-index="${i}"
                  onmousedown="startDragBrain(event,${i})" ontouchstart="startDragBrain(event,${i})">
               <span contenteditable="true" onblur="updateBrainText(${i}, this.textContent)">${escapeHtml(item.text)}</span>
               <span class="delete-handle" onclick="event.stopPropagation();deleteBrainItem(${i})">&times;</span>
@@ -39,22 +28,10 @@ function initBrainCanvas() {
   const canvas = document.getElementById('brain-canvas');
   if (!canvas) return;
 
-  // 먼저 Google Drive URL을 직접 배경으로 설정 (CSS background는 CORS 제약 없음)
-  canvas.style.backgroundImage = `url('${BRAIN_IMAGE_URL}')`;
+  canvas.style.backgroundImage = `url("${BRAIN_IMAGE_URL}")`;
   canvas.style.backgroundSize = 'contain';
   canvas.style.backgroundRepeat = 'no-repeat';
   canvas.style.backgroundPosition = 'center';
-
-  // 실제 로드 여부 확인 후 실패시 SVG 폴백 사용
-  const img = new Image();
-  img.onload = () => {
-    // 정상 로드 — 현재 URL 유지
-  };
-  img.onerror = () => {
-    canvas.style.backgroundImage = `url("${BRAIN_FALLBACK_SVG}")`;
-  };
-  // crossOrigin 없이 로드 (display 목적은 CORS 불필요)
-  img.src = BRAIN_IMAGE_URL;
 }
 
 function addBrainText(event) {
