@@ -7,10 +7,10 @@ function renderWord() {
       <div class="work-area">
         <div style="margin-bottom:16px;">
           <div class="form-row">
-            <input type="text" class="form-input" id="word-term" placeholder="${t('wordTerm')}" maxlength="30">
+            <input type="text" class="form-input" id="word-term" placeholder="${t('wordTerm')}" maxlength="30" onkeydown="if(event.key==='Enter') document.getElementById('word-def').focus()">
           </div>
           <div class="form-row">
-            <input type="text" class="form-input" id="word-def" placeholder="${t('wordDef')}" maxlength="200">
+            <input type="text" class="form-input" id="word-def" placeholder="${t('wordDef')}" maxlength="200" onkeydown="if(event.key==='Enter') addWord()">
             <button class="btn btn-primary btn-sm" onclick="addWord()">${t('addWord')}</button>
           </div>
         </div>
@@ -32,6 +32,7 @@ function renderWord() {
           ${data.length === 0 ? `
             <div style="text-align:center;padding:40px;color:var(--text-secondary);">
               <span class="material-icons" style="font-size:48px;display:block;margin-bottom:8px;">menu_book</span>
+              <p style="font-size:0.85rem;">${t('emptyWordHint')}</p>
             </div>
           ` : ''}
         </div>

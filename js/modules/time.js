@@ -28,7 +28,7 @@ function renderTime() {
                 <input type="number" class="form-input" id="time-end" min="0" max="${maxHour}" placeholder="${t('endTime')} (0-${maxHour})" step="0.5">
               </div>
               <div class="form-row">
-                <input type="text" class="form-input" id="time-task" placeholder="${t('taskName')}" maxlength="30">
+                <input type="text" class="form-input" id="time-task" placeholder="${t('taskName')}" maxlength="30" onkeydown="if(event.key==='Enter') addTimeTask()">
                 <button class="btn btn-primary btn-sm" onclick="addTimeTask()">${t('addTask')}</button>
               </div>
             </div>

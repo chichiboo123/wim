@@ -15,6 +15,15 @@ function closeFab() {
   if (toggle) toggle.classList.remove('open');
 }
 
+// FAB 외부 클릭 시 닫기
+document.addEventListener('DOMContentLoaded', () => {
+  document.addEventListener('click', (e) => {
+    if (!fabOpen) return;
+    const fabContainer = document.getElementById('fab-container');
+    if (fabContainer && !fabContainer.contains(e.target)) closeFab();
+  });
+});
+
 function getCaptureTarget() {
   return document.querySelector('.work-area') || document.getElementById('app-content');
 }

@@ -5,9 +5,9 @@ function renderBag() {
     <div class="module-page">
       <h2 class="module-title">${t('bagPageTitle')}</h2>
       <div class="bag-toolbar">
-        <input type="text" class="form-input" id="bag-text-input" placeholder="${t('textPlaceholder')}" maxlength="20">
+        <input type="text" class="form-input" id="bag-text-input" placeholder="${t('textPlaceholder')}" maxlength="20" onkeydown="if(event.key==='Enter') addBagText()">
         <button class="btn btn-primary btn-sm" onclick="addBagText()">${t('addText')}</button>
-        <input type="text" class="form-input" id="bag-emoji-input" placeholder="${t('emojiPlaceholder')}" maxlength="4" style="max-width:100px;">
+        <input type="text" class="form-input" id="bag-emoji-input" placeholder="${t('emojiPlaceholder')}" maxlength="4" style="max-width:100px;" onkeydown="if(event.key==='Enter') addBagEmoji()">
         <button class="btn btn-primary btn-sm" onclick="addBagEmoji()">${t('addEmoji')}</button>
         <button class="btn btn-secondary btn-sm" onclick="document.getElementById('bag-img-input').click()">${t('addImage')}</button>
         <input type="file" id="bag-img-input" accept="image/*" style="display:none" onchange="addBagImage(event)">

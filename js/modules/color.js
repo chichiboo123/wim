@@ -39,11 +39,17 @@ function renderColor() {
   `;
 }
 
+const DEFAULT_PASTEL_COLORS = [
+  '#FFB3BA', '#FFDFBA', '#FFFFBA', '#BAFFC9', '#BAE1FF',
+  '#DDA0DD', '#98D8C8', '#FDE68A', '#A8D8EA', '#F4B6C2',
+  '#B5E8C3', '#D6EDF8', '#FCE4EA', '#FEF3C7', '#E8D5F5',
+];
+
 let editingColorIndex = -1;
 
 function addColorSlot() {
   const data = getModuleData('color');
-  const defaultColor = '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0');
+  const defaultColor = DEFAULT_PASTEL_COLORS[data.length % DEFAULT_PASTEL_COLORS.length];
   data.push({ color: defaultColor, name: t('colorNamePlaceholder') });
   saveModuleData('color', data);
   renderCurrentPage();
