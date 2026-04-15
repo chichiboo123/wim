@@ -59,6 +59,7 @@ input, textarea, select {
   -webkit-backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--border);
   min-height: 56px;
+  position: relative;
 }
 
 .header-left {
@@ -78,7 +79,23 @@ input, textarea, select {
   font-family: 'Black Han Sans', sans-serif; /* 헤더 타이틀 */
   font-size: 1.3rem;
   color: var(--primary);
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  background: transparent;
+  border: none;
+  padding: 2px 8px;
+  border-radius: 8px;
   flex-shrink: 0;
+  z-index: 1;
+  max-width: 42vw;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.header-title:hover {
+  background: var(--hover);
 }
 
 .header-right {
