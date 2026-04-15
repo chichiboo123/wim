@@ -1,6 +1,7 @@
 /* ===== WORD MODULE ===== */
 function renderWord() {
   const data = getModuleData('word');
+  const isEditing = wordEditingIndex !== -1;
   return `
     <div class="module-page">
       <h2 class="module-title">${t('wordPageTitle')}</h2>
@@ -11,7 +12,8 @@ function renderWord() {
           </div>
           <div class="form-row">
             <input type="text" class="form-input" id="word-def" placeholder="${t('wordDef')}" maxlength="200" onkeydown="if(event.key==='Enter') addWord()">
-            <button class="btn btn-primary btn-sm" onclick="addWord()">${t('addWord')}</button>
+            <button class="btn btn-primary btn-sm" onclick="addWord()">${isEditing ? t('saveEdit') : t('addWord')}</button>
+            ${isEditing ? `<button class="btn btn-secondary btn-sm" onclick="cancelWordEdit()">${t('cancelEdit')}</button>` : ''}
           </div>
         </div>
         <div class="list-container" id="word-list">
@@ -41,14 +43,25 @@ function renderWord() {
   `;
 }
 
+let wordEditingIndex = -1;
+
 function addWord() {
   const term = document.getElementById('word-term').value.trim();
   const definition = document.getElementById('word-def').value.trim();
-  if (!term || !definition) return;
+  if (!term || !definition) {
+    showToast(t('toastNeedWordFields'));
+    return;
+  }
 
   const data = getModuleData('word');
-  data.push({ term, definition });
+  if (wordEditingIndex !== -1) {
+    data[wordEditingIndex] = { term, definition };
+    wordEditingIndex = -1;
+  } else {
+    data.push({ term, definition });
+  }
   saveModuleData('word', data);
+  showToast(t('toastSaved'));
   renderCurrentPage();
 }
 
@@ -56,9 +69,7 @@ function editWord(index) {
   const data = getModuleData('word');
   const item = data[index];
   if (!item) return;
-
-  data.splice(index, 1);
-  saveModuleData('word', data);
+  wordEditingIndex = index;
   renderCurrentPage();
 
   setTimeout(() => {
@@ -73,5 +84,11 @@ function deleteWord(index) {
   const data = getModuleData('word');
   data.splice(index, 1);
   saveModuleData('word', data);
+  if (wordEditingIndex === index) wordEditingIndex = -1;
+  renderCurrentPage();
+}
+
+function cancelWordEdit() {
+  wordEditingIndex = -1;
   renderCurrentPage();
 }

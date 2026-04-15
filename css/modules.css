@@ -637,3 +637,13 @@
     padding: 12px;
   }
 }
+
+@media (hover: none) {
+  .bag-item .delete-handle,
+  .brain-text-box .delete-handle,
+  .mind-chip-inside .delete-handle,
+  .rel-node .delete-handle,
+  .palette-slot .delete-btn {
+    display: flex;
+  }
+}

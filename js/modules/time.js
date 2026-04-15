@@ -9,7 +9,7 @@ function renderTime() {
       <h2 class="module-title">${t('timePageTitle')}</h2>
       <div class="toggle-container" style="justify-content:center;">
         <span style="font-size:0.9rem;font-weight:600;">${t('mode24h')}</span>
-        <div class="toggle-switch ${!timeMode24 ? 'active' : ''}" onclick="toggleTimeMode()"></div>
+        <button class="toggle-switch ${!timeMode24 ? 'active' : ''}" role="switch" aria-checked="${!timeMode24}" onclick="toggleTimeMode()" aria-label="${t('timeModeToggle')}"></button>
         <span style="font-size:0.9rem;font-weight:600;">${t('mode12h')}</span>
       </div>
       <div class="work-area">
@@ -134,7 +134,24 @@ function addTimeTask() {
   const start = parseFloat(document.getElementById('time-start').value);
   const end = parseFloat(document.getElementById('time-end').value);
   const task = document.getElementById('time-task').value.trim();
-  if (isNaN(start) || isNaN(end) || !task || start >= end) return;
+  const maxHour = timeMode24 ? 24 : 12;
+
+  if (isNaN(start) || isNaN(end)) {
+    showToast(t('toastTimeNeedNumber'));
+    return;
+  }
+  if (!task) {
+    showToast(t('toastNeedTaskName'));
+    return;
+  }
+  if (start < 0 || end > maxHour) {
+    showToast(t('toastTimeOutOfRange'));
+    return;
+  }
+  if (start >= end) {
+    showToast(t('toastTimeRangeInvalid'));
+    return;
+  }
 
   const data = getModuleData('time');
   data.push({

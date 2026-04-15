@@ -79,12 +79,12 @@ function renderDashboard() {
       ${MODULES.map(m => {
         const count = (allData[m.id] || []).length;
         return `
-          <div class="module-card" onclick="navigateTo('${m.id}')">
+          <button class="module-card" onclick="navigateTo('${m.id}')" aria-label="${t(m.titleKey)}">
             <span class="material-icons">${m.icon}</span>
             <h3 data-i18n="${m.titleKey}">${t(m.titleKey)}</h3>
             <p data-i18n="${m.descKey}">${t(m.descKey)}</p>
             ${count > 0 ? `<span class="card-badge">${count}</span>` : ''}
-          </div>
+          </button>
         `;
       }).join('')}
     </div>

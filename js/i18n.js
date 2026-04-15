@@ -68,6 +68,8 @@ const TRANSLATIONS = {
     wordTerm: "나를 이루는 단어",
     wordDef: "나만의 정의",
     addWord: "추가",
+    saveEdit: "수정 저장",
+    cancelEdit: "취소",
 
     // Relationship
     relPageTitle: "나의 인간관계",
@@ -100,6 +102,15 @@ const TRANSLATIONS = {
     toastRestored: "데이터가 복원되었습니다",
     toastError: "오류가 발생했습니다",
     toastExported: "내보내기 완료",
+    toastTimeNeedNumber: "시작/종료 시간을 숫자로 입력하세요",
+    toastTimeRangeInvalid: "시작 시간은 종료 시간보다 빨라야 합니다",
+    toastTimeOutOfRange: "시간 범위를 확인해 주세요",
+    toastNeedTaskName: "할 일을 입력해 주세요",
+    toastNeedWordFields: "단어와 정의를 모두 입력해 주세요",
+    toastNeedSongName: "곡명을 입력해 주세요",
+    toastAlreadyAdded: "이미 추가된 항목입니다",
+    toastInvalidBackup: "유효하지 않은 백업 파일입니다",
+    timeModeToggle: "12시간/24시간 모드 전환",
   },
 
   en: {
@@ -162,6 +173,8 @@ const TRANSLATIONS = {
     wordTerm: "A word that defines me",
     wordDef: "My definition",
     addWord: "Add",
+    saveEdit: "Save Edit",
+    cancelEdit: "Cancel",
 
     relPageTitle: "My Relationships",
     personName: "Name",
@@ -191,6 +204,15 @@ const TRANSLATIONS = {
     toastRestored: "Data restored",
     toastError: "An error occurred",
     toastExported: "Export complete",
+    toastTimeNeedNumber: "Enter start/end times as numbers",
+    toastTimeRangeInvalid: "Start time must be earlier than end time",
+    toastTimeOutOfRange: "Check the allowed time range",
+    toastNeedTaskName: "Please enter a task name",
+    toastNeedWordFields: "Please enter both word and definition",
+    toastNeedSongName: "Please enter a song name",
+    toastAlreadyAdded: "This item is already added",
+    toastInvalidBackup: "Invalid backup file",
+    timeModeToggle: "Toggle 12/24-hour mode",
   },
 
   ja: {
@@ -253,6 +275,8 @@ const TRANSLATIONS = {
     wordTerm: "自分を作る言葉",
     wordDef: "自分だけの定義",
     addWord: "追加",
+    saveEdit: "編集を保存",
+    cancelEdit: "キャンセル",
 
     relPageTitle: "人間関係マップ",
     personName: "名前",
@@ -282,6 +306,15 @@ const TRANSLATIONS = {
     toastRestored: "データが復元されました",
     toastError: "エラーが発生しました",
     toastExported: "エクスポート完了",
+    toastTimeNeedNumber: "開始/終了時刻を数字で入力してください",
+    toastTimeRangeInvalid: "開始時刻は終了時刻より前である必要があります",
+    toastTimeOutOfRange: "時刻の範囲を確認してください",
+    toastNeedTaskName: "タスク名を入力してください",
+    toastNeedWordFields: "言葉と定義の両方を入力してください",
+    toastNeedSongName: "曲名を入力してください",
+    toastAlreadyAdded: "すでに追加されています",
+    toastInvalidBackup: "無効なバックアップファイルです",
+    timeModeToggle: "12時間/24時間モード切替",
   }
 };
 
