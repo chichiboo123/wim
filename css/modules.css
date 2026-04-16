@@ -226,7 +226,7 @@
 .brain-canvas {
   position: relative;
   width: 100%;
-  min-height: 400px;
+  min-height: 560px;
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
@@ -327,8 +327,12 @@
 }
 
 .mind-chip-controls {
-  display: flex;
+  display: none;
   gap: 3px;
+}
+
+.mind-chip-inside.mind-active .mind-chip-controls {
+  display: flex;
 }
 
 .mind-ctrl {
@@ -454,6 +458,96 @@
 }
 
 /* ===== MUSIC MODULE ===== */
+.music-playlist-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 20px;
+  padding: 16px;
+  background: var(--card-bg);
+  border-radius: 14px;
+  border: 1px solid var(--border);
+}
+
+.music-playlist-thumb {
+  width: 110px;
+  height: 110px;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 2px dashed var(--border);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+  transition: border-color 0.2s;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.music-playlist-thumb:hover {
+  border-color: var(--primary);
+}
+
+.music-playlist-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.music-playlist-thumb-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  color: var(--text-secondary);
+  font-size: 0.72rem;
+  text-align: center;
+  padding: 8px;
+}
+
+.music-playlist-thumb-placeholder .material-icons {
+  font-size: 34px;
+  color: var(--border);
+}
+
+.music-playlist-thumb-remove {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.45);
+  color: white;
+  border: none;
+  font-size: 11px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+}
+
+.music-playlist-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.music-playlist-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.music-playlist-count {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+}
+
 .music-form {
   display: flex;
   flex-direction: column;
@@ -765,7 +859,7 @@
   background: #f87171;
   color: white;
   font-size: 10px;
-  display: flex;
+  display: none;
   align-items: center;
   justify-content: center;
   cursor: pointer;
@@ -773,6 +867,10 @@
   flex-shrink: 0;
   touch-action: manipulation;
   line-height: 1;
+}
+
+.rel-node.rel-active .rel-node-delete {
+  display: flex;
 }
 
 .rel-form {
@@ -835,7 +933,7 @@
 
   /* Brain */
   .brain-canvas {
-    min-height: 280px;
+    min-height: 380px;
   }
 
   /* Mind */

@@ -7,12 +7,63 @@ function isSafeUrl(url) {
   } catch { return false; }
 }
 
+function getMusicMeta() {
+  try {
+    return JSON.parse(localStorage.getItem('wim-music-meta')) || {};
+  } catch { return {}; }
+}
+
+function saveMusicMeta(meta) {
+  localStorage.setItem('wim-music-meta', JSON.stringify(meta));
+}
+
+function setPlaylistThumb(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    const meta = getMusicMeta();
+    meta.thumb = e.target.result;
+    saveMusicMeta(meta);
+    renderCurrentPage();
+  };
+  reader.readAsDataURL(file);
+  event.target.value = '';
+}
+
+function removePlaylistThumb() {
+  const meta = getMusicMeta();
+  delete meta.thumb;
+  saveMusicMeta(meta);
+  renderCurrentPage();
+}
+
 function renderMusic() {
   const data = getModuleData('music');
+  const meta = getMusicMeta();
   const isEditing = musicEditingIndex !== -1;
   return `
     <div class="module-page">
       <h2 class="module-title">${t('musicPageTitle')}</h2>
+
+      <!-- Playlist Thumbnail -->
+      <div class="music-playlist-header">
+        <div class="music-playlist-thumb" onclick="document.getElementById('playlist-thumb-input').click()" title="플레이리스트 커버 이미지">
+          ${meta.thumb
+            ? `<img src="${meta.thumb}" alt="playlist thumbnail">
+               <button class="music-playlist-thumb-remove" onclick="event.stopPropagation();removePlaylistThumb()">✕</button>`
+            : `<div class="music-playlist-thumb-placeholder">
+                 <span class="material-icons">photo_library</span>
+                 <span>커버 이미지</span>
+               </div>`}
+        </div>
+        <input type="file" id="playlist-thumb-input" accept="image/*" style="display:none" onchange="setPlaylistThumb(event)">
+        <div class="music-playlist-info">
+          <div class="music-playlist-title">My Playlist</div>
+          <div class="music-playlist-count">${data.length}곡</div>
+        </div>
+      </div>
+
       <div class="work-area">
 
         <!-- Add / Edit Form -->

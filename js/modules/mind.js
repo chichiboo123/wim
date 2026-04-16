@@ -84,7 +84,7 @@ function renderMind() {
               <span>${t('emptyMindHint')}</span>
             </div>` : ''}
           ${data.map((item, i) => `
-            <div class="mind-chip-inside" style="${mindChipStyle(item)}left:${item.x}%;top:${item.y}%;"
+            <div class="mind-chip-inside${mindActiveIndex === i ? ' mind-active' : ''}" style="${mindChipStyle(item)}left:${item.x}%;top:${item.y}%;"
                  data-index="${i}"
                  onmousedown="startDragMind(event,${i})" ontouchstart="startDragMind(event,${i})">
               <span class="mind-chip-text">${escapeHtml(item.text)}${(item.count || 1) > 1 ? ` ×${item.count}` : ''}</span>
@@ -145,6 +145,13 @@ function decreaseMindItem(index) {
 }
 
 function deleteMindItem(index) {
+  if (mindOutsideClickHandler) {
+    document.removeEventListener('click', mindOutsideClickHandler);
+    document.removeEventListener('touchstart', mindOutsideClickHandler);
+    mindOutsideClickHandler = null;
+  }
+  if (mindActiveIndex === index) mindActiveIndex = null;
+  else if (mindActiveIndex !== null && mindActiveIndex > index) mindActiveIndex--;
   const data = getModuleData('mind');
   data.splice(index, 1);
   saveModuleData('mind', data);
@@ -152,6 +159,31 @@ function deleteMindItem(index) {
 }
 
 let mindDragging = null;
+let mindActiveIndex = null;
+let mindOutsideClickHandler = null;
+
+function setMindActive(index) {
+  if (mindOutsideClickHandler) {
+    document.removeEventListener('click', mindOutsideClickHandler);
+    document.removeEventListener('touchstart', mindOutsideClickHandler);
+    mindOutsideClickHandler = null;
+  }
+  mindActiveIndex = index;
+  document.querySelectorAll('.mind-chip-inside').forEach(c => c.classList.remove('mind-active'));
+  if (index !== null) {
+    const chip = document.querySelector(`.mind-chip-inside[data-index="${index}"]`);
+    if (chip) chip.classList.add('mind-active');
+    setTimeout(() => {
+      mindOutsideClickHandler = function(e) {
+        if (!e.target.closest('.mind-chip-inside')) {
+          setMindActive(null);
+        }
+      };
+      document.addEventListener('click', mindOutsideClickHandler);
+      document.addEventListener('touchstart', mindOutsideClickHandler, { passive: true });
+    }, 0);
+  }
+}
 
 function startDragMind(e, index) {
   if (e.target.closest('.mind-ctrl')) return;
@@ -182,13 +214,18 @@ function startDragMind(e, index) {
   };
 
   const onUp = () => {
-    if (mindDragging !== null && moved) {
-      const chip = document.querySelector(`.mind-chip-inside[data-index="${mindDragging}"]`);
-      if (chip) {
-        const d = getModuleData('mind');
-        d[mindDragging].x = parseFloat(chip.style.left);
-        d[mindDragging].y = parseFloat(chip.style.top);
-        saveModuleData('mind', d);
+    if (mindDragging !== null) {
+      if (moved) {
+        const chip = document.querySelector(`.mind-chip-inside[data-index="${mindDragging}"]`);
+        if (chip) {
+          const d = getModuleData('mind');
+          d[mindDragging].x = parseFloat(chip.style.left);
+          d[mindDragging].y = parseFloat(chip.style.top);
+          saveModuleData('mind', d);
+        }
+      } else {
+        // Toggle active (show controls)
+        setMindActive(mindDragging === mindActiveIndex ? null : mindDragging);
       }
     }
     mindDragging = null;
