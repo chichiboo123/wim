@@ -43,6 +43,7 @@ function renderCurrentPage() {
   const fab = document.getElementById('fab-container');
   const title = document.getElementById('header-title');
   const resetModuleBtn = document.getElementById('reset-module-btn');
+  const resetAllBtn = document.getElementById('reset-all-btn');
 
   closeFab();
 
@@ -52,6 +53,7 @@ function renderCurrentPage() {
     fab.style.display = 'none';
     title.textContent = t('appTitle');
     if (resetModuleBtn) resetModuleBtn.style.display = 'none';
+    if (resetAllBtn) resetAllBtn.style.display = 'flex';
   } else {
     content.innerHTML = renderModule(currentPage);
     backBtn.style.display = 'inline-flex';
@@ -59,6 +61,7 @@ function renderCurrentPage() {
     const mod = MODULES.find(m => m.id === currentPage);
     title.textContent = mod ? t(mod.titleKey) : t('appTitle');
     if (resetModuleBtn) resetModuleBtn.style.display = 'flex';
+    if (resetAllBtn) resetAllBtn.style.display = 'none';
 
     // Module-specific init
     if (currentPage === 'brain') {

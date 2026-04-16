@@ -18,7 +18,7 @@ function renderBag() {
       </div>
       ${hasSelection ? `
         <div class="bag-selection-panel">
-          <span class="bag-selection-label">선택됨: <strong>${escapeHtml(data[bagSelectedIndex].value || '이미지')}</strong></span>
+          <span class="bag-selection-label">선택됨: <strong>${data[bagSelectedIndex].type === 'image' ? '이미지' : escapeHtml(data[bagSelectedIndex].value)}</strong></span>
           <div class="bag-size-ctrl">
             <span>크기</span>
             <input type="range" id="bag-size-range" min="0.5" max="2.5" step="0.1"
@@ -32,7 +32,7 @@ function renderBag() {
         ${quickEmoji}
       </div>
       <div class="work-area">
-        <div class="bag-canvas" id="bag-canvas">
+        <div class="bag-canvas" id="bag-canvas" onclick="bagCanvasClick(event)">
           <svg class="bag-svg" viewBox="0 0 400 300">
             <path d="M80,50 Q60,50 50,80 L30,250 Q25,280 60,285 L340,285 Q375,280 370,250 L350,80 Q340,50 320,50 L280,50 Q270,20 200,20 Q130,20 120,50 Z"
                   fill="none" stroke="var(--primary)" stroke-width="3" stroke-dasharray="8,4" opacity="0.5"/>
@@ -63,6 +63,12 @@ function selectBagItem(index) {
 function deselectBagItem() {
   bagSelectedIndex = -1;
   renderCurrentPage();
+}
+
+function bagCanvasClick(e) {
+  if (!e.target.closest('.bag-item')) {
+    deselectBagItem();
+  }
 }
 
 function updateSelectedBagSize(size) {

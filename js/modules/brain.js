@@ -16,6 +16,7 @@ function renderBrain() {
             <input type="range" id="brain-size-range" min="0.5" max="2.5" step="0.1"
                    value="${selItem.size || 1}" oninput="updateBrainSize(this.value)">
           </div>
+          <button class="btn btn-danger btn-sm" onclick="deleteBrainItem(${brainSelectedIndex})">삭제</button>
         ` : ''}
       </div>
       <div class="work-area">
@@ -27,7 +28,6 @@ function renderBrain() {
                  onmousedown="startDragBrain(event,${i})" ontouchstart="startDragBrain(event,${i})"
                  onclick="event.stopPropagation()">
               <span contenteditable="true" onblur="updateBrainText(${i}, this.textContent)">${escapeHtml(item.text)}</span>
-              <span class="delete-handle" onclick="event.stopPropagation();deleteBrainItem(${i})">&times;</span>
             </div>
           `).join('')}
         </div>
@@ -79,6 +79,14 @@ function selectBrainItemUI(index) {
     toolbar.appendChild(sizeCtrl);
   }
   sizeCtrl.innerHTML = `<span>크기</span><input type="range" id="brain-size-range" min="0.5" max="2.5" step="0.1" value="${size}" oninput="updateBrainSize(this.value)">`;
+  let deleteBtn = toolbar.querySelector('.brain-delete-btn');
+  if (!deleteBtn) {
+    deleteBtn = document.createElement('button');
+    deleteBtn.className = 'btn btn-danger btn-sm brain-delete-btn';
+    toolbar.appendChild(deleteBtn);
+  }
+  deleteBtn.textContent = '삭제';
+  deleteBtn.onclick = () => deleteBrainItem(index);
 }
 
 function deselectBrain(event) {
@@ -87,6 +95,8 @@ function deselectBrain(event) {
     document.querySelectorAll('.brain-text-box').forEach(el => el.classList.remove('brain-selected'));
     const sizeCtrl = document.querySelector('.brain-toolbar .bag-size-ctrl');
     if (sizeCtrl) sizeCtrl.remove();
+    const deleteBtn = document.querySelector('.brain-toolbar .brain-delete-btn');
+    if (deleteBtn) deleteBtn.remove();
   }
 }
 
@@ -119,7 +129,6 @@ function deleteBrainItem(index) {
 let brainDragging = null;
 
 function startDragBrain(e, index) {
-  if (e.target.classList.contains('delete-handle')) return;
   if (e.target.getAttribute('contenteditable') === 'true') return;
 
   const isTouchEvent = e.type === 'touchstart';

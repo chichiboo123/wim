@@ -24,7 +24,7 @@ function renderRelationship() {
                 <span class="material-icons">person</span>
               </div>
               <div class="rel-node-name">${escapeHtml(person.name)}</div>
-              <span class="delete-handle" onclick="event.stopPropagation();deleteRelPerson(${i})">&times;</span>
+              <button class="rel-node-delete" onclick="event.stopPropagation();deleteRelPerson(${i})" ontouchend="event.stopPropagation();event.preventDefault();deleteRelPerson(${i})">✕</button>
             </div>
           `).join('')}
         </div>
@@ -61,7 +61,7 @@ function deleteRelPerson(index) {
 let relDragging = null;
 
 function startDragRel(e, index) {
-  if (e.target.classList.contains('delete-handle')) return;
+  if (e.target.closest('.rel-node-delete')) return;
   e.preventDefault();
   relDragging = index;
   const canvas = document.getElementById('rel-canvas');
