@@ -1,4 +1,7 @@
 /* ===== RELATIONSHIP MODULE ===== */
+let relActiveIndex = null;
+let relOutsideClickHandler = null;
+
 function renderRelationship() {
   const data = getModuleData('relationship');
   return `
@@ -17,7 +20,7 @@ function renderRelationship() {
           </div>
           <div class="rel-center">${t('me')}</div>
           ${data.map((person, i) => `
-            <div class="rel-node" data-index="${i}"
+            <div class="rel-node${relActiveIndex === i ? ' rel-active' : ''}" data-index="${i}"
                  style="left:${person.x}%;top:${person.y}%;"
                  onmousedown="startDragRel(event,${i})" ontouchstart="startDragRel(event,${i})">
               <div class="rel-node-circle">
@@ -31,6 +34,29 @@ function renderRelationship() {
       </div>
     </div>
   `;
+}
+
+function setRelActive(index) {
+  if (relOutsideClickHandler) {
+    document.removeEventListener('click', relOutsideClickHandler);
+    document.removeEventListener('touchstart', relOutsideClickHandler);
+    relOutsideClickHandler = null;
+  }
+  relActiveIndex = index;
+  document.querySelectorAll('.rel-node').forEach(n => n.classList.remove('rel-active'));
+  if (index !== null) {
+    const node = document.querySelector(`.rel-node[data-index="${index}"]`);
+    if (node) node.classList.add('rel-active');
+    setTimeout(() => {
+      relOutsideClickHandler = function(e) {
+        if (!e.target.closest('.rel-node')) {
+          setRelActive(null);
+        }
+      };
+      document.addEventListener('click', relOutsideClickHandler);
+      document.addEventListener('touchstart', relOutsideClickHandler, { passive: true });
+    }, 0);
+  }
 }
 
 function addRelPerson() {
@@ -52,6 +78,12 @@ function addRelPerson() {
 }
 
 function deleteRelPerson(index) {
+  if (relOutsideClickHandler) {
+    document.removeEventListener('click', relOutsideClickHandler);
+    document.removeEventListener('touchstart', relOutsideClickHandler);
+    relOutsideClickHandler = null;
+  }
+  relActiveIndex = null;
   const data = getModuleData('relationship');
   data.splice(index, 1);
   saveModuleData('relationship', data);
@@ -67,11 +99,17 @@ function startDragRel(e, index) {
   const canvas = document.getElementById('rel-canvas');
   const rect = canvas.getBoundingClientRect();
 
+  const startCX = e.touches ? e.touches[0].clientX : e.clientX;
+  const startCY = e.touches ? e.touches[0].clientY : e.clientY;
+  let moved = false;
+
   const onMove = (ev) => {
     if (relDragging === null) return;
     ev.preventDefault();
     const cx = ev.touches ? ev.touches[0].clientX : ev.clientX;
     const cy = ev.touches ? ev.touches[0].clientY : ev.clientY;
+    if (!moved && (Math.abs(cx - startCX) > 4 || Math.abs(cy - startCY) > 4)) moved = true;
+    if (!moved) return;
     const node = document.querySelector(`.rel-node[data-index="${relDragging}"]`);
     if (node) {
       const px = ((cx - rect.left) / rect.width * 100);
@@ -83,12 +121,17 @@ function startDragRel(e, index) {
 
   const onUp = () => {
     if (relDragging !== null) {
-      const node = document.querySelector(`.rel-node[data-index="${relDragging}"]`);
-      if (node) {
-        const d = getModuleData('relationship');
-        d[relDragging].x = parseFloat(node.style.left);
-        d[relDragging].y = parseFloat(node.style.top);
-        saveModuleData('relationship', d);
+      if (moved) {
+        const node = document.querySelector(`.rel-node[data-index="${relDragging}"]`);
+        if (node) {
+          const d = getModuleData('relationship');
+          d[relDragging].x = parseFloat(node.style.left);
+          d[relDragging].y = parseFloat(node.style.top);
+          saveModuleData('relationship', d);
+        }
+      } else {
+        // Toggle active (show delete button)
+        setRelActive(relDragging === relActiveIndex ? null : relDragging);
       }
     }
     relDragging = null;
