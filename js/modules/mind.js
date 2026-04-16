@@ -45,8 +45,24 @@ function mindChipStyle(item) {
   return `background:${item.color};color:#333;font-size:${fontSize}rem;padding:${padV}px ${padH}px;font-weight:${weight};`;
 }
 
+/* Assign default grid positions to items that don't have coordinates */
+function ensureMindPositions(data) {
+  let changed = false;
+  data.forEach((item, i) => {
+    if (item.x === undefined || item.y === undefined) {
+      const col = i % 3;
+      const row = Math.floor(i / 3);
+      item.x = col * 30 + 5 + (Math.random() * 4 - 2);
+      item.y = row * 22 + 5 + (Math.random() * 4 - 2);
+      changed = true;
+    }
+  });
+  if (changed) saveModuleData('mind', data);
+}
+
 function renderMind() {
   const data = getModuleData('mind');
+  ensureMindPositions(data);
   const emotions = EMOTIONS[currentLang] || EMOTIONS.ko;
   const selectedEmotions = new Set(data.map(d => d.text));
   return `
@@ -62,14 +78,17 @@ function renderMind() {
       </div>
       <div class="work-area">
         <div class="mind-room" id="mind-room">
-          ${data.length === 0 ? `<div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--text-secondary);font-size:0.85rem;opacity:0.7;gap:8px;text-align:center;padding:16px;">
-            <span class="material-icons" style="font-size:48px;">favorite_border</span>
-            <span>${t('emptyMindHint')}</span>
-          </div>` : ''}
+          ${data.length === 0 ? `
+            <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--text-secondary);font-size:0.85rem;opacity:0.7;gap:8px;text-align:center;padding:16px;">
+              <span class="material-icons" style="font-size:48px;">favorite_border</span>
+              <span>${t('emptyMindHint')}</span>
+            </div>` : ''}
           ${data.map((item, i) => `
-            <div class="mind-chip-inside" style="${mindChipStyle(item)}">
+            <div class="mind-chip-inside" style="${mindChipStyle(item)}left:${item.x}%;top:${item.y}%;"
+                 data-index="${i}"
+                 onmousedown="startDragMind(event,${i})" ontouchstart="startDragMind(event,${i})">
               ${escapeHtml(item.text)}${(item.count || 1) > 1 ? ` ×${item.count}` : ''}
-              <span class="delete-handle" onclick="deleteMindItem(${i})">&times;</span>
+              <span class="delete-handle" onclick="event.stopPropagation();deleteMindItem(${i})">&times;</span>
             </div>
           `).join('')}
         </div>
@@ -87,10 +106,14 @@ function addMindEmotion(emotion, colorIndex) {
     renderCurrentPage();
     return;
   }
+  const x = 5 + Math.random() * 70;
+  const y = 5 + Math.random() * 70;
   data.push({
     text: emotion,
     color: EMOTION_COLORS[colorIndex % EMOTION_COLORS.length],
-    count: 1
+    count: 1,
+    x,
+    y
   });
   saveModuleData('mind', data);
   renderCurrentPage();
@@ -101,4 +124,57 @@ function deleteMindItem(index) {
   data.splice(index, 1);
   saveModuleData('mind', data);
   renderCurrentPage();
+}
+
+let mindDragging = null;
+
+function startDragMind(e, index) {
+  if (e.target.classList.contains('delete-handle')) return;
+  const isTouchEvent = e.type === 'touchstart';
+  if (isTouchEvent) e.preventDefault();
+
+  mindDragging = index;
+  const room = document.getElementById('mind-room');
+  const rect = room.getBoundingClientRect();
+  const startX = isTouchEvent ? e.touches[0].clientX : e.clientX;
+  const startY = isTouchEvent ? e.touches[0].clientY : e.clientY;
+  let moved = false;
+
+  const onMove = (ev) => {
+    if (mindDragging === null) return;
+    const cx = ev.touches ? ev.touches[0].clientX : ev.clientX;
+    const cy = ev.touches ? ev.touches[0].clientY : ev.clientY;
+    if (!moved && (Math.abs(cx - startX) > 3 || Math.abs(cy - startY) > 3)) moved = true;
+    if (!moved) return;
+    ev.preventDefault();
+    const chip = document.querySelector(`.mind-chip-inside[data-index="${mindDragging}"]`);
+    if (chip) {
+      const px = ((cx - rect.left) / rect.width * 100).toFixed(1);
+      const py = ((cy - rect.top) / rect.height * 100).toFixed(1);
+      chip.style.left = Math.max(0, Math.min(parseFloat(px), 85)) + '%';
+      chip.style.top = Math.max(0, Math.min(parseFloat(py), 85)) + '%';
+    }
+  };
+
+  const onUp = () => {
+    if (mindDragging !== null && moved) {
+      const chip = document.querySelector(`.mind-chip-inside[data-index="${mindDragging}"]`);
+      if (chip) {
+        const d = getModuleData('mind');
+        d[mindDragging].x = parseFloat(chip.style.left);
+        d[mindDragging].y = parseFloat(chip.style.top);
+        saveModuleData('mind', d);
+      }
+    }
+    mindDragging = null;
+    document.removeEventListener('mousemove', onMove);
+    document.removeEventListener('mouseup', onUp);
+    document.removeEventListener('touchmove', onMove);
+    document.removeEventListener('touchend', onUp);
+  };
+
+  document.addEventListener('mousemove', onMove);
+  document.addEventListener('mouseup', onUp);
+  document.addEventListener('touchmove', onMove, { passive: false });
+  document.addEventListener('touchend', onUp);
 }

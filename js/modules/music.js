@@ -6,41 +6,39 @@ function renderMusic() {
     <div class="module-page">
       <h2 class="module-title">${t('musicPageTitle')}</h2>
       <div class="work-area">
-        <div style="margin-bottom:16px;">
-          <div class="form-row">
-            <input type="text" class="form-input" id="music-song" placeholder="${t('songName')}" maxlength="60" onkeydown="if(event.key==='Enter') document.getElementById('music-artist').focus()">
-            <input type="text" class="form-input" id="music-artist" placeholder="${t('artistName')}" maxlength="40" onkeydown="if(event.key==='Enter') document.getElementById('music-reason').focus()">
+
+        <!-- Add / Edit Form -->
+        <div class="music-form">
+          <!-- Large thumbnail — click to change -->
+          <div class="music-thumb-large" onclick="document.getElementById('music-thumb-input').click()" title="${t('thumbnail')}">
+            ${pendingMusicThumb
+              ? `<img src="${pendingMusicThumb}" alt="thumbnail">`
+              : `<div class="music-thumb-placeholder">
+                   <span class="material-icons">add_photo_alternate</span>
+                   <span>${t('thumbnail')}</span>
+                 </div>`}
           </div>
-          <div class="form-row">
-            <input type="text" class="form-input" id="music-reason" placeholder="${t('reason')}" maxlength="100" onkeydown="if(event.key==='Enter') addMusic()">
-            <button class="btn btn-secondary btn-sm" onclick="document.getElementById('music-thumb-input').click()">
-              <span class="material-icons" style="font-size:16px;vertical-align:middle;">image</span>
-              ${t('thumbnail')}
-            </button>
-            <input type="file" id="music-thumb-input" accept="image/*" style="display:none" onchange="setMusicThumb(event)">
-            <button class="btn btn-primary btn-sm" onclick="addMusic()">${isEditing ? t('saveEdit') : t('addSong')}</button>
-            ${isEditing ? `<button class="btn btn-secondary btn-sm" onclick="cancelMusicEdit()">${t('cancelEdit')}</button>` : ''}
+          <input type="file" id="music-thumb-input" accept="image/*" style="display:none" onchange="setMusicThumb(event)">
+
+          <input type="text" class="form-input" id="music-song"
+                 placeholder="${t('songName')}" maxlength="60"
+                 onkeydown="if(event.key==='Enter') document.getElementById('music-artist').focus()">
+          <input type="text" class="form-input" id="music-artist"
+                 placeholder="${t('artistName')}" maxlength="40"
+                 onkeydown="if(event.key==='Enter') document.getElementById('music-reason').focus()">
+          <input type="text" class="form-input" id="music-reason"
+                 placeholder="${t('reason')}" maxlength="100"
+                 onkeydown="if(event.key==='Enter') addMusic()">
+          <div class="music-form-actions">
+            <button class="btn btn-primary" onclick="addMusic()">${isEditing ? t('saveEdit') : t('addSong')}</button>
+            ${isEditing ? `<button class="btn btn-secondary" onclick="cancelMusicEdit()">${t('cancelEdit')}</button>` : ''}
           </div>
         </div>
-        <div id="music-thumb-preview" style="display:${pendingMusicThumb ? 'flex' : 'none'};margin-bottom:14px;align-items:center;gap:12px;padding:10px;background:var(--bg);border:1px solid var(--border);border-radius:12px;">
-          <img id="music-thumb-preview-img" src="${pendingMusicThumb || ''}" alt=""
-               style="width:64px;height:64px;object-fit:cover;border-radius:8px;box-shadow:0 2px 8px var(--shadow);flex-shrink:0;">
-          <div>
-            <div style="font-size:0.82rem;font-weight:600;color:var(--text);margin-bottom:3px;">
-              <span class="material-icons" style="font-size:14px;vertical-align:middle;color:var(--primary);">check_circle</span>
-              ${t('thumbnail')}
-            </div>
-            <div id="music-thumb-name" style="font-size:0.75rem;color:var(--text-secondary);max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;"></div>
-          </div>
-        </div>
+
+        <!-- Song list -->
         <div class="list-container" id="music-list">
           ${data.map((item, i) => `
             <div class="music-item">
-              <div class="music-thumb">
-                ${item.thumb
-                  ? `<img src="${item.thumb}" alt="${escapeHtml(item.song)}">`
-                  : `<span class="material-icons">music_note</span>`}
-              </div>
               <div class="music-info">
                 <div class="song-title">${escapeHtml(item.song)}</div>
                 <div class="artist-name">${escapeHtml(item.artist)}</div>
@@ -59,6 +57,7 @@ function renderMusic() {
             </div>
           ` : ''}
         </div>
+
       </div>
     </div>
   `;
@@ -73,13 +72,9 @@ function setMusicThumb(event) {
   const reader = new FileReader();
   reader.onload = function(e) {
     pendingMusicThumb = e.target.result;
-    const preview = document.getElementById('music-thumb-preview');
-    const imgEl = document.getElementById('music-thumb-preview-img');
-    const nameEl = document.getElementById('music-thumb-name');
-    if (preview) {
-      preview.style.display = 'flex';
-      if (imgEl) imgEl.src = e.target.result;
-      if (nameEl) nameEl.textContent = file.name;
+    const thumbEl = document.querySelector('.music-thumb-large');
+    if (thumbEl) {
+      thumbEl.innerHTML = `<img src="${e.target.result}" alt="thumbnail">`;
     }
   };
   reader.readAsDataURL(file);

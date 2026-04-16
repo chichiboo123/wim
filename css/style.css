@@ -59,7 +59,6 @@ input, textarea, select {
   -webkit-backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--border);
   min-height: 56px;
-  position: relative;
 }
 
 .header-left {
@@ -89,9 +88,10 @@ input, textarea, select {
   border-radius: 8px;
   flex-shrink: 0;
   z-index: 1;
-  max-width: 42vw;
+  max-width: 38vw;
   overflow: hidden;
   text-overflow: ellipsis;
+  pointer-events: auto;
 }
 
 .header-title:hover {
@@ -103,6 +103,8 @@ input, textarea, select {
   align-items: center;
   gap: 8px;
   margin-left: auto;
+  position: relative;
+  z-index: 2;
 }
 
 .header-selects {
@@ -720,6 +722,7 @@ button.chip {
 
   .header-title {
     font-size: 0.95rem;
+    max-width: 32vw;
   }
 
   .header-selects {

@@ -90,8 +90,11 @@
   align-items: center;
 }
 
-.bag-toolbar .form-input {
-  max-width: 200px;
+.bag-unified-input {
+  flex: 1;
+  min-width: 140px;
+  min-height: 38px;
+  padding: 8px 12px;
 }
 
 .bag-size-ctrl {
@@ -185,6 +188,14 @@
 }
 
 /* ===== BRAIN MODULE ===== */
+.brain-toolbar {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
 .brain-canvas {
   position: relative;
   width: 100%;
@@ -194,7 +205,7 @@
   background-position: center;
   border-radius: 12px;
   overflow: hidden;
-  cursor: crosshair;
+  cursor: default;
 }
 
 .brain-text-box {
@@ -220,6 +231,12 @@
 
 .brain-text-box:active {
   cursor: grabbing;
+}
+
+.brain-selected {
+  outline: 2px dashed var(--primary);
+  outline-offset: 3px;
+  z-index: 8;
 }
 
 .brain-text-box .delete-handle {
@@ -248,16 +265,11 @@
 .mind-room {
   position: relative;
   width: 100%;
-  min-height: 350px;
+  min-height: 420px;
   background: var(--bg);
   border-radius: 16px;
   border: 2px solid var(--border);
-  padding: 20px;
-  overflow: visible;
-  display: flex;
-  flex-wrap: wrap;
-  align-content: flex-start;
-  gap: 10px;
+  overflow: hidden;
 }
 
 .mind-chip-inside {
@@ -266,10 +278,16 @@
   font-size: 0.88rem;
   font-weight: 500;
   animation: chipDrop 0.4s ease;
-  cursor: default;
-  position: relative;
+  cursor: grab;
+  position: absolute;
   line-height: 1.3;
   word-break: keep-all;
+  user-select: none;
+}
+
+.mind-chip-inside:active {
+  cursor: grabbing;
+  z-index: 10;
 }
 
 @keyframes chipDrop {
@@ -397,6 +415,64 @@
 }
 
 /* ===== MUSIC MODULE ===== */
+.music-form {
+  margin-bottom: 20px;
+}
+
+.music-form .form-input {
+  display: block;
+  width: 100%;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+}
+
+.music-thumb-large {
+  width: 160px;
+  height: 160px;
+  border-radius: 16px;
+  margin: 0 auto 16px;
+  cursor: pointer;
+  overflow: hidden;
+  border: 2px dashed var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+  transition: border-color 0.2s, opacity 0.2s;
+}
+
+.music-thumb-large:hover {
+  border-color: var(--primary);
+  opacity: 0.85;
+}
+
+.music-thumb-large img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.music-thumb-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  color: var(--text-secondary);
+  font-size: 0.82rem;
+}
+
+.music-thumb-placeholder .material-icons {
+  font-size: 40px;
+  color: var(--border);
+}
+
+.music-form-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin-top: 4px;
+}
+
 .music-item {
   display: flex;
   align-items: center;
