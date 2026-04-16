@@ -98,9 +98,16 @@ function startDragRel(e, index) {
   relDragging = index;
   const canvas = document.getElementById('rel-canvas');
   const rect = canvas.getBoundingClientRect();
+  const data = getModuleData('relationship');
+  const startItemX = data[index]?.x ?? 50;
+  const startItemY = data[index]?.y ?? 50;
 
   const startCX = e.touches ? e.touches[0].clientX : e.clientX;
   const startCY = e.touches ? e.touches[0].clientY : e.clientY;
+  const startPointerX = ((startCX - rect.left) / rect.width) * 100;
+  const startPointerY = ((startCY - rect.top) / rect.height) * 100;
+  const dragOffsetX = startPointerX - startItemX;
+  const dragOffsetY = startPointerY - startItemY;
   let moved = false;
 
   const onMove = (ev) => {
@@ -112,10 +119,12 @@ function startDragRel(e, index) {
     if (!moved) return;
     const node = document.querySelector(`.rel-node[data-index="${relDragging}"]`);
     if (node) {
-      const px = ((cx - rect.left) / rect.width * 100);
-      const py = ((cy - rect.top) / rect.height * 100);
-      node.style.left = Math.max(3, Math.min(97, px)) + '%';
-      node.style.top = Math.max(3, Math.min(97, py)) + '%';
+      const pointerX = ((cx - rect.left) / rect.width) * 100;
+      const pointerY = ((cy - rect.top) / rect.height) * 100;
+      const nextX = Math.max(3, Math.min(97, pointerX - dragOffsetX));
+      const nextY = Math.max(3, Math.min(97, pointerY - dragOffsetY));
+      node.style.left = nextX.toFixed(1) + '%';
+      node.style.top = nextY.toFixed(1) + '%';
     }
   };
 

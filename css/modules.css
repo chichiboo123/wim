@@ -23,6 +23,9 @@
   user-select: none;
   z-index: 5;
   transition: box-shadow 0.2s;
+  transform-origin: top left;
+  touch-action: none;
+  will-change: left, top;
 }
 
 .bag-item:active {
@@ -246,6 +249,8 @@
   cursor: grab;
   z-index: 5;
   color: var(--text);
+  touch-action: none;
+  will-change: left, top;
 }
 
 .brain-cloud {
@@ -314,6 +319,8 @@
   flex-direction: column;
   align-items: center;
   gap: 4px;
+  touch-action: none;
+  will-change: left, top;
 }
 
 .mind-chip-inside:active {
@@ -462,7 +469,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 16px;
+  gap: 22px;
   margin-bottom: 20px;
   padding: 16px;
   background: var(--card-bg);
@@ -471,8 +478,9 @@
 }
 
 .music-playlist-thumb {
-  width: 110px;
-  height: 110px;
+  width: 200px;
+  aspect-ratio: 16 / 9;
+  height: auto;
   border-radius: 12px;
   overflow: hidden;
   border: 2px dashed var(--border);
@@ -508,7 +516,7 @@
 }
 
 .music-playlist-thumb-placeholder .material-icons {
-  font-size: 34px;
+  font-size: 40px;
   color: var(--border);
 }
 
@@ -813,6 +821,8 @@
   z-index: 15;
   transform: translate(-50%, -50%);
   user-select: none;
+  touch-action: none;
+  will-change: left, top;
 }
 
 .rel-node:active {
@@ -967,6 +977,14 @@
   }
 
   /* Music */
+  .music-playlist-header {
+    gap: 12px;
+  }
+
+  .music-playlist-thumb {
+    width: min(52vw, 220px);
+  }
+
   .music-item {
     flex-direction: row;
     align-items: flex-start;
