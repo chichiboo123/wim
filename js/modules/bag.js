@@ -183,8 +183,11 @@ function startDragBag(e, index) {
     if (item) {
       const nx = cx - rect.left - bagDragOffset.x;
       const ny = cy - rect.top - bagDragOffset.y;
-      item.style.left = Math.max(0, Math.min(nx, canvas.offsetWidth - 40)) + 'px';
-      item.style.top = Math.max(0, Math.min(ny, canvas.offsetHeight - 40)) + 'px';
+      const itemRect = item.getBoundingClientRect();
+      const maxX = Math.max(0, canvas.offsetWidth - itemRect.width);
+      const maxY = Math.max(0, canvas.offsetHeight - itemRect.height);
+      item.style.left = Math.max(0, Math.min(nx, maxX)) + 'px';
+      item.style.top = Math.max(0, Math.min(ny, maxY)) + 'px';
     }
   };
 

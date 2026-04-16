@@ -195,6 +195,13 @@ function startDragMind(e, index) {
   const rect = room.getBoundingClientRect();
   const startX = isTouchEvent ? e.touches[0].clientX : e.clientX;
   const startY = isTouchEvent ? e.touches[0].clientY : e.clientY;
+  const data = getModuleData('mind');
+  const startItemX = data[index]?.x ?? 0;
+  const startItemY = data[index]?.y ?? 0;
+  const startPointerX = ((startX - rect.left) / rect.width) * 100;
+  const startPointerY = ((startY - rect.top) / rect.height) * 100;
+  const dragOffsetX = startPointerX - startItemX;
+  const dragOffsetY = startPointerY - startItemY;
   let moved = false;
 
   const onMove = (ev) => {
@@ -206,10 +213,12 @@ function startDragMind(e, index) {
     ev.preventDefault();
     const chip = document.querySelector(`.mind-chip-inside[data-index="${mindDragging}"]`);
     if (chip) {
-      const px = ((cx - rect.left) / rect.width * 100).toFixed(1);
-      const py = ((cy - rect.top) / rect.height * 100).toFixed(1);
-      chip.style.left = Math.max(0, Math.min(parseFloat(px), 85)) + '%';
-      chip.style.top = Math.max(0, Math.min(parseFloat(py), 85)) + '%';
+      const pointerX = ((cx - rect.left) / rect.width) * 100;
+      const pointerY = ((cy - rect.top) / rect.height) * 100;
+      const nextX = Math.max(0, Math.min(pointerX - dragOffsetX, 85));
+      const nextY = Math.max(0, Math.min(pointerY - dragOffsetY, 85));
+      chip.style.left = nextX.toFixed(1) + '%';
+      chip.style.top = nextY.toFixed(1) + '%';
     }
   };
 
