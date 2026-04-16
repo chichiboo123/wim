@@ -66,6 +66,7 @@ const TRANSLATIONS = {
     reason: "추천 이유",
     addSong: "추가",
     thumbnail: "썸네일",
+    youtubeUrl: "YouTube URL (선택)",
 
     // Word
     wordPageTitle: "나만의 사전",
@@ -83,16 +84,26 @@ const TRANSLATIONS = {
 
     // Help
     helpContent: `
-      <h3>🎒 테마 선택</h3>
+      <h3><span class="material-icons" style="vertical-align:-4px;font-size:1.1em;">apps</span> 테마 선택</h3>
       <p>메인 화면에서 8가지 테마 카드 중 하나를 선택하세요.</p>
-      <h3>🎨 테마 색상 변경</h3>
-      <p>우측 상단의 컬러 칩을 클릭하여 앱 전체 색상을 변경할 수 있습니다.</p>
-      <h3>🌐 언어 변경</h3>
-      <p>우측 상단의 번역 아이콘을 클릭하여 한국어/영어/일본어를 전환합니다.</p>
-      <h3>💾 데이터 백업 & 복원</h3>
-      <p>내보내기 버튼(FAB)의 JSON 저장으로 백업하고, 디스켓 아이콘으로 복원하세요.</p>
-      <h3>📤 내보내기</h3>
-      <p>각 체험 페이지 우측 하단의 버튼으로 JPG, PDF, 클립보드 복사, JSON 저장이 가능합니다.</p>
+      <h3><span class="material-icons" style="vertical-align:-4px;font-size:1.1em;">shopping_bag</span> 백 (Bag)</h3>
+      <p>텍스트·이모지·이미지를 가방 안에 배치하세요. 요소를 탭하면 크기 조절과 삭제, 드래그로 위치 이동이 가능합니다. 가방 빈 곳을 탭하면 선택이 해제됩니다.</p>
+      <h3><span class="material-icons" style="vertical-align:-4px;font-size:1.1em;">psychology</span> 브레인 (Brain)</h3>
+      <p>[추가] 버튼으로 생각 풍선을 만들고, 탭하면 크기 조절·삭제 툴바가 나타납니다. 드래그로 위치를 자유롭게 이동하세요.</p>
+      <h3><span class="material-icons" style="vertical-align:-4px;font-size:1.1em;">favorite</span> 감정 (Emotion)</h3>
+      <p>감정 단어를 선택하면 마음의 방에 칩이 추가됩니다. [+][−] 버튼으로 감정 강도를 조절하고, [✕]로 삭제합니다. 드래그로 위치를 이동할 수 있습니다.</p>
+      <h3><span class="material-icons" style="vertical-align:-4px;font-size:1.1em;">headphones</span> 뮤직 (Music)</h3>
+      <p>썸네일·곡명·아티스트·추천 이유·YouTube URL을 입력해 플레이리스트를 만드세요. ▲▼ 버튼으로 트랙 순서를 바꿀 수 있습니다.</p>
+      <h3><span class="material-icons" style="vertical-align:-4px;font-size:1.1em;">group</span> 관계 (Relationship)</h3>
+      <p>이름을 입력하고 [추가]하면 관계 맵에 나타납니다. 드래그로 거리를 조절하고, [✕] 버튼으로 삭제하세요.</p>
+      <h3><span class="material-icons" style="vertical-align:-4px;font-size:1.1em;">palette</span> 테마 색상 변경</h3>
+      <p>우측 상단의 컬러 도트를 클릭하여 앱 전체 색상을 변경할 수 있습니다.</p>
+      <h3><span class="material-icons" style="vertical-align:-4px;font-size:1.1em;">language</span> 언어 변경</h3>
+      <p>우측 상단의 언어 선택 드롭다운으로 한국어/영어/일본어를 전환합니다.</p>
+      <h3><span class="material-icons" style="vertical-align:-4px;font-size:1.1em;">save</span> 데이터 백업 & 복원</h3>
+      <p>우측 상단 저장 아이콘으로 JSON 백업 다운로드 및 복원이 가능합니다.</p>
+      <h3><span class="material-icons" style="vertical-align:-4px;font-size:1.1em;">ios_share</span> 내보내기</h3>
+      <p>각 페이지 우측 하단 버튼으로 JPG, PDF, 클립보드 복사, JSON 저장이 가능합니다.</p>
     `,
 
     // Empty state hints
@@ -181,6 +192,7 @@ const TRANSLATIONS = {
     reason: "Reason",
     addSong: "Add",
     thumbnail: "Thumbnail",
+    youtubeUrl: "YouTube URL (optional)",
 
     wordPageTitle: "My Dictionary",
     wordTerm: "A word that defines me",
@@ -195,16 +207,26 @@ const TRANSLATIONS = {
     me: "Me",
 
     helpContent: `
-      <h3>🎒 Select Theme</h3>
+      <h3><span class="material-icons" style="vertical-align:-4px;font-size:1.1em;">apps</span> Select Theme</h3>
       <p>Choose one of 8 theme cards on the main screen.</p>
-      <h3>🎨 Change Colors</h3>
-      <p>Click color chips in the top right to change the app theme.</p>
-      <h3>🌐 Switch Language</h3>
-      <p>Click the translate icon to switch between Korean/English/Japanese.</p>
-      <h3>💾 Backup & Restore</h3>
-      <p>Use the JSON export to backup, and the disk icon to restore.</p>
-      <h3>📤 Export</h3>
-      <p>Use the FAB button on each page to save as JPG, PDF, copy, or JSON.</p>
+      <h3><span class="material-icons" style="vertical-align:-4px;font-size:1.1em;">shopping_bag</span> Bag</h3>
+      <p>Place text, emoji, or images inside the bag. Tap an item to resize or delete it; drag to reposition. Tap empty space to deselect.</p>
+      <h3><span class="material-icons" style="vertical-align:-4px;font-size:1.1em;">psychology</span> Brain</h3>
+      <p>Use [Add] to create thought bubbles. Tap a bubble to show the resize/delete toolbar. Drag to move freely.</p>
+      <h3><span class="material-icons" style="vertical-align:-4px;font-size:1.1em;">favorite</span> Emotion</h3>
+      <p>Select emotion words to add chips. Use [+][−] to adjust intensity and [✕] to remove. Drag chips to reposition.</p>
+      <h3><span class="material-icons" style="vertical-align:-4px;font-size:1.1em;">headphones</span> Music</h3>
+      <p>Add songs with thumbnail, title, artist, reason, and an optional YouTube URL. Use ▲▼ to reorder tracks.</p>
+      <h3><span class="material-icons" style="vertical-align:-4px;font-size:1.1em;">group</span> Relationship</h3>
+      <p>Add people by name to build your relationship map. Drag to adjust distance; tap [✕] to remove.</p>
+      <h3><span class="material-icons" style="vertical-align:-4px;font-size:1.1em;">palette</span> Change Colors</h3>
+      <p>Click the color dot in the top right to change the app theme.</p>
+      <h3><span class="material-icons" style="vertical-align:-4px;font-size:1.1em;">language</span> Switch Language</h3>
+      <p>Use the language dropdown to switch between Korean, English, and Japanese.</p>
+      <h3><span class="material-icons" style="vertical-align:-4px;font-size:1.1em;">save</span> Backup & Restore</h3>
+      <p>Use the save icon in the top right to download a JSON backup or restore from one.</p>
+      <h3><span class="material-icons" style="vertical-align:-4px;font-size:1.1em;">ios_share</span> Export</h3>
+      <p>Use the FAB button on each page to export as JPG, PDF, copy to clipboard, or save as JSON.</p>
     `,
 
     // Empty state hints
@@ -292,6 +314,7 @@ const TRANSLATIONS = {
     reason: "推薦理由",
     addSong: "追加",
     thumbnail: "サムネイル",
+    youtubeUrl: "YouTube URL (任意)",
 
     wordPageTitle: "マイ辞書",
     wordTerm: "自分を作る言葉",
@@ -306,16 +329,26 @@ const TRANSLATIONS = {
     me: "私",
 
     helpContent: `
-      <h3>🎒 テーマ選択</h3>
+      <h3><span class="material-icons" style="vertical-align:-4px;font-size:1.1em;">apps</span> テーマ選択</h3>
       <p>メイン画面で8つのテーマカードの一つを選んでください。</p>
-      <h3>🎨 カラー変更</h3>
-      <p>右上のカラーチップをクリックしてテーマを変更できます。</p>
-      <h3>🌐 言語切替</h3>
-      <p>翻訳アイコンをクリックして韓国語/英語/日本語を切り替えます。</p>
-      <h3>💾 バックアップ＆復元</h3>
-      <p>JSON保存でバックアップし、ディスクアイコンで復元してください。</p>
-      <h3>📤 エクスポート</h3>
-      <p>各ページのFABボタンでJPG、PDF、コピー、JSON保存ができます。</p>
+      <h3><span class="material-icons" style="vertical-align:-4px;font-size:1.1em;">shopping_bag</span> バッグ (Bag)</h3>
+      <p>テキスト・絵文字・画像をバッグに配置できます。タップするとサイズ調整・削除ツールバーが表示されます。ドラッグで移動し、空白をタップすると選択解除されます。</p>
+      <h3><span class="material-icons" style="vertical-align:-4px;font-size:1.1em;">psychology</span> ブレイン (Brain)</h3>
+      <p>[追加]ボタンで思考バブルを作成します。タップするとサイズ調整・削除ツールバーが表示されます。ドラッグで自由に移動できます。</p>
+      <h3><span class="material-icons" style="vertical-align:-4px;font-size:1.1em;">favorite</span> 感情 (Emotion)</h3>
+      <p>感情の言葉を選んでチップを追加します。[+][−]で強度を調整し、[✕]で削除します。ドラッグで位置を移動できます。</p>
+      <h3><span class="material-icons" style="vertical-align:-4px;font-size:1.1em;">headphones</span> ミュージック (Music)</h3>
+      <p>サムネイル・曲名・アーティスト・推薦理由・YouTube URLを入力してプレイリストを作成します。▲▼でトラック順を変更できます。</p>
+      <h3><span class="material-icons" style="vertical-align:-4px;font-size:1.1em;">group</span> 関係 (Relationship)</h3>
+      <p>名前を入力して[追加]すると関係マップに表示されます。ドラッグで距離を調整し、[✕]で削除します。</p>
+      <h3><span class="material-icons" style="vertical-align:-4px;font-size:1.1em;">palette</span> カラー変更</h3>
+      <p>右上のカラードットをクリックしてアプリのテーマを変更できます。</p>
+      <h3><span class="material-icons" style="vertical-align:-4px;font-size:1.1em;">language</span> 言語切替</h3>
+      <p>言語ドロップダウンで韓国語/英語/日本語を切り替えます。</p>
+      <h3><span class="material-icons" style="vertical-align:-4px;font-size:1.1em;">save</span> バックアップ＆復元</h3>
+      <p>右上の保存アイコンでJSONバックアップのダウンロードと復元ができます。</p>
+      <h3><span class="material-icons" style="vertical-align:-4px;font-size:1.1em;">ios_share</span> エクスポート</h3>
+      <p>各ページのFABボタンでJPG、PDF、クリップボードコピー、JSON保存ができます。</p>
     `,
 
     // Empty state hints

@@ -87,8 +87,12 @@ function renderMind() {
             <div class="mind-chip-inside" style="${mindChipStyle(item)}left:${item.x}%;top:${item.y}%;"
                  data-index="${i}"
                  onmousedown="startDragMind(event,${i})" ontouchstart="startDragMind(event,${i})">
-              ${escapeHtml(item.text)}${(item.count || 1) > 1 ? ` ×${item.count}` : ''}
-              <span class="delete-handle" onclick="event.stopPropagation();deleteMindItem(${i})">&times;</span>
+              <span class="mind-chip-text">${escapeHtml(item.text)}${(item.count || 1) > 1 ? ` ×${item.count}` : ''}</span>
+              <div class="mind-chip-controls">
+                <button class="mind-ctrl" onclick="event.stopPropagation();decreaseMindItem(${i})" ontouchend="event.stopPropagation();event.preventDefault();decreaseMindItem(${i})">−</button>
+                <button class="mind-ctrl mind-ctrl-del" onclick="event.stopPropagation();deleteMindItem(${i})" ontouchend="event.stopPropagation();event.preventDefault();deleteMindItem(${i})">✕</button>
+                <button class="mind-ctrl" onclick="event.stopPropagation();increaseMindItem(${i})" ontouchend="event.stopPropagation();event.preventDefault();increaseMindItem(${i})">+</button>
+              </div>
             </div>
           `).join('')}
         </div>
@@ -119,6 +123,27 @@ function addMindEmotion(emotion, colorIndex) {
   renderCurrentPage();
 }
 
+function increaseMindItem(index) {
+  const data = getModuleData('mind');
+  if (!data[index]) return;
+  data[index].count = (data[index].count || 1) + 1;
+  saveModuleData('mind', data);
+  renderCurrentPage();
+}
+
+function decreaseMindItem(index) {
+  const data = getModuleData('mind');
+  if (!data[index]) return;
+  const current = data[index].count || 1;
+  if (current <= 1) {
+    deleteMindItem(index);
+    return;
+  }
+  data[index].count = current - 1;
+  saveModuleData('mind', data);
+  renderCurrentPage();
+}
+
 function deleteMindItem(index) {
   const data = getModuleData('mind');
   data.splice(index, 1);
@@ -129,7 +154,7 @@ function deleteMindItem(index) {
 let mindDragging = null;
 
 function startDragMind(e, index) {
-  if (e.target.classList.contains('delete-handle')) return;
+  if (e.target.closest('.mind-ctrl')) return;
   const isTouchEvent = e.type === 'touchstart';
   if (isTouchEvent) e.preventDefault();
 
