@@ -4,6 +4,7 @@ function renderBag() {
   const quickEmoji = BAG_EMOJI_PRESET.map((em) =>
     `<button class="chip" onclick="addPresetBagEmoji('${em}')" aria-label="${em}">${em}</button>`
   ).join('');
+  const hasSelection = bagSelectedIndex >= 0 && data[bagSelectedIndex];
   return `
     <div class="module-page">
       <div class="bag-toolbar">
@@ -14,12 +15,19 @@ function renderBag() {
         <button class="btn btn-secondary btn-sm" onclick="toggleBagEmojiPicker()">${t('emojiPick')}</button>
         <button class="btn btn-secondary btn-sm" onclick="document.getElementById('bag-img-input').click()">${t('addImage')}</button>
         <input type="file" id="bag-img-input" accept="image/*" style="display:none" onchange="addBagImage(event)">
-        <div class="bag-size-ctrl">
-          <span>크기</span>
-          <input type="range" id="bag-size-range" min="0.5" max="2.5" step="0.1"
-                 value="${getSelectedBagSize()}" oninput="updateSelectedBagSize(this.value)">
-        </div>
       </div>
+      ${hasSelection ? `
+        <div class="bag-selection-panel">
+          <span class="bag-selection-label">선택됨: <strong>${escapeHtml(data[bagSelectedIndex].value || '이미지')}</strong></span>
+          <div class="bag-size-ctrl">
+            <span>크기</span>
+            <input type="range" id="bag-size-range" min="0.5" max="2.5" step="0.1"
+                   value="${data[bagSelectedIndex].size || 1}"
+                   oninput="updateSelectedBagSize(this.value)">
+          </div>
+          <button class="btn btn-danger btn-sm" onclick="deleteBagItem(${bagSelectedIndex})">삭제</button>
+        </div>
+      ` : ''}
       <div class="emoji-preset-wrap" id="emoji-preset-wrap" style="display:none;">
         ${quickEmoji}
       </div>
@@ -34,6 +42,7 @@ function renderBag() {
           ${data.map((item, i) => renderBagItem(item, i)).join('')}
         </div>
       </div>
+      ${data.length > 0 && !hasSelection ? `<p class="bag-hint">요소를 클릭하면 크기 조절 및 삭제가 가능합니다</p>` : ''}
     </div>
   `;
 }
@@ -46,22 +55,14 @@ const BAG_EMOJI_PRESET = [
 ];
 let bagSelectedIndex = -1;
 
-function getSelectedBagSize() {
-  const data = getModuleData('bag');
-  if (bagSelectedIndex < 0 || !data[bagSelectedIndex]) return 1;
-  return data[bagSelectedIndex].size || 1;
-}
-
 function selectBagItem(index) {
   bagSelectedIndex = index;
-  // Update selection UI without full re-render (match by data-index, not DOM order)
-  document.querySelectorAll('.bag-item').forEach(el => {
-    el.classList.toggle('bag-item-selected', parseInt(el.dataset.index) === index);
-  });
-  // Sync slider to selected item's size
-  const data = getModuleData('bag');
-  const range = document.getElementById('bag-size-range');
-  if (range && data[index]) range.value = data[index].size || 1;
+  renderCurrentPage();
+}
+
+function deselectBagItem() {
+  bagSelectedIndex = -1;
+  renderCurrentPage();
 }
 
 function updateSelectedBagSize(size) {
@@ -91,24 +92,18 @@ function renderBagItem(item, index) {
   const selectedClass = bagSelectedIndex === index ? ' bag-item-selected' : '';
   if (item.type === 'text') {
     return `<div class="bag-item bead${selectedClass}" style="${style}" data-index="${index}"
-              onclick="selectBagItem(${index})"
               onmousedown="startDragBag(event,${index})" ontouchstart="startDragBag(event,${index})">
               ${escapeHtml(item.value)}
-              <span class="delete-handle" onclick="event.stopPropagation();deleteBagItem(${index})">&times;</span>
             </div>`;
   } else if (item.type === 'emoji') {
     return `<div class="bag-item emoji${selectedClass}" style="${style}" data-index="${index}"
-              onclick="selectBagItem(${index})"
               onmousedown="startDragBag(event,${index})" ontouchstart="startDragBag(event,${index})">
               ${item.value}
-              <span class="delete-handle" onclick="event.stopPropagation();deleteBagItem(${index})">&times;</span>
             </div>`;
   } else if (item.type === 'image') {
     return `<div class="bag-item image-item${selectedClass}" style="${style}" data-index="${index}"
-              onclick="selectBagItem(${index})"
               onmousedown="startDragBag(event,${index})" ontouchstart="startDragBag(event,${index})">
               <img src="${item.value}" alt="">
-              <span class="delete-handle" onclick="event.stopPropagation();deleteBagItem(${index})">&times;</span>
             </div>`;
   }
   return '';
@@ -119,7 +114,6 @@ function addBagItem() {
   const val = input.value.trim();
   if (!val) return;
   const data = getModuleData('bag');
-  // Auto-detect emoji: if the string consists entirely of emoji/symbol characters treat as emoji type
   const emojiOnlyRegex = /^\p{Emoji_Presentation}[\p{Emoji_Presentation}\p{Emoji_Modifier}\p{Emoji_Component}\uFE0F\u200D]*$/u;
   const type = emojiOnlyRegex.test(val) ? 'emoji' : 'text';
   data.push({ type, value: val, x: 100 + Math.random() * 150, y: 80 + Math.random() * 150, size: 1 });
@@ -145,7 +139,7 @@ function addBagImage(event) {
 function deleteBagItem(index) {
   const data = getModuleData('bag');
   data.splice(index, 1);
-  if (bagSelectedIndex === index) bagSelectedIndex = -1;
+  bagSelectedIndex = -1;
   saveModuleData('bag', data);
   renderCurrentPage();
 }
@@ -154,21 +148,31 @@ let bagDragging = null;
 let bagDragOffset = { x: 0, y: 0 };
 
 function startDragBag(e, index) {
-  if (e.target.classList.contains('delete-handle')) return;
-  e.preventDefault();
+  // Touch: prevent scroll; mouse: e.preventDefault prevents text selection
+  const isTouchEvent = e.type === 'touchstart';
+  if (isTouchEvent) e.preventDefault();
+  else e.preventDefault();
+
+  const startClientX = isTouchEvent ? e.touches[0].clientX : e.clientX;
+  const startClientY = isTouchEvent ? e.touches[0].clientY : e.clientY;
+  let moved = false;
+
   bagDragging = index;
   const canvas = document.getElementById('bag-canvas');
   const rect = canvas.getBoundingClientRect();
-  const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-  const clientY = e.touches ? e.touches[0].clientY : e.clientY;
   const data = getModuleData('bag');
-  bagDragOffset.x = clientX - rect.left - data[index].x;
-  bagDragOffset.y = clientY - rect.top - data[index].y;
+  bagDragOffset.x = startClientX - rect.left - data[index].x;
+  bagDragOffset.y = startClientY - rect.top - data[index].y;
 
   const onMove = (ev) => {
     if (bagDragging === null) return;
     const cx = ev.touches ? ev.touches[0].clientX : ev.clientX;
     const cy = ev.touches ? ev.touches[0].clientY : ev.clientY;
+    if (!moved && (Math.abs(cx - startClientX) > 5 || Math.abs(cy - startClientY) > 5)) {
+      moved = true;
+    }
+    if (!moved) return;
+    ev.preventDefault();
     const item = document.querySelector(`.bag-item[data-index="${bagDragging}"]`);
     if (item) {
       const nx = cx - rect.left - bagDragOffset.x;
@@ -181,11 +185,15 @@ function startDragBag(e, index) {
   const onUp = () => {
     if (bagDragging !== null) {
       const item = document.querySelector(`.bag-item[data-index="${bagDragging}"]`);
-      if (item) {
+      if (moved && item) {
+        // Save dragged position
         const d = getModuleData('bag');
         d[bagDragging].x = parseInt(item.style.left);
         d[bagDragging].y = parseInt(item.style.top);
         saveModuleData('bag', d);
+      } else if (!moved) {
+        // Tap/click without movement → select this item
+        selectBagItem(bagDragging);
       }
     }
     bagDragging = null;

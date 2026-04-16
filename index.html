@@ -27,10 +27,12 @@
 
   <!-- Header -->
   <header id="app-header">
-    <button class="header-left icon-btn" id="header-back" style="display:none;" onclick="navigateTo('home')" aria-label="홈으로 이동">
-      <span class="material-icons">arrow_back</span>
-    </button>
-    <button class="header-title" id="header-title" data-i18n="appTitle" onclick="navigateTo('home')" aria-label="홈으로 이동">What's In My</button>
+    <!-- Brand area: clicking always goes home; back arrow appears on sub-pages -->
+    <div class="header-brand" onclick="navigateTo('home')" role="button" tabindex="0"
+         onkeydown="if(event.key==='Enter'||event.key===' ')navigateTo('home')" aria-label="홈으로 이동">
+      <span class="material-icons header-back-arrow" id="header-back" style="display:none;">arrow_back_ios_new</span>
+      <span class="header-title" id="header-title" data-i18n="appTitle">What's In My</span>
+    </div>
     <div class="header-right">
       <div class="header-selects">
         <div class="theme-picker-wrap">

@@ -54,7 +54,7 @@ function renderCurrentPage() {
     if (resetModuleBtn) resetModuleBtn.style.display = 'none';
   } else {
     content.innerHTML = renderModule(currentPage);
-    backBtn.style.display = 'flex';
+    backBtn.style.display = 'inline-flex';
     fab.style.display = 'flex';
     const mod = MODULES.find(m => m.id === currentPage);
     title.textContent = mod ? t(mod.titleKey) : t('appTitle');

@@ -61,41 +61,41 @@ input, textarea, select {
   min-height: 56px;
 }
 
-.header-left {
-  cursor: pointer;
+.header-brand {
   display: flex;
   align-items: center;
-  padding: 4px;
-  border-radius: 50%;
+  gap: 4px;
+  cursor: pointer;
+  padding: 5px 10px;
+  border-radius: 10px;
   transition: background 0.2s;
+  flex-shrink: 1;
+  min-width: 0;
+  max-width: 55vw;
 }
 
-.header-left:hover {
+.header-brand:hover {
   background: var(--hover);
+}
+
+.header-back-arrow {
+  font-size: 1.1rem;
+  color: var(--primary);
+  flex-shrink: 0;
+  align-items: center;
 }
 
 .header-title {
-  font-family: 'Black Han Sans', sans-serif; /* 헤더 타이틀 */
+  font-family: 'Black Han Sans', sans-serif;
   font-size: 1.3rem;
   color: var(--primary);
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
   white-space: nowrap;
-  background: transparent;
-  border: none;
-  padding: 2px 8px;
-  border-radius: 8px;
-  flex-shrink: 0;
-  z-index: 1;
-  max-width: 38vw;
   overflow: hidden;
   text-overflow: ellipsis;
-  pointer-events: auto;
-}
-
-.header-title:hover {
-  background: var(--hover);
+  background: transparent;
+  border: none;
+  padding: 0;
+  line-height: 1.2;
 }
 
 .header-right {
@@ -720,9 +720,12 @@ button.chip {
     gap: 6px;
   }
 
+  .header-brand {
+    max-width: 48vw;
+  }
+
   .header-title {
     font-size: 0.95rem;
-    max-width: 32vw;
   }
 
   .header-selects {
