@@ -1,19 +1,31 @@
 /* ===== BRAIN MODULE ===== */
 const BRAIN_IMAGE_URL = 'https://i.ibb.co/6cM2tCNn/1.png';
+let brainSelectedIndex = -1;
 
 function renderBrain() {
   const data = getModuleData('brain');
+  const selItem = brainSelectedIndex >= 0 ? data[brainSelectedIndex] : null;
   return `
     <div class="module-page">
       <h2 class="module-title">${t('brainPageTitle')}</h2>
-      <p style="text-align:center;color:var(--text-secondary);font-size:0.85rem;margin-bottom:12px;">
-        ${t('clickToAdd')}
-      </p>
+      <div class="brain-toolbar">
+        <button class="btn btn-primary btn-sm" onclick="addBrainTextBtn()">${t('addTask')}</button>
+        ${selItem ? `
+          <div class="bag-size-ctrl">
+            <span>크기</span>
+            <input type="range" id="brain-size-range" min="0.5" max="2.5" step="0.1"
+                   value="${selItem.size || 1}" oninput="updateBrainSize(this.value)">
+          </div>
+        ` : ''}
+      </div>
       <div class="work-area">
-        <div class="brain-canvas" id="brain-canvas" onclick="addBrainText(event)">
+        <div class="brain-canvas" id="brain-canvas" onclick="deselectBrain(event)">
           ${data.map((item, i) => `
-            <div class="brain-text-box brain-cloud" style="left:${item.x}%;top:${item.y}%;" data-index="${i}"
-                 onmousedown="startDragBrain(event,${i})" ontouchstart="startDragBrain(event,${i})">
+            <div class="brain-text-box brain-cloud${brainSelectedIndex === i ? ' brain-selected' : ''}"
+                 style="left:${item.x}%;top:${item.y}%;transform-origin:top left;transform:scale(${item.size || 1});"
+                 data-index="${i}"
+                 onmousedown="startDragBrain(event,${i})" ontouchstart="startDragBrain(event,${i})"
+                 onclick="event.stopPropagation()">
               <span contenteditable="true" onblur="updateBrainText(${i}, this.textContent)">${escapeHtml(item.text)}</span>
               <span class="delete-handle" onclick="event.stopPropagation();deleteBrainItem(${i})">&times;</span>
             </div>
@@ -27,26 +39,20 @@ function renderBrain() {
 function initBrainCanvas() {
   const canvas = document.getElementById('brain-canvas');
   if (!canvas) return;
-
   canvas.style.backgroundImage = `url("${BRAIN_IMAGE_URL}")`;
   canvas.style.backgroundSize = 'contain';
   canvas.style.backgroundRepeat = 'no-repeat';
   canvas.style.backgroundPosition = 'center';
 }
 
-function addBrainText(event) {
-  if (event.target.closest('.brain-text-box')) return;
-  const canvas = document.getElementById('brain-canvas');
-  const rect = canvas.getBoundingClientRect();
-  const x = ((event.clientX - rect.left) / rect.width * 100).toFixed(1);
-  const y = ((event.clientY - rect.top) / rect.height * 100).toFixed(1);
-
+function addBrainTextBtn() {
   const data = getModuleData('brain');
-  data.push({ text: '...', x: parseFloat(x), y: parseFloat(y) });
+  const x = 15 + Math.random() * 55;
+  const y = 15 + Math.random() * 55;
+  data.push({ text: '...', x, y, size: 1 });
   saveModuleData('brain', data);
+  brainSelectedIndex = data.length - 1;
   renderCurrentPage();
-
-  // Focus on the new text box
   setTimeout(() => {
     const boxes = document.querySelectorAll('.brain-text-box span[contenteditable]');
     if (boxes.length > 0) {
@@ -55,6 +61,42 @@ function addBrainText(event) {
       document.execCommand('selectAll', false, null);
     }
   }, 100);
+}
+
+function selectBrainItemUI(index) {
+  brainSelectedIndex = index;
+  document.querySelectorAll('.brain-text-box').forEach(el => {
+    el.classList.toggle('brain-selected', parseInt(el.dataset.index) === index);
+  });
+  const data = getModuleData('brain');
+  const size = data[index] ? (data[index].size || 1) : 1;
+  const toolbar = document.querySelector('.brain-toolbar');
+  if (!toolbar) return;
+  let sizeCtrl = toolbar.querySelector('.bag-size-ctrl');
+  if (!sizeCtrl) {
+    sizeCtrl = document.createElement('div');
+    sizeCtrl.className = 'bag-size-ctrl';
+    toolbar.appendChild(sizeCtrl);
+  }
+  sizeCtrl.innerHTML = `<span>크기</span><input type="range" id="brain-size-range" min="0.5" max="2.5" step="0.1" value="${size}" oninput="updateBrainSize(this.value)">`;
+}
+
+function deselectBrain(event) {
+  if (!event.target.closest('.brain-text-box')) {
+    brainSelectedIndex = -1;
+    document.querySelectorAll('.brain-text-box').forEach(el => el.classList.remove('brain-selected'));
+    const sizeCtrl = document.querySelector('.brain-toolbar .bag-size-ctrl');
+    if (sizeCtrl) sizeCtrl.remove();
+  }
+}
+
+function updateBrainSize(size) {
+  const data = getModuleData('brain');
+  if (brainSelectedIndex < 0 || !data[brainSelectedIndex]) return;
+  data[brainSelectedIndex].size = parseFloat(size);
+  saveModuleData('brain', data);
+  const box = document.querySelector(`.brain-text-box[data-index="${brainSelectedIndex}"]`);
+  if (box) box.style.transform = `scale(${size})`;
 }
 
 function updateBrainText(index, text) {
@@ -68,6 +110,8 @@ function updateBrainText(index, text) {
 function deleteBrainItem(index) {
   const data = getModuleData('brain');
   data.splice(index, 1);
+  if (brainSelectedIndex === index) brainSelectedIndex = -1;
+  else if (brainSelectedIndex > index) brainSelectedIndex--;
   saveModuleData('brain', data);
   renderCurrentPage();
 }
@@ -75,17 +119,29 @@ function deleteBrainItem(index) {
 let brainDragging = null;
 
 function startDragBrain(e, index) {
-  if (e.target.classList.contains('delete-handle') || e.target.getAttribute('contenteditable')) return;
-  e.preventDefault();
+  if (e.target.classList.contains('delete-handle')) return;
+  if (e.target.getAttribute('contenteditable') === 'true') return;
+
+  const isTouchEvent = e.type === 'touchstart';
+  if (isTouchEvent) e.preventDefault();
+
+  const startClientX = isTouchEvent ? e.touches[0].clientX : e.clientX;
+  const startClientY = isTouchEvent ? e.touches[0].clientY : e.clientY;
+  let moved = false;
+
   brainDragging = index;
   const canvas = document.getElementById('brain-canvas');
   const rect = canvas.getBoundingClientRect();
 
   const onMove = (ev) => {
     if (brainDragging === null) return;
-    ev.preventDefault();
     const cx = ev.touches ? ev.touches[0].clientX : ev.clientX;
     const cy = ev.touches ? ev.touches[0].clientY : ev.clientY;
+    if (!moved && (Math.abs(cx - startClientX) > 5 || Math.abs(cy - startClientY) > 5)) {
+      moved = true;
+    }
+    if (!moved) return;
+    ev.preventDefault();
     const box = document.querySelector(`.brain-text-box[data-index="${brainDragging}"]`);
     if (box) {
       const px = ((cx - rect.left) / rect.width * 100).toFixed(1);
@@ -98,11 +154,13 @@ function startDragBrain(e, index) {
   const onUp = () => {
     if (brainDragging !== null) {
       const box = document.querySelector(`.brain-text-box[data-index="${brainDragging}"]`);
-      if (box) {
+      if (moved && box) {
         const d = getModuleData('brain');
         d[brainDragging].x = parseFloat(box.style.left);
         d[brainDragging].y = parseFloat(box.style.top);
         saveModuleData('brain', d);
+      } else if (!moved) {
+        selectBrainItemUI(brainDragging);
       }
     }
     brainDragging = null;

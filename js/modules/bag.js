@@ -7,16 +7,17 @@ function renderBag() {
   return `
     <div class="module-page">
       <div class="bag-toolbar">
-        <input type="text" class="form-input" id="bag-text-input" placeholder="${t('textPlaceholder')}" maxlength="20" onkeydown="if(event.key==='Enter') addBagText()">
-        <button class="btn btn-primary btn-sm" onclick="addBagText()">${t('addText')}</button>
-        <input type="text" class="form-input" id="bag-emoji-input" placeholder="${t('emojiPlaceholder')}" maxlength="4" style="max-width:100px;" onkeydown="if(event.key==='Enter') addBagEmoji()">
-        <button class="btn btn-primary btn-sm" onclick="addBagEmoji()">${t('addEmoji')}</button>
+        <input type="text" class="form-input bag-unified-input" id="bag-unified-input"
+               placeholder="텍스트 또는 이모지 입력..."
+               maxlength="20" onkeydown="if(event.key==='Enter') addBagItem()">
+        <button class="btn btn-primary btn-sm" onclick="addBagItem()">추가</button>
         <button class="btn btn-secondary btn-sm" onclick="toggleBagEmojiPicker()">${t('emojiPick')}</button>
         <button class="btn btn-secondary btn-sm" onclick="document.getElementById('bag-img-input').click()">${t('addImage')}</button>
         <input type="file" id="bag-img-input" accept="image/*" style="display:none" onchange="addBagImage(event)">
         <div class="bag-size-ctrl">
           <span>크기</span>
-          <input type="range" id="bag-size-range" min="0.5" max="2.5" step="0.1" value="${getSelectedBagSize()}" onchange="updateSelectedBagSize(this.value)">
+          <input type="range" id="bag-size-range" min="0.5" max="2.5" step="0.1"
+                 value="${getSelectedBagSize()}" oninput="updateSelectedBagSize(this.value)">
         </div>
       </div>
       <div class="emoji-preset-wrap" id="emoji-preset-wrap" style="display:none;">
@@ -53,7 +54,14 @@ function getSelectedBagSize() {
 
 function selectBagItem(index) {
   bagSelectedIndex = index;
-  renderCurrentPage();
+  // Update selection UI without full re-render (match by data-index, not DOM order)
+  document.querySelectorAll('.bag-item').forEach(el => {
+    el.classList.toggle('bag-item-selected', parseInt(el.dataset.index) === index);
+  });
+  // Sync slider to selected item's size
+  const data = getModuleData('bag');
+  const range = document.getElementById('bag-size-range');
+  if (range && data[index]) range.value = data[index].size || 1;
 }
 
 function updateSelectedBagSize(size) {
@@ -61,7 +69,9 @@ function updateSelectedBagSize(size) {
   if (bagSelectedIndex < 0 || !data[bagSelectedIndex]) return;
   data[bagSelectedIndex].size = parseFloat(size);
   saveModuleData('bag', data);
-  renderCurrentPage();
+  // Update DOM directly — no full re-render needed
+  const item = document.querySelector(`.bag-item[data-index="${bagSelectedIndex}"]`);
+  if (item) item.style.transform = `scale(${size})`;
 }
 
 function toggleBagEmojiPicker() {
@@ -71,28 +81,31 @@ function toggleBagEmojiPicker() {
 }
 
 function addPresetBagEmoji(emoji) {
-  const input = document.getElementById('bag-emoji-input');
+  const input = document.getElementById('bag-unified-input');
   if (input) input.value = emoji;
-  addBagEmoji();
+  addBagItem();
 }
 
 function renderBagItem(item, index) {
   const style = `left:${item.x}px;top:${item.y}px;transform:scale(${item.size || 1});`;
   const selectedClass = bagSelectedIndex === index ? ' bag-item-selected' : '';
   if (item.type === 'text') {
-    return `<div class="bag-item bead${selectedClass}" style="${style}" data-index="${index}" onclick="selectBagItem(${index})"
+    return `<div class="bag-item bead${selectedClass}" style="${style}" data-index="${index}"
+              onclick="selectBagItem(${index})"
               onmousedown="startDragBag(event,${index})" ontouchstart="startDragBag(event,${index})">
               ${escapeHtml(item.value)}
               <span class="delete-handle" onclick="event.stopPropagation();deleteBagItem(${index})">&times;</span>
             </div>`;
   } else if (item.type === 'emoji') {
-    return `<div class="bag-item emoji${selectedClass}" style="${style}" data-index="${index}" onclick="selectBagItem(${index})"
+    return `<div class="bag-item emoji${selectedClass}" style="${style}" data-index="${index}"
+              onclick="selectBagItem(${index})"
               onmousedown="startDragBag(event,${index})" ontouchstart="startDragBag(event,${index})">
               ${item.value}
               <span class="delete-handle" onclick="event.stopPropagation();deleteBagItem(${index})">&times;</span>
             </div>`;
   } else if (item.type === 'image') {
-    return `<div class="bag-item image-item${selectedClass}" style="${style}" data-index="${index}" onclick="selectBagItem(${index})"
+    return `<div class="bag-item image-item${selectedClass}" style="${style}" data-index="${index}"
+              onclick="selectBagItem(${index})"
               onmousedown="startDragBag(event,${index})" ontouchstart="startDragBag(event,${index})">
               <img src="${item.value}" alt="">
               <span class="delete-handle" onclick="event.stopPropagation();deleteBagItem(${index})">&times;</span>
@@ -101,23 +114,15 @@ function renderBagItem(item, index) {
   return '';
 }
 
-function addBagText() {
-  const input = document.getElementById('bag-text-input');
+function addBagItem() {
+  const input = document.getElementById('bag-unified-input');
   const val = input.value.trim();
   if (!val) return;
   const data = getModuleData('bag');
-  data.push({ type: 'text', value: val, x: 100 + Math.random() * 150, y: 80 + Math.random() * 150, size: 1 });
-  saveModuleData('bag', data);
-  input.value = '';
-  renderCurrentPage();
-}
-
-function addBagEmoji() {
-  const input = document.getElementById('bag-emoji-input');
-  const val = input.value.trim();
-  if (!val) return;
-  const data = getModuleData('bag');
-  data.push({ type: 'emoji', value: val, x: 100 + Math.random() * 150, y: 80 + Math.random() * 150, size: 1 });
+  // Auto-detect emoji: if the string consists entirely of emoji/symbol characters treat as emoji type
+  const emojiOnlyRegex = /^\p{Emoji_Presentation}[\p{Emoji_Presentation}\p{Emoji_Modifier}\p{Emoji_Component}\uFE0F\u200D]*$/u;
+  const type = emojiOnlyRegex.test(val) ? 'emoji' : 'text';
+  data.push({ type, value: val, x: 100 + Math.random() * 150, y: 80 + Math.random() * 150, size: 1 });
   saveModuleData('bag', data);
   input.value = '';
   renderCurrentPage();
