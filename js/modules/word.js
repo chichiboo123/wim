@@ -19,15 +19,11 @@ function renderWord() {
         <div class="list-container" id="word-list">
           ${data.map((item, i) => `
             <div class="word-item">
-              <div style="display:flex;justify-content:space-between;align-items:flex-start;">
-                <div>
-                  <div class="word-term">${escapeHtml(item.term)}</div>
-                  <div class="word-definition">${escapeHtml(item.definition)}</div>
-                </div>
-                <div class="list-item-actions" style="flex-shrink:0;">
-                  <button class="icon-btn" onclick="editWord(${i})"><span class="material-icons" style="font-size:18px;">edit</span></button>
-                  <button class="icon-btn" onclick="deleteWord(${i})"><span class="material-icons" style="color:#f87171;font-size:18px;">delete</span></button>
-                </div>
+              <div class="word-term">${escapeHtml(item.term)}</div>
+              <div class="word-definition">${escapeHtml(item.definition)}</div>
+              <div class="list-item-actions" style="flex-shrink:0;margin-left:auto;">
+                <button class="icon-btn" onclick="editWord(${i})"><span class="material-icons" style="font-size:18px;">edit</span></button>
+                <button class="icon-btn" onclick="deleteWord(${i})"><span class="material-icons" style="color:#f87171;font-size:18px;">delete</span></button>
               </div>
             </div>
           `).join('')}

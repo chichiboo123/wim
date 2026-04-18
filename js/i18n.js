@@ -69,7 +69,7 @@ const TRANSLATIONS = {
     youtubeUrl: "YouTube URL (선택)",
 
     // Word
-    wordPageTitle: "나만의 사전",
+    wordPageTitle: "나를 이루는 단어",
     wordTerm: "나를 이루는 단어",
     wordDef: "나만의 정의",
     addWord: "추가",

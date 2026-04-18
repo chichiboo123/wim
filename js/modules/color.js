@@ -68,12 +68,20 @@ function renderColor() {
   return `
     <div class="module-page">
       <h2 class="module-title">${t('colorPageTitle')}</h2>
-      <div style="display:flex;gap:8px;justify-content:center;margin-bottom:16px;flex-wrap:wrap;">
+      <div style="display:flex;gap:8px;justify-content:center;margin-bottom:12px;flex-wrap:wrap;">
         <button class="btn btn-primary btn-sm" onclick="addColorSlot()">${t('addColor')}</button>
         <button class="btn btn-secondary btn-sm" onclick="window.open('https://chichiboo123.github.io/cow/','_blank')">
           <span class="material-icons" style="font-size:16px;vertical-align:middle;margin-right:4px;">palette</span>
           ${t('refPalette')}
         </button>
+      </div>
+      <div class="color-presets-wrap">
+        <div class="color-presets-label">기본 색상 선택</div>
+        <div class="color-presets-grid">
+          ${COLOR_PRESETS.map(c =>
+            `<button class="color-preset-swatch" style="background:${c};" onclick="addPresetColor('${c}')" title="${c}"></button>`
+          ).join('')}
+        </div>
       </div>
       ${renderPainterPalette(data)}
       <div class="work-area">
@@ -110,7 +118,23 @@ const DEFAULT_PASTEL_COLORS = [
   '#B5E8C3', '#D6EDF8', '#FCE4EA', '#FEF3C7', '#E8D5F5',
 ];
 
+const COLOR_PRESETS = [
+  '#FFB3BA','#FFDFBA','#FFFFBA','#BAFFC9','#BAE1FF',
+  '#DDA0DD','#98D8C8','#FDE68A','#A8D8EA','#F4B6C2',
+  '#B5E8C3','#D6EDF8','#FCE4EA','#FEF3C7','#E8D5F5',
+  '#FF8FAB','#FFB347','#87CEEB','#90EE90','#E6E6FA',
+  '#FFDAB9','#B0E0E6','#F0E68C','#DEB887','#C8A8E8',
+  '#A8D8C8','#F8BBD0','#DCEDC8','#FFF9C4','#CFD8DC',
+];
+
 let editingColorIndex = -1;
+
+function addPresetColor(color) {
+  const data = getModuleData('color');
+  data.push({ color, name: t('colorNamePlaceholder') });
+  saveModuleData('color', data);
+  renderCurrentPage();
+}
 
 function addColorSlot() {
   const data = getModuleData('color');
