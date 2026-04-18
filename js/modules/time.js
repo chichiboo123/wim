@@ -1,7 +1,9 @@
 /* ===== TIME MODULE ===== */
 let timeMode24 = true;
+let timeSvgSelectStep = 0; // 0=wait for start click, 1=wait for end click
 
 function renderTime() {
+  timeSvgSelectStep = 0;
   const data = getModuleData('time');
   const maxHour = timeMode24 ? 24 : 12;
   return `
@@ -16,10 +18,13 @@ function renderTime() {
         <div class="time-container">
           <div class="time-chart-wrap">
             <div class="time-chart">
-              <svg viewBox="0 0 300 300" id="time-svg">
+              <svg viewBox="0 0 300 300" id="time-svg" onclick="handleTimeSvgClick(event)" style="cursor:crosshair;">
                 ${renderTimeSvg(data, maxHour)}
               </svg>
             </div>
+            <p style="text-align:center;font-size:0.72rem;color:var(--text-secondary);margin-top:4px;opacity:0.8;">
+              원 클릭 → 시작 시간 &nbsp;|&nbsp; 재클릭 → 종료 시간 &nbsp;(30분 단위)
+            </p>
           </div>
           <div class="time-list-wrap">
             <div class="time-form">
@@ -71,7 +76,6 @@ function renderTimeSvg(data, maxHour) {
   const cx = 150, cy = 150, r = 120;
   let svg = '';
 
-  // Background circle
   svg += `<circle cx="${cx}" cy="${cy}" r="${r}" fill="var(--primary-pale)" stroke="var(--border)" stroke-width="1"/>`;
 
   // Data wedges
@@ -95,6 +99,17 @@ function renderTimeSvg(data, maxHour) {
     });
   });
 
+  // Half-hour ticks (short, faint)
+  for (let h = 0; h < maxHour; h++) {
+    const halfAngle = ((h + 0.5) / maxHour) * 360 - 90;
+    const halfRad = halfAngle * Math.PI / 180;
+    const hx1 = cx + (r - 4) * Math.cos(halfRad);
+    const hy1 = cy + (r - 4) * Math.sin(halfRad);
+    const hx2 = cx + r * Math.cos(halfRad);
+    const hy2 = cy + r * Math.sin(halfRad);
+    svg += `<line x1="${hx1.toFixed(1)}" y1="${hy1.toFixed(1)}" x2="${hx2.toFixed(1)}" y2="${hy2.toFixed(1)}" stroke="var(--text-secondary)" stroke-width="0.5" opacity="0.3"/>`;
+  }
+
   // Hour marks
   for (let h = 0; h < maxHour; h++) {
     const angle = (h / maxHour) * 360 - 90;
@@ -113,10 +128,67 @@ function renderTimeSvg(data, maxHour) {
     }
   }
 
-  // Center dot
   svg += `<circle cx="${cx}" cy="${cy}" r="4" fill="var(--primary)"/>`;
-
   return svg;
+}
+
+/* SVG click → fill time inputs (30-min steps) */
+function handleTimeSvgClick(event) {
+  if (event.target.tagName === 'text') return;
+  const svg = document.getElementById('time-svg');
+  if (!svg) return;
+  const pt = svg.createSVGPoint();
+  pt.x = event.clientX;
+  pt.y = event.clientY;
+  const svgP = pt.matrixTransform(svg.getScreenCTM().inverse());
+  const cx = 150, cy = 150, r = 120;
+  const dx = svgP.x - cx, dy = svgP.y - cy;
+  const dist = Math.sqrt(dx * dx + dy * dy);
+  if (dist < 70 || dist > 148) return; // only rim area
+
+  let angle = Math.atan2(dy, dx) * 180 / Math.PI + 90;
+  if (angle < 0) angle += 360;
+
+  const maxHour = timeMode24 ? 24 : 12;
+  let timeVal = Math.round((angle / 360) * maxHour * 2) / 2; // nearest 0.5
+  if (timeVal >= maxHour) timeVal = 0;
+
+  const h = Math.floor(timeVal);
+  const m = timeVal % 1 >= 0.5 ? 30 : 0;
+  const label = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
+
+  if (timeSvgSelectStep === 0) {
+    const sH = document.getElementById('time-start-h');
+    const sM = document.getElementById('time-start-m');
+    if (sH) sH.value = h;
+    if (sM) sM.value = m;
+    timeSvgSelectStep = 1;
+    // Draw start dot
+    const existing = svg.querySelector('#time-start-dot');
+    if (existing) existing.remove();
+    const dotAngle = (timeVal / maxHour) * 360 - 90;
+    const dotRad = dotAngle * Math.PI / 180;
+    const dotX = cx + r * Math.cos(dotRad);
+    const dotY = cy + r * Math.sin(dotRad);
+    const dot = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    dot.setAttribute('cx', dotX.toFixed(1));
+    dot.setAttribute('cy', dotY.toFixed(1));
+    dot.setAttribute('r', '6');
+    dot.setAttribute('fill', 'var(--primary)');
+    dot.setAttribute('id', 'time-start-dot');
+    svg.appendChild(dot);
+    showToast(`시작 ${label} → 종료 시간을 클릭하세요`);
+  } else {
+    const eH = document.getElementById('time-end-h');
+    const eM = document.getElementById('time-end-m');
+    if (eH) eH.value = h;
+    if (eM) eM.value = m;
+    timeSvgSelectStep = 0;
+    const dot = svg.querySelector('#time-start-dot');
+    if (dot) dot.remove();
+    setTimeout(() => { const t = document.getElementById('time-task'); if (t) t.focus(); }, 50);
+    showToast(`종료 ${label} — 할 일을 입력하고 추가하세요`);
+  }
 }
 
 function splitTimeSegments(start, end, maxHour) {
@@ -146,8 +218,8 @@ function polarToCartesian(cx, cy, r, angleDeg) {
 function formatTimeRange(start, end, maxHour) {
   const fmt = (v) => {
     const h = Math.floor(v % maxHour);
-    const m = (v % 1) * 60;
-    return `${String(h).padStart(2, '0')}:${String(Math.round(m)).padStart(2, '0')}`;
+    const m = Math.round((v % 1) * 60);
+    return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
   };
   const overnight = end > maxHour ? ' (+1)' : '';
   return `${fmt(start)} ~ ${fmt(end)}${overnight}`;
@@ -164,49 +236,20 @@ function addTimeTask() {
   const rawEnd = readTimeValue('time-end-h', 'time-end-m');
   const task = document.getElementById('time-task').value.trim();
   const maxHour = timeMode24 ? 24 : 12;
-  let end = rawEnd;
 
-  if (isNaN(start) || isNaN(rawEnd)) {
-    showToast(t('toastTimeNeedNumber'));
-    return;
-  }
-  if (!task) {
-    showToast(t('toastNeedTaskName'));
-    return;
-  }
+  if (isNaN(start) || isNaN(rawEnd)) { showToast(t('toastTimeNeedNumber')); return; }
+  if (!task) { showToast(t('toastNeedTaskName')); return; }
   if (start < 0 || start >= maxHour || rawEnd < 0 || rawEnd > maxHour) {
-    showToast(t('toastTimeOutOfRange'));
-    return;
+    showToast(t('toastTimeOutOfRange')); return;
   }
-  if (rawEnd <= start) end = rawEnd + maxHour;
 
-  if (isNaN(start) || isNaN(end)) {
-    showToast(t('toastTimeNeedNumber'));
-    return;
-  }
-  if (!task) {
-    showToast(t('toastNeedTaskName'));
-    return;
-  }
-  if (start < 0 || end > maxHour) {
-    showToast(t('toastTimeOutOfRange'));
-    return;
-  }
-  if (start >= end) {
-    showToast(t('toastTimeRangeInvalid'));
-    return;
-  }
+  // If end <= start, treat as overnight (add maxHour to end)
+  const end = rawEnd < start ? rawEnd + maxHour : rawEnd;
+
+  if (start >= end) { showToast(t('toastTimeRangeInvalid')); return; }
+
   const data = getModuleData('time');
-  const expectedStart = data.length ? (data[data.length - 1].end % maxHour) : 0;
-  if (Math.abs(start - expectedStart) > 0.001) {
-    showToast(t('toastTimeMustBeContinuous'));
-    return;
-  }
-
-  data.push({
-    start, end, task,
-    color: TIME_COLORS[data.length % TIME_COLORS.length]
-  });
+  data.push({ start, end, task, color: TIME_COLORS[data.length % TIME_COLORS.length] });
   saveModuleData('time', data);
   renderCurrentPage();
 }

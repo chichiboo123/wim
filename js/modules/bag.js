@@ -25,6 +25,14 @@ function renderBag() {
                    value="${data[bagSelectedIndex].size || 1}"
                    oninput="updateSelectedBagSize(this.value)">
           </div>
+          ${data[bagSelectedIndex].type === 'text' ? `
+            <div class="bag-bead-colors">
+              ${BAG_BEAD_COLORS.map(c =>
+                `<button class="bag-color-swatch${data[bagSelectedIndex].beadColor === c ? ' active' : ''}"
+                         style="background:${c};" onclick="setBagBeadColor('${c}')" title="${c}"></button>`
+              ).join('')}
+            </div>
+          ` : ''}
           <button class="btn btn-danger btn-sm" onclick="deleteBagItem(${bagSelectedIndex})">삭제</button>
         </div>
       ` : ''}
@@ -46,6 +54,11 @@ function renderBag() {
     </div>
   `;
 }
+
+const BAG_BEAD_COLORS = [
+  '#FFB3BA', '#FFDFBA', '#FFFFBA', '#BAFFC9', '#BAE1FF',
+  '#DDA0DD', '#B5E8C3', '#FDE68A', '#A8D8EA', '#C8A8E8'
+];
 
 const BAG_EMOJI_PRESET = [
   '😀','😄','😁','😂','🥹','😍','🥰','😎','🤩','😇','🤔','😴',
@@ -93,11 +106,20 @@ function addPresetBagEmoji(emoji) {
   addBagItem();
 }
 
+function setBagBeadColor(color) {
+  const data = getModuleData('bag');
+  if (bagSelectedIndex < 0 || !data[bagSelectedIndex]) return;
+  data[bagSelectedIndex].beadColor = color;
+  saveModuleData('bag', data);
+  renderCurrentPage();
+}
+
 function renderBagItem(item, index) {
   const style = `left:${item.x}px;top:${item.y}px;transform:scale(${item.size || 1});`;
   const selectedClass = bagSelectedIndex === index ? ' bag-item-selected' : '';
   if (item.type === 'text') {
-    return `<div class="bag-item bead${selectedClass}" style="${style}" data-index="${index}"
+    const bg = item.beadColor || 'var(--primary-light)';
+    return `<div class="bag-item bead${selectedClass}" style="${style}background:${bg};" data-index="${index}"
               onmousedown="startDragBag(event,${index})" ontouchstart="startDragBag(event,${index})">
               ${escapeHtml(item.value)}
             </div>`;

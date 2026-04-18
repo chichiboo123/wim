@@ -136,6 +136,32 @@
   outline-offset: 2px;
 }
 
+.bag-bead-colors {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.bag-color-swatch {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: transform 0.1s;
+}
+
+.bag-color-swatch:hover {
+  transform: scale(1.2);
+}
+
+.bag-color-swatch.active {
+  border-color: var(--text);
+  box-shadow: 0 0 0 1px var(--text);
+}
+
 .emoji-preset-wrap {
   display: flex;
   flex-wrap: wrap;
@@ -457,6 +483,42 @@
   display: flex;
 }
 
+/* ===== COLOR PRESETS ===== */
+.color-presets-wrap {
+  margin-bottom: 14px;
+  padding: 10px 14px;
+  background: var(--card-bg);
+  border-radius: 12px;
+  border: 1px solid var(--border);
+}
+
+.color-presets-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+}
+
+.color-presets-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.color-preset-swatch {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 1px solid rgba(0,0,0,0.12);
+  cursor: pointer;
+  transition: transform 0.12s;
+}
+
+.color-preset-swatch:hover {
+  transform: scale(1.25);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
 /* ===== MUSIC MODULE ===== */
 .music-playlist-header {
   display: flex;
@@ -725,7 +787,10 @@
 
 /* ===== WORD MODULE ===== */
 .word-item {
-  padding: 16px;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 12px 16px;
   background: var(--bg);
   border-radius: 12px;
   border: 1px solid var(--border);
@@ -733,16 +798,21 @@
 }
 
 .word-term {
-  font-size: 1.1rem;
+  flex-shrink: 0;
+  font-size: 1rem;
   font-weight: 700;
   color: var(--primary);
-  margin-bottom: 6px;
+  min-width: 70px;
+  max-width: 130px;
+  word-break: break-word;
 }
 
 .word-definition {
-  font-size: 0.9rem;
+  flex: 1;
+  font-size: 0.88rem;
   color: var(--text-secondary);
   line-height: 1.5;
+  word-break: break-word;
 }
 
 /* ===== RELATIONSHIP MODULE ===== */
