@@ -110,23 +110,35 @@ function addMindEmotion(emotion, colorIndex) {
     renderCurrentPage();
     return;
   }
-  // Try to find a non-overlapping position
+  // Use actual DOM chip rects for accurate overlap detection
   const room = document.getElementById('mind-room');
   const rW = room ? room.offsetWidth : 420;
   const rH = room ? room.offsetHeight : 420;
-  const chipW = 90, chipH = 44; // approximate size for count=1
-  const maxX = Math.max(5, (rW - chipW) / rW * 100);
-  const maxY = Math.max(5, (rH - chipH) / rH * 100);
-  let x = 5 + Math.random() * (maxX - 5);
-  let y = 5 + Math.random() * (maxY - 5);
-  for (let attempt = 0; attempt < 25; attempt++) {
-    const cx = 5 + Math.random() * (maxX - 5);
-    const cy = 5 + Math.random() * (maxY - 5);
-    const overlap = data.some(item => {
-      const dx = Math.abs(item.x - cx) * rW / 100;
-      const dy = Math.abs(item.y - cy) * rH / 100;
-      return dx < chipW + 8 && dy < chipH + 8;
+  const newChipWPx = 100, newChipHPx = 50;
+  const maxX = Math.max(0, (rW - newChipWPx) / rW * 100);
+  const maxY = Math.max(0, (rH - newChipHPx) / rH * 100);
+  let x = Math.random() * maxX;
+  let y = Math.random() * maxY;
+  const domRects = [];
+  if (room) {
+    const roomRect = room.getBoundingClientRect();
+    room.querySelectorAll('.mind-chip-inside').forEach(el => {
+      const r = el.getBoundingClientRect();
+      domRects.push({
+        x: (r.left - roomRect.left) / rW * 100,
+        y: (r.top - roomRect.top) / rH * 100,
+        w: r.width / rW * 100,
+        h: r.height / rH * 100
+      });
     });
+  }
+  const newW = newChipWPx / rW * 100, newH = newChipHPx / rH * 100;
+  for (let attempt = 0; attempt < 60; attempt++) {
+    const cx = Math.random() * maxX;
+    const cy = Math.random() * maxY;
+    const overlap = domRects.some(r =>
+      !(cx + newW + 1 < r.x || cx > r.x + r.w + 1 || cy + newH + 1 < r.y || cy > r.y + r.h + 1)
+    );
     if (!overlap) { x = cx; y = cy; break; }
   }
   data.push({ text: emotion, color: EMOTION_COLORS[colorIndex % EMOTION_COLORS.length], count: 1, x, y });
@@ -220,6 +232,10 @@ function startDragMind(e, index) {
   const chipH = chipEl ? chipEl.offsetHeight : 40;
   const maxPx = Math.max(0, (1 - chipW / rect.width) * 100);
   const maxPy = Math.max(0, (1 - chipH / rect.height) * 100);
+  // Track cursor offset from chip's top-left to prevent jump on drag start
+  const chipElRect = chipEl ? chipEl.getBoundingClientRect() : null;
+  const offsetX = chipElRect ? (startX - chipElRect.left) / rect.width * 100 : 0;
+  const offsetY = chipElRect ? (startY - chipElRect.top) / rect.height * 100 : 0;
 
   const onMove = (ev) => {
     if (mindDragging === null) return;
@@ -230,10 +246,10 @@ function startDragMind(e, index) {
     ev.preventDefault();
     const chip = document.querySelector(`.mind-chip-inside[data-index="${mindDragging}"]`);
     if (chip) {
-      const px = ((cx - rect.left) / rect.width * 100).toFixed(1);
-      const py = ((cy - rect.top) / rect.height * 100).toFixed(1);
-      chip.style.left = Math.max(0, Math.min(parseFloat(px), maxPx)) + '%';
-      chip.style.top = Math.max(0, Math.min(parseFloat(py), maxPy)) + '%';
+      const rawX = (cx - rect.left) / rect.width * 100 - offsetX;
+      const rawY = (cy - rect.top) / rect.height * 100 - offsetY;
+      chip.style.left = Math.max(0, Math.min(rawX, maxPx)) + '%';
+      chip.style.top = Math.max(0, Math.min(rawY, maxPy)) + '%';
     }
   };
 
