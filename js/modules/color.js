@@ -44,25 +44,52 @@ function getColorMeta() {
 function saveColorMeta(m) { localStorage.setItem('wim-color-meta', JSON.stringify(m)); }
 
 function renderPainterPalette(data) {
-  if (data.length === 0) return '';
   const meta = getColorMeta();
-  const customCount = meta.paletteCount || 0;
-  const spotCount = customCount > 0 ? Math.min(customCount, ALL_PALETTE_SPOTS.length) : Math.min(data.length, 15);
-  const spots = ALL_PALETTE_SPOTS.slice(0, spotCount);
+  const slotMode = meta.paletteCount > 0;
 
-  const blobs = data.slice(0, spots.length).map((item, i) => {
-    const [cx, cy] = spots[i];
-    return `<g>
-      <title>${escapeHtml(item.name)}: ${item.color}</title>
-      <circle cx="${cx}" cy="${cy}" r="18" fill="${item.color}"
-              stroke="rgba(0,0,0,0.18)" stroke-width="1.5"
-              style="filter:drop-shadow(0 2px 4px rgba(0,0,0,0.18));"/>
-    </g>`;
-  }).join('');
+  if (!slotMode && data.length === 0) return '';
 
-  const extra = data.length > spots.length
+  let blobs = '';
+  if (slotMode) {
+    const count = Math.min(meta.paletteCount, ALL_PALETTE_SPOTS.length);
+    for (let i = 0; i < count; i++) {
+      const [cx, cy] = ALL_PALETTE_SPOTS[i];
+      const item = data[i];
+      const filled = item && item.color;
+      if (filled) {
+        blobs += `<g onclick="pickColor(${i})" style="cursor:pointer;">
+          <title>${escapeHtml(item.name || '')}: ${item.color}</title>
+          <circle cx="${cx}" cy="${cy}" r="18" fill="${item.color}"
+                  stroke="rgba(0,0,0,0.18)" stroke-width="1.5"
+                  style="filter:drop-shadow(0 2px 4px rgba(0,0,0,0.18));"/>
+        </g>`;
+      } else {
+        blobs += `<g onclick="pickColor(${i})" style="cursor:pointer;">
+          <title>클릭하여 색상 선택</title>
+          <circle cx="${cx}" cy="${cy}" r="18" fill="rgba(255,255,255,0.6)"
+                  stroke="rgba(0,0,0,0.25)" stroke-width="1.5" stroke-dasharray="3,2"/>
+          <text x="${cx}" y="${cy}" text-anchor="middle" dominant-baseline="middle"
+                font-size="16" fill="rgba(0,0,0,0.3)" style="pointer-events:none;">+</text>
+        </g>`;
+      }
+    }
+  } else {
+    const spotCount = Math.min(data.length, ALL_PALETTE_SPOTS.length);
+    for (let i = 0; i < spotCount; i++) {
+      const [cx, cy] = ALL_PALETTE_SPOTS[i];
+      const item = data[i];
+      blobs += `<g>
+        <title>${escapeHtml(item.name)}: ${item.color}</title>
+        <circle cx="${cx}" cy="${cy}" r="18" fill="${item.color}"
+                stroke="rgba(0,0,0,0.18)" stroke-width="1.5"
+                style="filter:drop-shadow(0 2px 4px rgba(0,0,0,0.18));"/>
+      </g>`;
+    }
+  }
+
+  const extra = (!slotMode && data.length > ALL_PALETTE_SPOTS.length)
     ? `<div style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:8px;">
-        ${data.slice(spots.length).map(item =>
+        ${data.slice(ALL_PALETTE_SPOTS.length).map(item =>
           `<div title="${escapeHtml(item.name)}: ${item.color}"
                style="width:26px;height:26px;border-radius:50%;background:${item.color};border:1px solid rgba(0,0,0,0.15);"></div>`
         ).join('')}
@@ -97,16 +124,20 @@ function renderPainterPalette(data) {
 function renderColor() {
   const data = getModuleData('color');
   const meta = getColorMeta();
+  const slotMode = meta.paletteCount > 0;
   return `
     <div class="module-page">
       <h2 class="module-title">${t('colorPageTitle')}</h2>
       <div style="display:flex;gap:8px;justify-content:center;margin-bottom:12px;flex-wrap:wrap;align-items:center;">
-        <button class="btn btn-primary btn-sm" onclick="toggleColorPickerPanel()">${t('addColor')}</button>
+        ${!slotMode ? `<button class="btn btn-primary btn-sm" onclick="toggleColorPickerPanel()">${t('addColor')}</button>` : ''}
         <div style="display:flex;align-items:center;gap:6px;font-size:0.82rem;color:var(--text-secondary);">
           <span>팔레트 표시 수</span>
-          <input type="number" min="1" max="${ALL_PALETTE_SPOTS.length}" value="${meta.paletteCount || ''}"
-                 placeholder="자동" style="width:60px;" class="form-input" style="padding:4px 6px;"
-                 onchange="setColorPaletteCount(this.value)">
+          <input type="number" min="1" max="${ALL_PALETTE_SPOTS.length}" id="palette-count-input"
+                 value="${meta.paletteCount || ''}"
+                 placeholder="자동" style="width:60px;" class="form-input"
+                 onkeydown="if(event.key==='Enter') confirmColorPaletteCount()">
+          <button class="btn btn-secondary btn-sm" onclick="confirmColorPaletteCount()">확인</button>
+          ${slotMode ? `<button class="btn btn-secondary btn-sm" onclick="clearColorPaletteCount()">초기화</button>` : ''}
         </div>
         <button class="btn btn-secondary btn-sm" onclick="window.open('https://chichiboo123.github.io/cow/','_blank')">
           <span class="material-icons" style="font-size:16px;vertical-align:middle;margin-right:4px;">palette</span>
@@ -135,20 +166,41 @@ function renderColor() {
       ${renderPainterPalette(data)}
       <div class="work-area">
         <div class="palette-grid" id="palette-grid">
-          ${data.map((item, i) => `
-            <div class="palette-slot">
-              <div class="palette-color-area" style="background:${item.color};" onclick="pickColor(${i})">
-                <span class="material-icons">colorize</span>
-                <span class="delete-btn" onclick="event.stopPropagation();deleteColor(${i})">&times;</span>
-              </div>
-              <div class="palette-info">
-                <div class="color-name" contenteditable="true"
-                     onblur="updateColorName(${i}, this.textContent)">${escapeHtml(item.name)}</div>
-                <div class="color-hex">${item.color}</div>
-              </div>
-            </div>
-          `).join('')}
-          ${data.length === 0 ? `
+          ${slotMode
+            ? Array.from({length: Math.min(meta.paletteCount, ALL_PALETTE_SPOTS.length)}, (_, i) => {
+                const item = data[i];
+                const filled = item && item.color;
+                return `
+                  <div class="palette-slot${filled ? '' : ' palette-slot-empty'}">
+                    <div class="palette-color-area" style="background:${filled ? item.color : 'var(--bg-secondary)'};" onclick="pickColor(${i})">
+                      <span class="material-icons">${filled ? 'colorize' : 'add'}</span>
+                    </div>
+                    <div class="palette-info">
+                      ${filled
+                        ? `<div class="color-name" contenteditable="true"
+                               onblur="updateColorName(${i}, this.textContent)">${escapeHtml(item.name || '')}</div>
+                           <div class="color-hex">${item.color}</div>`
+                        : `<div class="color-name" style="color:var(--text-secondary);font-size:0.8rem;">슬롯 ${i+1}</div>`
+                      }
+                    </div>
+                  </div>
+                `;
+              }).join('')
+            : data.map((item, i) => `
+                <div class="palette-slot">
+                  <div class="palette-color-area" style="background:${item.color};" onclick="pickColor(${i})">
+                    <span class="material-icons">colorize</span>
+                    <span class="delete-btn" onclick="event.stopPropagation();deleteColor(${i})">&times;</span>
+                  </div>
+                  <div class="palette-info">
+                    <div class="color-name" contenteditable="true"
+                         onblur="updateColorName(${i}, this.textContent)">${escapeHtml(item.name)}</div>
+                    <div class="color-hex">${item.color}</div>
+                  </div>
+                </div>
+              `).join('')
+          }
+          ${data.length === 0 && !slotMode ? `
             <div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-secondary);">
               <span class="material-icons" style="font-size:48px;display:block;margin-bottom:8px;">palette</span>
               <p>${t('addColor')}</p>
@@ -159,6 +211,40 @@ function renderColor() {
       <input type="color" id="hidden-color-picker" style="position:absolute;opacity:0;pointer-events:none;" onchange="applyColor(event)">
     </div>
   `;
+}
+
+function confirmColorPaletteCount() {
+  const input = document.getElementById('palette-count-input');
+  const val = input ? input.value.trim() : '';
+  if (!val) {
+    clearColorPaletteCount();
+    return;
+  }
+  const n = parseInt(val, 10);
+  if (isNaN(n) || n < 1) return;
+  const count = Math.min(n, ALL_PALETTE_SPOTS.length);
+  const meta = getColorMeta();
+  meta.paletteCount = count;
+  saveColorMeta(meta);
+
+  // Resize data to exactly count slots, padding with empty, trimming if smaller
+  const data = getModuleData('color');
+  const filtered = data.filter(item => item && item.color);
+  const newData = Array.from({length: count}, (_, i) => filtered[i] || { color: null, name: '' });
+  saveModuleData('color', newData);
+  colorPickerOpen = false;
+  renderCurrentPage();
+}
+
+function clearColorPaletteCount() {
+  const meta = getColorMeta();
+  delete meta.paletteCount;
+  saveColorMeta(meta);
+  // Remove empty slots from data
+  const data = getModuleData('color');
+  const cleaned = data.filter(item => item && item.color);
+  saveModuleData('color', cleaned);
+  renderCurrentPage();
 }
 
 function toggleColorPickerPanel() {
@@ -196,7 +282,7 @@ function pickColor(index) {
   editingColorIndex = index;
   const data = getModuleData('color');
   const picker = document.getElementById('hidden-color-picker');
-  picker.value = data[index].color;
+  picker.value = (data[index] && data[index].color) ? data[index].color : '#FF6B6B';
   picker.click();
 }
 
@@ -212,8 +298,10 @@ function applyColor(event) {
   }
   if (editingColorIndex < 0) return;
   const data = getModuleData('color');
-  if (data[editingColorIndex]) {
+  if (data[editingColorIndex] !== undefined) {
+    if (!data[editingColorIndex]) data[editingColorIndex] = { color: null, name: '' };
     data[editingColorIndex].color = event.target.value;
+    if (!data[editingColorIndex].name) data[editingColorIndex].name = t('colorNamePlaceholder');
     saveModuleData('color', data);
     renderCurrentPage();
   }
@@ -229,8 +317,14 @@ function updateColorName(index, name) {
 }
 
 function deleteColor(index) {
+  const meta = getColorMeta();
   const data = getModuleData('color');
-  data.splice(index, 1);
+  if (meta.paletteCount > 0) {
+    // In slot mode: clear the slot instead of removing it
+    data[index] = { color: null, name: '' };
+  } else {
+    data.splice(index, 1);
+  }
   saveModuleData('color', data);
   renderCurrentPage();
 }

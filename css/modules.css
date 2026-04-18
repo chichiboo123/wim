@@ -468,6 +468,20 @@
   color: var(--text-secondary);
 }
 
+.palette-slot-empty .palette-color-area {
+  border: 2px dashed var(--border);
+  background: var(--bg-secondary) !important;
+}
+
+.palette-slot-empty .palette-color-area .material-icons {
+  color: var(--text-secondary);
+  opacity: 0.5;
+}
+
+.palette-slot-empty .palette-color-area:hover .material-icons {
+  opacity: 1;
+}
+
 .palette-slot .delete-btn {
   position: absolute;
   top: 4px;
