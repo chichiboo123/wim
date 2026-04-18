@@ -213,31 +213,89 @@ input, textarea, select {
 }
 
 /* ===== Dashboard ===== */
-.dashboard-header {
-  text-align: center;
+.hero-layout {
+  display: flex;
+  align-items: center;
+  gap: 20px;
   margin-bottom: 36px;
   padding-top: 16px;
 }
 
-.dashboard-header h1 {
-  font-family: 'Black Han Sans', sans-serif; /* 대시보드 메인 타이틀 */
+.hero-center {
+  flex: 1;
+  text-align: center;
+  min-width: 0;
+}
+
+.hero-title {
+  font-family: 'Black Han Sans', sans-serif;
   font-size: 2rem;
   color: var(--primary);
   margin-bottom: 8px;
 }
 
-.dashboard-header p {
+.hero-subtitle {
   color: var(--text-secondary);
   font-size: 0.95rem;
 }
 
 .hero-image {
   display: block;
-  max-width: 380px;
-  width: 90%;
-  margin: 20px auto 0;
+  max-width: 340px;
+  width: 100%;
+  margin: 16px auto 0;
   border-radius: 16px;
 }
+
+.hero-side-modules {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 108px;
+  flex-shrink: 0;
+}
+
+.hero-module-btn {
+  background: var(--card-bg);
+  border-radius: 12px;
+  padding: 10px 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  border: 1px solid var(--border);
+  transition: transform 0.15s, box-shadow 0.15s;
+  text-align: center;
+  width: 100%;
+  position: relative;
+  color: var(--text);
+}
+
+.hero-module-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px var(--shadow);
+}
+
+.hero-module-btn .material-icons {
+  font-size: 26px;
+  color: var(--primary);
+}
+
+.hero-module-btn .btn-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.module-grid-mobile {
+  display: none;
+}
+
+/* Legacy (unused on desktop but kept for reference) */
+.dashboard-header { text-align: center; margin-bottom: 36px; padding-top: 16px; }
+.dashboard-header h1 { font-family: 'Black Han Sans', sans-serif; font-size: 2rem; color: var(--primary); margin-bottom: 8px; }
+.dashboard-header p { color: var(--text-secondary); font-size: 0.95rem; }
 
 .module-grid {
   display: grid;
@@ -757,20 +815,32 @@ button.chip {
   }
 
   /* 대시보드 */
-  .dashboard-header {
+  .hero-layout {
+    flex-direction: column;
+    gap: 12px;
     margin-bottom: 24px;
     padding-top: 8px;
   }
 
-  .dashboard-header h1 {
+  .hero-side-modules {
+    display: none;
+  }
+
+  .hero-title {
     font-size: 1.5rem;
   }
 
-  .dashboard-header p {
+  .hero-subtitle {
     font-size: 0.85rem;
   }
 
-  .module-grid {
+  .module-grid-mobile {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .module-grid:not(.module-grid-mobile) {
     grid-template-columns: repeat(2, 1fr);
     gap: 10px;
   }

@@ -76,13 +76,33 @@ function renderCurrentPage() {
 /* ===== Dashboard ===== */
 function renderDashboard() {
   const allData = loadAllData();
+
+  function heroBtn(m) {
+    const count = (allData[m.id] || []).length;
+    return `
+      <button class="hero-module-btn" onclick="navigateTo('${m.id}')" aria-label="${t(m.titleKey)}">
+        <span class="material-icons">${m.icon}</span>
+        <span class="btn-label">${t(m.titleKey)}</span>
+        ${count > 0 ? `<span class="card-badge">${count}</span>` : ''}
+      </button>
+    `;
+  }
+
   return `
-    <div class="dashboard-header">
-      <h1 data-i18n="appTitle">What's In My</h1>
-      <p data-i18n="subtitle">${t('subtitle')}</p>
-      <img class="hero-image" src="https://i.ibb.co/n88DvYjk/Chat-GPT-Image-2026-4-18-08-49-39.png" alt="">
+    <div class="hero-layout">
+      <div class="hero-side-modules">
+        ${MODULES.slice(0, 4).map(heroBtn).join('')}
+      </div>
+      <div class="hero-center">
+        <h1 class="hero-title" data-i18n="appTitle">What's In My</h1>
+        <p class="hero-subtitle" data-i18n="subtitle">${t('subtitle')}</p>
+        <img class="hero-image" src="https://i.ibb.co/n88DvYjk/Chat-GPT-Image-2026-4-18-08-49-39.png" alt="">
+      </div>
+      <div class="hero-side-modules">
+        ${MODULES.slice(4).map(heroBtn).join('')}
+      </div>
     </div>
-    <div class="module-grid">
+    <div class="module-grid module-grid-mobile">
       ${MODULES.map(m => {
         const count = (allData[m.id] || []).length;
         return `
