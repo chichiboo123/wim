@@ -80,7 +80,7 @@ function renderDashboard() {
     <div class="dashboard-header">
       <h1 data-i18n="appTitle">What's In My</h1>
       <p data-i18n="subtitle">${t('subtitle')}</p>
-      <img class="hero-image" src="https://drive.google.com/uc?export=view&id=1eNJdZnA1j1L80kQ-5Lamxv4t-NasTqN6" alt="">
+      <img class="hero-image" src="https://i.ibb.co/n88DvYjk/Chat-GPT-Image-2026-4-18-08-49-39.png" alt="">
     </div>
     <div class="module-grid">
       ${MODULES.map(m => {

@@ -1,33 +1,70 @@
 /* ===== COLOR PALETTE MODULE ===== */
 
+// 60 curated colors across all themes
+const ALL_COLORS_60 = [
+  // Pastels
+  '#FFB3BA','#FFDFBA','#FFFFBA','#BAFFC9','#BAE1FF',
+  '#DDA0DD','#98D8C8','#FDE68A','#A8D8EA','#F4B6C2',
+  '#B5E8C3','#E8D5F5',
+  // Vivid / Primary
+  '#FF0000','#FF6B00','#FFD700','#00CC44','#0088FF',
+  '#6600CC','#FF007F','#00CCCC','#FF4444','#44AA00',
+  '#0044CC','#CC0066',
+  // Earth tones
+  '#D2691E','#A0522D','#DEB887','#F5DEB3','#BC8F5F',
+  '#CD853F','#C8A87A','#E8C898','#BDB76B','#8B6914',
+  '#C4A35A','#967117',
+  // Cool blues & purples
+  '#4169E1','#6495ED','#87CEEB','#B0C4DE','#6A5ACD',
+  '#9370DB','#E6E6FA','#7B68EE','#191970','#708090',
+  '#4682B4','#5F9EA0',
+  // Warm pinks & reds
+  '#FF8FAB','#FFB6C1','#DB7093','#C71585','#DC143C',
+  '#B22222','#CD5C5C','#FA8072','#E9967A','#FF7F50',
+  '#FF69B4','#F08080',
+];
+
+// 30 spots arranged around the palette rim
+const ALL_PALETTE_SPOTS = [
+  [120,58],[148,42],[178,33],[210,30],[242,34],
+  [272,44],[300,60],[324,82],[344,108],[358,136],
+  [364,164],[360,192],[348,218],[328,240],[302,254],
+  [272,262],[240,264],[208,262],[178,256],[150,246],
+  [126,232],[102,214],[78,194],[58,170],[44,144],
+  [40,118],[46,94],[62,72],[88,54],[108,44],
+];
+
+let editingColorIndex = -1;
+let colorPickerOpen = false;
+
+function getColorMeta() {
+  try { return JSON.parse(localStorage.getItem('wim-color-meta') || '{}'); }
+  catch { return {}; }
+}
+function saveColorMeta(m) { localStorage.setItem('wim-color-meta', JSON.stringify(m)); }
+
 function renderPainterPalette(data) {
   if (data.length === 0) return '';
-
-  // Pre-defined blob positions arranged around the palette rim (up to 15)
-  const spots = [
-    [120, 58], [165, 42], [210, 35], [255, 42], [300, 60],
-    [342, 100], [360, 148], [354, 198],
-    [325, 238], [278, 254], [228, 258], [180, 255], [138, 244],
-    [44, 120], [46, 162]
-  ];
+  const meta = getColorMeta();
+  const customCount = meta.paletteCount || 0;
+  const spotCount = customCount > 0 ? Math.min(customCount, ALL_PALETTE_SPOTS.length) : Math.min(data.length, 15);
+  const spots = ALL_PALETTE_SPOTS.slice(0, spotCount);
 
   const blobs = data.slice(0, spots.length).map((item, i) => {
     const [cx, cy] = spots[i];
-    const label = item.name.length > 7 ? item.name.slice(0, 6) + '…' : item.name;
     return `<g>
       <title>${escapeHtml(item.name)}: ${item.color}</title>
-      <circle cx="${cx}" cy="${cy}" r="20" fill="${item.color}"
+      <circle cx="${cx}" cy="${cy}" r="18" fill="${item.color}"
               stroke="rgba(0,0,0,0.18)" stroke-width="1.5"
               style="filter:drop-shadow(0 2px 4px rgba(0,0,0,0.18));"/>
     </g>`;
   }).join('');
 
-  // Show extra colors (beyond 15) as a small strip below
   const extra = data.length > spots.length
     ? `<div style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:8px;">
         ${data.slice(spots.length).map(item =>
           `<div title="${escapeHtml(item.name)}: ${item.color}"
-               style="width:28px;height:28px;border-radius:50%;background:${item.color};border:1px solid rgba(0,0,0,0.15);box-shadow:0 1px 4px rgba(0,0,0,0.12);"></div>`
+               style="width:26px;height:26px;border-radius:50%;background:${item.color};border:1px solid rgba(0,0,0,0.15);"></div>`
         ).join('')}
        </div>`
     : '';
@@ -44,18 +81,12 @@ function renderPainterPalette(data) {
             <feDropShadow dx="0" dy="4" stdDeviation="8" flood-color="rgba(0,0,0,0.18)"/>
           </filter>
         </defs>
-        <!-- Palette body (kidney shape) -->
         <path d="M198,22 C295,16 388,72 390,156 C392,240 316,264 234,262 C182,260 152,242 122,240 C72,236 16,212 16,156 C16,78 98,26 198,22 Z"
               fill="url(#palWoodGrad)" stroke="#C4A07A" stroke-width="2" filter="url(#palShadow)"/>
-        <!-- Wood grain lines -->
         <path d="M100,40 Q200,28 300,50" fill="none" stroke="#D4B07A" stroke-width="0.8" opacity="0.5"/>
         <path d="M60,80 Q180,65 320,82" fill="none" stroke="#D4B07A" stroke-width="0.8" opacity="0.4"/>
-        <!-- Palette sheen -->
         <path d="M130,28 Q210,18 310,52" fill="none" stroke="rgba(255,255,255,0.45)" stroke-width="3" stroke-linecap="round"/>
-        <!-- Thumb hole -->
-        <ellipse cx="88" cy="218" rx="30" ry="34"
-                 fill="#E8D5B0" stroke="#C4A07A" stroke-width="2"/>
-        <!-- Color blobs -->
+        <ellipse cx="88" cy="218" rx="30" ry="34" fill="#E8D5B0" stroke="#C4A07A" stroke-width="2"/>
         ${blobs}
       </svg>
       ${extra}
@@ -65,24 +96,42 @@ function renderPainterPalette(data) {
 
 function renderColor() {
   const data = getModuleData('color');
+  const meta = getColorMeta();
   return `
     <div class="module-page">
       <h2 class="module-title">${t('colorPageTitle')}</h2>
-      <div style="display:flex;gap:8px;justify-content:center;margin-bottom:12px;flex-wrap:wrap;">
-        <button class="btn btn-primary btn-sm" onclick="addColorSlot()">${t('addColor')}</button>
+      <div style="display:flex;gap:8px;justify-content:center;margin-bottom:12px;flex-wrap:wrap;align-items:center;">
+        <button class="btn btn-primary btn-sm" onclick="toggleColorPickerPanel()">${t('addColor')}</button>
+        <div style="display:flex;align-items:center;gap:6px;font-size:0.82rem;color:var(--text-secondary);">
+          <span>팔레트 표시 수</span>
+          <input type="number" min="1" max="${ALL_PALETTE_SPOTS.length}" value="${meta.paletteCount || ''}"
+                 placeholder="자동" style="width:60px;" class="form-input" style="padding:4px 6px;"
+                 onchange="setColorPaletteCount(this.value)">
+        </div>
         <button class="btn btn-secondary btn-sm" onclick="window.open('https://chichiboo123.github.io/cow/','_blank')">
           <span class="material-icons" style="font-size:16px;vertical-align:middle;margin-right:4px;">palette</span>
           ${t('refPalette')}
         </button>
       </div>
-      <div class="color-presets-wrap">
-        <div class="color-presets-label">기본 색상 선택</div>
-        <div class="color-presets-grid">
-          ${COLOR_PRESETS.map(c =>
-            `<button class="color-preset-swatch" style="background:${c};" onclick="addPresetColor('${c}')" title="${c}"></button>`
-          ).join('')}
+      ${colorPickerOpen ? `
+        <div class="color-picker-panel">
+          <div class="color-picker-panel-header">
+            <span>색상 선택 (60가지)</span>
+            <button class="icon-btn" onclick="toggleColorPickerPanel()"><span class="material-icons" style="font-size:18px;">close</span></button>
+          </div>
+          <div class="color-picker-grid">
+            ${ALL_COLORS_60.map(c =>
+              `<button class="color-picker-cell" style="background:${c};" onclick="addPresetColor('${c}')" title="${c}"></button>`
+            ).join('')}
+          </div>
+          <div class="color-picker-custom">
+            <button class="btn btn-secondary btn-sm" onclick="openCustomColorPicker()">
+              <span class="material-icons" style="font-size:15px;vertical-align:middle;margin-right:4px;">colorize</span>
+              사용자 지정
+            </button>
+          </div>
         </div>
-      </div>
+      ` : ''}
       ${renderPainterPalette(data)}
       <div class="work-area">
         <div class="palette-grid" id="palette-grid">
@@ -112,35 +161,34 @@ function renderColor() {
   `;
 }
 
-const DEFAULT_PASTEL_COLORS = [
-  '#FFB3BA', '#FFDFBA', '#FFFFBA', '#BAFFC9', '#BAE1FF',
-  '#DDA0DD', '#98D8C8', '#FDE68A', '#A8D8EA', '#F4B6C2',
-  '#B5E8C3', '#D6EDF8', '#FCE4EA', '#FEF3C7', '#E8D5F5',
-];
-
-const COLOR_PRESETS = [
-  '#FFB3BA','#FFDFBA','#FFFFBA','#BAFFC9','#BAE1FF',
-  '#DDA0DD','#98D8C8','#FDE68A','#A8D8EA','#F4B6C2',
-  '#B5E8C3','#D6EDF8','#FCE4EA','#FEF3C7','#E8D5F5',
-  '#FF8FAB','#FFB347','#87CEEB','#90EE90','#E6E6FA',
-  '#FFDAB9','#B0E0E6','#F0E68C','#DEB887','#C8A8E8',
-  '#A8D8C8','#F8BBD0','#DCEDC8','#FFF9C4','#CFD8DC',
-];
-
-let editingColorIndex = -1;
+function toggleColorPickerPanel() {
+  colorPickerOpen = !colorPickerOpen;
+  renderCurrentPage();
+}
 
 function addPresetColor(color) {
+  colorPickerOpen = false;
   const data = getModuleData('color');
   data.push({ color, name: t('colorNamePlaceholder') });
   saveModuleData('color', data);
   renderCurrentPage();
 }
 
-function addColorSlot() {
-  const data = getModuleData('color');
-  const defaultColor = DEFAULT_PASTEL_COLORS[data.length % DEFAULT_PASTEL_COLORS.length];
-  data.push({ color: defaultColor, name: t('colorNamePlaceholder') });
-  saveModuleData('color', data);
+function openCustomColorPicker() {
+  const picker = document.getElementById('hidden-color-picker');
+  if (picker) {
+    editingColorIndex = -2;
+    picker.value = '#FF6B6B';
+    picker.click();
+  }
+}
+
+function setColorPaletteCount(value) {
+  const n = parseInt(value, 10);
+  const meta = getColorMeta();
+  if (n > 0) meta.paletteCount = n;
+  else delete meta.paletteCount;
+  saveColorMeta(meta);
   renderCurrentPage();
 }
 
@@ -153,6 +201,15 @@ function pickColor(index) {
 }
 
 function applyColor(event) {
+  if (editingColorIndex === -2) {
+    colorPickerOpen = false;
+    const data = getModuleData('color');
+    data.push({ color: event.target.value, name: t('colorNamePlaceholder') });
+    saveModuleData('color', data);
+    renderCurrentPage();
+    editingColorIndex = -1;
+    return;
+  }
   if (editingColorIndex < 0) return;
   const data = getModuleData('color');
   if (data[editingColorIndex]) {

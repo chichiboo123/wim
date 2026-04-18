@@ -52,7 +52,9 @@ function renderTime() {
               </div>
             </div>
             <div class="list-container" id="time-list">
-              ${data.map((item, i) => `
+              ${[...data].map((item, i) => ({...item, _i: i}))
+                .sort((a, b) => (a.start % maxHour) - (b.start % maxHour))
+                .map(item => `
                 <div class="list-item">
                   <div style="width:12px;height:12px;border-radius:50%;background:${item.color};flex-shrink:0;"></div>
                   <div class="list-item-content">
@@ -60,7 +62,7 @@ function renderTime() {
                     <div style="font-size:0.85rem;color:var(--text-secondary)">${escapeHtml(item.task)}</div>
                   </div>
                   <div class="list-item-actions">
-                    <button class="icon-btn" onclick="deleteTimeTask(${i})"><span class="material-icons" style="color:#f87171;">delete</span></button>
+                    <button class="icon-btn" onclick="deleteTimeTask(${item._i})"><span class="material-icons" style="color:#f87171;">delete</span></button>
                   </div>
                 </div>
               `).join('')}

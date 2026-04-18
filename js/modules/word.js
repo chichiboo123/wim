@@ -6,15 +6,11 @@ function renderWord() {
     <div class="module-page">
       <h2 class="module-title">${t('wordPageTitle')}</h2>
       <div class="work-area">
-        <div style="margin-bottom:16px;">
-          <div class="form-row">
-            <input type="text" class="form-input" id="word-term" placeholder="${t('wordTerm')}" maxlength="30" onkeydown="if(event.key==='Enter') document.getElementById('word-def').focus()">
-          </div>
-          <div class="form-row">
-            <input type="text" class="form-input" id="word-def" placeholder="${t('wordDef')}" maxlength="200" onkeydown="if(event.key==='Enter') addWord()">
-            <button class="btn btn-primary btn-sm" onclick="addWord()">${isEditing ? t('saveEdit') : t('addWord')}</button>
-            ${isEditing ? `<button class="btn btn-secondary btn-sm" onclick="cancelWordEdit()">${t('cancelEdit')}</button>` : ''}
-          </div>
+        <div class="word-form-row" style="margin-bottom:16px;">
+          <input type="text" class="form-input word-term-input" id="word-term" placeholder="${t('wordTerm')}" maxlength="30" onkeydown="if(event.key==='Enter') document.getElementById('word-def').focus()">
+          <input type="text" class="form-input word-def-input" id="word-def" placeholder="${t('wordDef')}" maxlength="200" onkeydown="if(event.key==='Enter') addWord()">
+          <button class="btn btn-primary btn-sm" onclick="addWord()">${isEditing ? t('saveEdit') : t('addWord')}</button>
+          ${isEditing ? `<button class="btn btn-secondary btn-sm" onclick="cancelWordEdit()">${t('cancelEdit')}</button>` : ''}
         </div>
         <div class="list-container" id="word-list">
           ${data.map((item, i) => `
