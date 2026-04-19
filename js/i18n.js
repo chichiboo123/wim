@@ -2,7 +2,7 @@
 const TRANSLATIONS = {
   ko: {
     appTitle: "What's In My",
-    subtitle: "나를 탐색하는 8가지 테마",
+    subtitle: "나를 탐색하는 8가지 방법",
     helpTitle: "사용법 안내",
     backupTitle: "백업 / 복원",
     backupDownload: "백업 다운로드 (JSON)",
@@ -11,21 +11,21 @@ const TRANSLATIONS = {
 
     // Dashboard
     bagTitle: "가방",
-    bagDesc: "내 가방 안에는 무엇이 있을까?",
+    bagDesc: "내 가방 안",
     timeTitle: "시간",
-    timeDesc: "나의 24시간을 계획해 보자",
+    timeDesc: "나의 24시간",
     brainTitle: "브레인",
-    brainDesc: "내 머릿속에는 무엇이 있을까?",
+    brainDesc: "내 머릿속",
     mindTitle: "감정",
-    mindDesc: "내 감정의 크기를 시각화해 보자",
+    mindDesc: "내 감정의 방",
     colorTitle: "색깔",
-    colorDesc: "나만의 색 팔레트를 만들어 보자",
+    colorDesc: "나만의 색 팔레트",
     musicTitle: "음악",
-    musicDesc: "나만의 플레이리스트를 만들어 보자",
+    musicDesc: "나만의 플레이리스트",
     wordTitle: "단어",
-    wordDesc: "나를 이루는 단어 사전을 만들어 보자",
+    wordDesc: "나를 이루는 단어 사전",
     relTitle: "관계",
-    relDesc: "나와 주변 사람들의 관계를 그려 보자",
+    relDesc: "나를 이루는 관계",
 
     // Bag
     bagPageTitle: "내 가방 안에는?",
@@ -50,7 +50,7 @@ const TRANSLATIONS = {
     clickToAdd: "빈 곳을 클릭하여 텍스트를 추가하세요",
 
     // Mind
-    mindPageTitle: "감정 (Emotion)",
+    mindPageTitle: "감정의 방",
     selectEmotion: "감정 단어를 선택하세요",
 
     // Color
@@ -142,7 +142,7 @@ const TRANSLATIONS = {
 
   en: {
     appTitle: "What's In My",
-    subtitle: "8 themes to explore yourself",
+    subtitle: "8 ways to explore yourself",
     helpTitle: "How to Use",
     backupTitle: "Backup / Restore",
     backupDownload: "Download Backup (JSON)",
