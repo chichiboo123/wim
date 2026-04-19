@@ -1,4 +1,34 @@
 /* ===== MIND MODULE ===== */
+const EMOTION_CATEGORIES = {
+  ko: [
+    { label: '기쁨 · 즐거움', range: [0, 10] },
+    { label: '슬픔 · 그리움', range: [10, 17] },
+    { label: '분노 · 짜증', range: [17, 22] },
+    { label: '불안 · 두려움', range: [22, 27] },
+    { label: '놀라움 · 혼란', range: [27, 31] },
+    { label: '지루함 · 무기력', range: [31, 35] },
+    { label: '뿌듯함 · 여유', range: [35, 40] },
+  ],
+  en: [
+    { label: 'Joy · Happiness', range: [0, 10] },
+    { label: 'Sadness · Longing', range: [10, 17] },
+    { label: 'Anger · Irritation', range: [17, 22] },
+    { label: 'Anxiety · Fear', range: [22, 27] },
+    { label: 'Surprise · Confusion', range: [27, 31] },
+    { label: 'Boredom · Lethargy', range: [31, 35] },
+    { label: 'Pride · Relaxation', range: [35, 40] },
+  ],
+  ja: [
+    { label: '喜び · 楽しさ', range: [0, 10] },
+    { label: '悲しみ · 懐かしさ', range: [10, 17] },
+    { label: '怒り · イライラ', range: [17, 22] },
+    { label: '不安 · 恐怖', range: [22, 27] },
+    { label: '驚き · 混乱', range: [27, 31] },
+    { label: '退屈 · 無気力', range: [31, 35] },
+    { label: '誇り · ゆとり', range: [35, 40] },
+  ],
+};
+
 const EMOTIONS = {
   ko: [
     '기쁨', '행복', '설렘', '감사', '평화', '희망', '자신감', '사랑', '만족', '용기',
@@ -64,7 +94,22 @@ function renderMind() {
   const data = getModuleData('mind');
   ensureMindPositions(data);
   const emotions = EMOTIONS[currentLang] || EMOTIONS.ko;
+  const categories = EMOTION_CATEGORIES[currentLang] || EMOTION_CATEGORIES.ko;
   const selectedEmotions = new Set(data.map(d => d.text));
+
+  const pickerHtml = categories.map(cat => {
+    const [start, end] = cat.range;
+    const chips = emotions.slice(start, end).map((em, j) => {
+      const gi = start + j;
+      const sel = selectedEmotions.has(em) ? ' selected' : '';
+      return `<button class="chip${sel}" onclick="addMindEmotion('${em}',${gi})" aria-pressed="${sel ? 'true' : 'false'}">${em}</button>`;
+    }).join('');
+    return `<div class="emotion-category"><span class="emotion-cat-label">${cat.label}</span><div class="emotion-chips-row">${chips}</div></div>`;
+  }).join('');
+
+  const hintLang = { ko: '탭하여 강도 조절 · 드래그하여 이동', en: 'Tap to adjust · Drag to move', ja: 'タップで調整 · ドラッグで移動' };
+  const hint = hintLang[currentLang] || hintLang.ko;
+
   return `
     <div class="module-page">
       <h2 class="module-title">${t('mindPageTitle')}</h2>
@@ -72,11 +117,9 @@ function renderMind() {
         ${t('selectEmotion')}
       </p>
       <div class="emotion-picker">
-        ${emotions.map((em, i) => `
-          <button class="chip ${selectedEmotions.has(em) ? 'selected' : ''}" onclick="addMindEmotion('${em}', ${i})" aria-pressed="${selectedEmotions.has(em)}">${em}</button>
-        `).join('')}
+        ${pickerHtml}
       </div>
-      <div class="work-area">
+      <div class="work-area" style="padding:0;overflow:hidden;">
         <div class="mind-room" id="mind-room">
           ${data.length === 0 ? `
             <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--text-secondary);font-size:0.85rem;opacity:0.7;gap:8px;text-align:center;padding:16px;">
@@ -95,6 +138,7 @@ function renderMind() {
               </div>
             </div>
           `).join('')}
+          <div class="mind-room-hint">${hint}</div>
         </div>
       </div>
     </div>

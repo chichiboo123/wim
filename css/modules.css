@@ -366,14 +366,19 @@
   display: flex;
 }
 
+.mind-chip-inside.mind-active {
+  box-shadow: 0 0 0 3px rgba(0,0,0,0.25);
+  z-index: 5;
+}
+
 .mind-ctrl {
-  width: 20px;
-  height: 20px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   border: 1px solid rgba(0,0,0,0.2);
-  background: rgba(255,255,255,0.7);
+  background: rgba(255,255,255,0.85);
   cursor: pointer;
-  font-size: 0.8rem;
+  font-size: 1rem;
   font-weight: bold;
   line-height: 1;
   display: flex;
@@ -385,16 +390,51 @@
 }
 
 .mind-ctrl-del {
-  background: rgba(248, 113, 113, 0.85);
+  background: rgba(248, 113, 113, 0.9);
   color: white;
   border-color: transparent;
 }
 
+.mind-room-hint {
+  position: absolute;
+  bottom: 6px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+  opacity: 0.6;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* ===== EMOTION PICKER CATEGORIES ===== */
 .emotion-picker {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.emotion-category {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.emotion-cat-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 0 2px;
+}
+
+.emotion-chips-row {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
-  margin-bottom: 16px;
 }
 
 /* ===== COLOR MODULE ===== */
@@ -1040,10 +1080,10 @@
 
   /* Mind */
   .mind-room {
-    min-height: 260px;
+    min-height: 320px;
   }
 
-  .emotion-picker {
+  .emotion-chips-row {
     gap: 5px;
   }
 

@@ -794,11 +794,6 @@ button.chip {
     font-size: 0.95rem;
   }
 
-  .header-selects {
-    flex-direction: column;
-    gap: 4px;
-  }
-
   .header-select {
     padding: 4px 8px;
     font-size: 0.72rem;
@@ -817,13 +812,18 @@ button.chip {
   /* 대시보드 */
   .hero-layout {
     flex-direction: column;
-    gap: 12px;
+    gap: 10px;
     margin-bottom: 24px;
     padding-top: 8px;
   }
 
-  .hero-side-modules {
-    display: none;
+  /* 일러스트를 맨 위로 */
+  .hero-center {
+    order: -1;
+  }
+
+  .hero-image {
+    max-width: 220px;
   }
 
   .hero-title {
@@ -834,32 +834,28 @@ button.chip {
     font-size: 0.85rem;
   }
 
-  .module-grid-mobile {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
+  /* 사이드 모듈 버튼: 일러스트 아래 가로 4열 배치 */
+  .hero-side-modules {
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+    justify-content: center;
+    gap: 6px;
   }
 
-  .module-grid:not(.module-grid-mobile) {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
+  .hero-module-btn {
+    flex: 1 0 60px;
+    max-width: 80px;
+    min-height: 68px;
+    padding: 8px 4px;
   }
 
-  .module-card {
-    padding: 16px 10px;
+  .hero-module-btn .material-icons {
+    font-size: 22px;
   }
 
-  .module-card .material-icons {
-    font-size: 36px;
-    margin-bottom: 8px;
-  }
-
-  .module-card h3 {
-    font-size: 0.95rem;
-  }
-
-  .module-card p {
-    font-size: 0.75rem;
+  .hero-module-btn .btn-label {
+    font-size: 0.65rem;
   }
 
   /* 모듈 페이지 */
