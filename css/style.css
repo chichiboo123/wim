@@ -837,33 +837,28 @@ button.chip {
     font-size: 0.85rem;
   }
 
-  /* 사이드 모듈 버튼: 일러스트 아래 가로 4열 배치 */
+  /* 사이드 모듈 버튼: 4개씩 한 줄 (2줄 × 4열 배치) */
   .hero-side-modules {
     flex-direction: row;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     width: 100%;
-    justify-content: center;
-    gap: 8px;
-  }
-
-  .hero-side-modules {
-    width: 100%;
+    gap: 6px;
   }
 
   .hero-module-btn {
-    flex: 1 0 80px;
-    max-width: 120px;
-    min-height: 100px;
-    padding: 14px 8px;
-    gap: 8px;
+    flex: 1 1 0;
+    min-width: 0;
+    min-height: 90px;
+    padding: 12px 4px;
+    gap: 6px;
   }
 
   .hero-module-btn .material-icons {
-    font-size: 32px;
+    font-size: 28px;
   }
 
   .hero-module-btn .btn-label {
-    font-size: 0.78rem;
+    font-size: 0.72rem;
   }
 
   /* 모듈 페이지 */
