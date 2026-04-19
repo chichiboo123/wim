@@ -37,12 +37,18 @@ function getExportScale() {
 
 async function captureModuleCanvas() {
   const target = getCaptureTarget();
+  const rect = target.getBoundingClientRect();
   return html2canvas(target, {
     useCORS: true,
     allowTaint: true,
     backgroundColor: '#ffffff',
     scale: getExportScale(),
-    foreignObjectRendering: true,
+    width: Math.ceil(rect.width),
+    height: Math.ceil(rect.height),
+    x: 0,
+    y: 0,
+    scrollX: -window.scrollX,
+    scrollY: -window.scrollY,
     imageTimeout: 0,
   });
 }
