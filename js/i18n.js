@@ -23,7 +23,7 @@ const TRANSLATIONS = {
     musicTitle: "음악",
     musicDesc: "나만의 플레이리스트",
     wordTitle: "단어",
-    wordDesc: "나를 이루는 단어 사전",
+    wordDesc: "나를 이루는 단어들",
     relTitle: "관계",
     relDesc: "나를 이루는 관계",
 

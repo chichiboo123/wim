@@ -7,6 +7,7 @@ function renderBag() {
   const hasSelection = bagSelectedIndex >= 0 && data[bagSelectedIndex];
   return `
     <div class="module-page">
+      <h2 class="module-title">${t('bagPageTitle')}</h2>
       <div class="bag-toolbar">
         <input type="text" class="form-input bag-unified-input" id="bag-unified-input"
                placeholder="텍스트 또는 이모지 입력..."
