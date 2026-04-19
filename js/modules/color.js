@@ -28,11 +28,14 @@ const MAX_PALETTE_SPOTS = 30;
 
 // Compute N equally-spaced positions on the palette rim ellipse
 function computePaletteSpots(count) {
-  // Shifted right+up so spots clear the thumb ellipse at (88,218)
+  // Right-side arc only so paint dabs never overlap the thumb hole.
   const cx = 220, cy = 128, rx = 138, ry = 92;
+  const startAngle = -Math.PI * 0.62;
+  const endAngle = Math.PI * 0.62;
   const spots = [];
   for (let i = 0; i < count; i++) {
-    const angle = (i / count) * Math.PI * 2 - Math.PI / 2;
+    const ratio = count === 1 ? 0.5 : (i / (count - 1));
+    const angle = startAngle + (endAngle - startAngle) * ratio;
     spots.push([
       Math.round(cx + rx * Math.cos(angle)),
       Math.round(cy + ry * Math.sin(angle))

@@ -147,23 +147,24 @@ function renderMind() {
   ensureMindPositions(data);
   const emotions = EMOTIONS[currentLang] || EMOTIONS.ko;
   const categories = EMOTION_CATEGORIES[currentLang] || EMOTION_CATEGORIES.ko;
+  if (mindPickerCategory < 0 || mindPickerCategory >= categories.length) mindPickerCategory = 0;
   const selectedEmotions = new Set(data.map(d => d.text));
 
-  const pickerHtml = categories.map(cat => {
-    const [start, end] = cat.range;
-    const chips = emotions.slice(start, end).map((em, j) => {
-      const gi = start + j;
-      const sel = selectedEmotions.has(em) ? ' selected' : '';
-      return `<button class="chip${sel}" onclick="addMindEmotion('${em}',${gi})" aria-pressed="${sel ? 'true' : 'false'}">${em}</button>`;
-    }).join('');
+  const categoryGrid = categories.map((cat, idx) => {
+    const active = idx === mindPickerCategory ? ' active' : '';
     return `
-      <div class="emotion-category">
-        <div class="emotion-cat-header">
-          <span class="emotion-cat-dot" style="background:${cat.color};"></span>
-          <span class="emotion-cat-label">${cat.label}</span>
-        </div>
-        <div class="emotion-chips-row">${chips}</div>
-      </div>`;
+      <button type="button" class="emotion-category-cell${active}" onclick="selectMindCategory(${idx})" aria-pressed="${active ? 'true' : 'false'}">
+        <span class="emotion-cat-dot" style="background:${cat.color};"></span>
+        <span class="emotion-cat-label">${cat.label}</span>
+      </button>`;
+  }).join('');
+
+  const activeCategory = categories[mindPickerCategory];
+  const [start, end] = activeCategory.range;
+  const pickerHtml = emotions.slice(start, end).map((em, j) => {
+    const gi = start + j;
+    const sel = selectedEmotions.has(em) ? ' selected' : '';
+    return `<button type="button" class="chip${sel}" onclick="addMindEmotion('${em}',${gi})" aria-pressed="${sel ? 'true' : 'false'}">${em}</button>`;
   }).join('');
 
   const note = PLUTCHIK_NOTE[currentLang] || PLUTCHIK_NOTE.ko;
@@ -177,7 +178,8 @@ function renderMind() {
         ${t('selectEmotion')}
       </p>
       <div class="emotion-picker">
-        ${pickerHtml}
+        <div class="emotion-categories-grid">${categoryGrid}</div>
+        <div class="emotion-chips-row">${pickerHtml}</div>
       </div>
       <p class="plutchik-note">* ${note}</p>
       <div class="work-area" style="padding:0;overflow:hidden;">
@@ -191,11 +193,11 @@ function renderMind() {
             <div class="mind-chip-inside${mindActiveIndex === i ? ' mind-active' : ''}" style="${mindChipStyle(item)}left:${item.x}%;top:${item.y}%;"
                  data-index="${i}"
                  onmousedown="startDragMind(event,${i})" ontouchstart="startDragMind(event,${i})">
-              <span class="mind-chip-text">${escapeHtml(item.text)}${(item.count || 1) > 1 ? ` ×${item.count}` : ''}</span>
+              <span class="mind-chip-text">${escapeHtml(item.text)}</span>
               <div class="mind-chip-controls">
-                <button class="mind-ctrl" onclick="event.stopPropagation();decreaseMindItem(${i})" ontouchend="event.stopPropagation();event.preventDefault();decreaseMindItem(${i})">−</button>
-                <button class="mind-ctrl mind-ctrl-del" onclick="event.stopPropagation();deleteMindItem(${i})" ontouchend="event.stopPropagation();event.preventDefault();deleteMindItem(${i})">✕</button>
-                <button class="mind-ctrl" onclick="event.stopPropagation();increaseMindItem(${i})" ontouchend="event.stopPropagation();event.preventDefault();increaseMindItem(${i})">+</button>
+                <button type="button" class="mind-ctrl" onclick="event.preventDefault();event.stopPropagation();decreaseMindItem(${i})" ontouchend="event.stopPropagation();event.preventDefault();decreaseMindItem(${i})">−</button>
+                <button type="button" class="mind-ctrl mind-ctrl-del" onclick="event.preventDefault();event.stopPropagation();deleteMindItem(${i})" ontouchend="event.stopPropagation();event.preventDefault();deleteMindItem(${i})">✕</button>
+                <button type="button" class="mind-ctrl" onclick="event.preventDefault();event.stopPropagation();increaseMindItem(${i})" ontouchend="event.stopPropagation();event.preventDefault();increaseMindItem(${i})">+</button>
               </div>
             </div>
           `).join('')}
@@ -250,6 +252,11 @@ function addMindEmotion(emotion, colorIndex) {
   renderCurrentPage();
 }
 
+function selectMindCategory(index) {
+  mindPickerCategory = index;
+  renderCurrentPage();
+}
+
 function increaseMindItem(index) {
   const data = getModuleData('mind');
   if (!data[index]) return;
@@ -288,6 +295,7 @@ function deleteMindItem(index) {
 let mindDragging = null;
 let mindActiveIndex = null;
 let mindOutsideClickHandler = null;
+let mindPickerCategory = 0;
 
 function setMindActive(index) {
   if (mindOutsideClickHandler) {
