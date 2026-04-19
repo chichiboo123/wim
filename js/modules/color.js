@@ -24,15 +24,22 @@ const ALL_COLORS_60 = [
   '#FF69B4','#F08080',
 ];
 
-// 30 spots arranged around the palette rim
-const ALL_PALETTE_SPOTS = [
-  [120,58],[148,42],[178,33],[210,30],[242,34],
-  [272,44],[300,60],[324,82],[344,108],[358,136],
-  [364,164],[360,192],[348,218],[328,240],[302,254],
-  [272,262],[240,264],[208,262],[178,256],[150,246],
-  [126,232],[102,214],[78,194],[58,170],[44,144],
-  [40,118],[46,94],[62,72],[88,54],[108,44],
-];
+const MAX_PALETTE_SPOTS = 30;
+
+// Compute N equally-spaced positions on the palette rim ellipse
+function computePaletteSpots(count) {
+  // Ellipse fitted to the SVG palette rim (viewBox 0 0 400 280)
+  const cx = 202, cy = 147, rx = 162, ry = 117;
+  const spots = [];
+  for (let i = 0; i < count; i++) {
+    const angle = (i / count) * Math.PI * 2 - Math.PI / 2; // start from top
+    spots.push([
+      Math.round(cx + rx * Math.cos(angle)),
+      Math.round(cy + ry * Math.sin(angle))
+    ]);
+  }
+  return spots;
+}
 
 let editingColorIndex = -1;
 let colorPickerOpen = false;
@@ -51,9 +58,10 @@ function renderPainterPalette(data) {
 
   let blobs = '';
   if (slotMode) {
-    const count = Math.min(meta.paletteCount, ALL_PALETTE_SPOTS.length);
+    const count = Math.min(meta.paletteCount, MAX_PALETTE_SPOTS);
+    const spots = computePaletteSpots(count);
     for (let i = 0; i < count; i++) {
-      const [cx, cy] = ALL_PALETTE_SPOTS[i];
+      const [cx, cy] = spots[i];
       const item = data[i];
       const filled = item && item.color;
       if (filled) {
@@ -74,9 +82,10 @@ function renderPainterPalette(data) {
       }
     }
   } else {
-    const spotCount = Math.min(data.length, ALL_PALETTE_SPOTS.length);
+    const spotCount = Math.min(data.length, MAX_PALETTE_SPOTS);
+    const spots = computePaletteSpots(spotCount);
     for (let i = 0; i < spotCount; i++) {
-      const [cx, cy] = ALL_PALETTE_SPOTS[i];
+      const [cx, cy] = spots[i];
       const item = data[i];
       blobs += `<g>
         <title>${escapeHtml(item.name)}: ${item.color}</title>
@@ -87,9 +96,9 @@ function renderPainterPalette(data) {
     }
   }
 
-  const extra = (!slotMode && data.length > ALL_PALETTE_SPOTS.length)
+  const extra = (!slotMode && data.length > MAX_PALETTE_SPOTS)
     ? `<div style="display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:8px;">
-        ${data.slice(ALL_PALETTE_SPOTS.length).map(item =>
+        ${data.slice(MAX_PALETTE_SPOTS).map(item =>
           `<div title="${escapeHtml(item.name)}: ${item.color}"
                style="width:26px;height:26px;border-radius:50%;background:${item.color};border:1px solid rgba(0,0,0,0.15);"></div>`
         ).join('')}
@@ -132,7 +141,7 @@ function renderColor() {
         ${!slotMode ? `<button class="btn btn-primary btn-sm" onclick="toggleColorPickerPanel()">${t('addColor')}</button>` : ''}
         <div style="display:flex;align-items:center;gap:6px;font-size:0.82rem;color:var(--text-secondary);">
           <span>팔레트 표시 수</span>
-          <input type="number" min="1" max="${ALL_PALETTE_SPOTS.length}" id="palette-count-input"
+          <input type="number" min="1" max="${MAX_PALETTE_SPOTS}" id="palette-count-input"
                  value="${meta.paletteCount || ''}"
                  placeholder="자동" style="width:60px;" class="form-input"
                  onkeydown="if(event.key==='Enter') confirmColorPaletteCount()">
@@ -222,7 +231,7 @@ function confirmColorPaletteCount() {
   }
   const n = parseInt(val, 10);
   if (isNaN(n) || n < 1) return;
-  const count = Math.min(n, ALL_PALETTE_SPOTS.length);
+  const count = Math.min(n, MAX_PALETTE_SPOTS);
   const meta = getColorMeta();
   meta.paletteCount = count;
   saveColorMeta(meta);
