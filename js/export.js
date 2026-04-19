@@ -25,7 +25,8 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function getCaptureTarget() {
-  return document.querySelector('.work-area') || document.getElementById('app-content');
+  // Capture the full module page (includes playlist header, palette SVG, etc.)
+  return document.querySelector('.module-page') || document.querySelector('.work-area') || document.getElementById('app-content');
 }
 
 async function exportJPG() {

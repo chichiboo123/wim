@@ -422,13 +422,34 @@
   gap: 6px;
 }
 
+.emotion-cat-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.emotion-cat-dot {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.18);
+}
+
 .emotion-cat-label {
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   font-weight: 700;
   color: var(--text-secondary);
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  padding: 0 2px;
+  letter-spacing: 0.02em;
+}
+
+.plutchik-note {
+  text-align: center;
+  font-size: 0.7rem;
+  color: var(--text-secondary);
+  opacity: 0.75;
+  margin: -4px 0 14px;
+  line-height: 1.4;
 }
 
 .emotion-chips-row {

@@ -1,70 +1,122 @@
 /* ===== MIND MODULE ===== */
+
+// Plutchik's Wheel of Emotions – 8 primary categories, child-friendly vocabulary
 const EMOTION_CATEGORIES = {
   ko: [
-    { label: '기쁨 · 즐거움', range: [0, 10] },
-    { label: '슬픔 · 그리움', range: [10, 17] },
-    { label: '분노 · 짜증', range: [17, 22] },
-    { label: '불안 · 두려움', range: [22, 27] },
-    { label: '놀라움 · 혼란', range: [27, 31] },
-    { label: '지루함 · 무기력', range: [31, 35] },
-    { label: '뿌듯함 · 여유', range: [35, 40] },
+    { label: '기쁨',      color: '#FFD700', range: [0,  6]  },
+    { label: '신뢰·편안', color: '#72CC72', range: [6,  11] },
+    { label: '두려움',    color: '#4AA84A', range: [11, 16] },
+    { label: '놀라움',    color: '#87CEEB', range: [16, 20] },
+    { label: '슬픔',      color: '#6488CC', range: [20, 25] },
+    { label: '불쾌함',    color: '#9870CC', range: [25, 29] },
+    { label: '화남',      color: '#FF6B5A', range: [29, 34] },
+    { label: '기대·설렘', color: '#FFB347', range: [34, 38] },
   ],
   en: [
-    { label: 'Joy · Happiness', range: [0, 10] },
-    { label: 'Sadness · Longing', range: [10, 17] },
-    { label: 'Anger · Irritation', range: [17, 22] },
-    { label: 'Anxiety · Fear', range: [22, 27] },
-    { label: 'Surprise · Confusion', range: [27, 31] },
-    { label: 'Boredom · Lethargy', range: [31, 35] },
-    { label: 'Pride · Relaxation', range: [35, 40] },
+    { label: 'Joy',           color: '#FFD700', range: [0,  6]  },
+    { label: 'Trust & Calm',  color: '#72CC72', range: [6,  11] },
+    { label: 'Fear',          color: '#4AA84A', range: [11, 16] },
+    { label: 'Surprise',      color: '#87CEEB', range: [16, 20] },
+    { label: 'Sadness',       color: '#6488CC', range: [20, 25] },
+    { label: 'Disgust',       color: '#9870CC', range: [25, 29] },
+    { label: 'Anger',         color: '#FF6B5A', range: [29, 34] },
+    { label: 'Anticipation',  color: '#FFB347', range: [34, 38] },
   ],
   ja: [
-    { label: '喜び · 楽しさ', range: [0, 10] },
-    { label: '悲しみ · 懐かしさ', range: [10, 17] },
-    { label: '怒り · イライラ', range: [17, 22] },
-    { label: '不安 · 恐怖', range: [22, 27] },
-    { label: '驚き · 混乱', range: [27, 31] },
-    { label: '退屈 · 無気力', range: [31, 35] },
-    { label: '誇り · ゆとり', range: [35, 40] },
+    { label: '喜び',       color: '#FFD700', range: [0,  6]  },
+    { label: '信頼・安心', color: '#72CC72', range: [6,  11] },
+    { label: '恐れ',       color: '#4AA84A', range: [11, 16] },
+    { label: '驚き',       color: '#87CEEB', range: [16, 20] },
+    { label: '悲しみ',     color: '#6488CC', range: [20, 25] },
+    { label: '嫌悪',       color: '#9870CC', range: [25, 29] },
+    { label: '怒り',       color: '#FF6B5A', range: [29, 34] },
+    { label: '期待・設定', color: '#FFB347', range: [34, 38] },
   ],
 };
 
+// 38 child-friendly emotion words grouped by Plutchik category
 const EMOTIONS = {
   ko: [
-    '기쁨', '행복', '설렘', '감사', '평화', '희망', '자신감', '사랑', '만족', '용기',
-    '슬픔', '외로움', '그리움', '후회', '실망', '우울', '공허',
-    '분노', '짜증', '답답함', '억울함', '질투',
-    '불안', '걱정', '두려움', '긴장', '초조',
-    '놀라움', '당황', '혼란', '궁금',
-    '지루함', '무기력', '피곤', '귀찮음',
-    '뿌듯함', '안도감', '신남', '즐거움', '여유'
+    // Joy [0-6)
+    '기쁨', '행복', '신남', '즐거움', '뿌듯함', '감사',
+    // Trust [6-11)
+    '안심', '편안', '믿음', '친근함', '포근함',
+    // Fear [11-16)
+    '무서움', '불안', '긴장', '떨림', '조마조마',
+    // Surprise [16-20)
+    '깜짝놀람', '신기함', '어리둥절', '당황함',
+    // Sadness [20-25)
+    '슬픔', '외로움', '그리움', '속상함', '눈물',
+    // Disgust [25-29)
+    '싫음', '찝찝함', '불쾌함', '기분나쁨',
+    // Anger [29-34)
+    '화남', '억울함', '답답함', '짜증', '분함',
+    // Anticipation [34-38)
+    '기대', '두근두근', '궁금함', '기다림',
   ],
   en: [
-    'Joy', 'Happiness', 'Excitement', 'Gratitude', 'Peace', 'Hope', 'Confidence', 'Love', 'Satisfaction', 'Courage',
-    'Sadness', 'Loneliness', 'Longing', 'Regret', 'Disappointment', 'Depression', 'Emptiness',
-    'Anger', 'Irritation', 'Frustration', 'Resentment', 'Jealousy',
-    'Anxiety', 'Worry', 'Fear', 'Tension', 'Nervousness',
-    'Surprise', 'Embarrassment', 'Confusion', 'Curiosity',
-    'Boredom', 'Lethargy', 'Fatigue', 'Laziness',
-    'Pride', 'Relief', 'Thrill', 'Pleasure', 'Relaxation'
+    // Joy [0-6)
+    'Joy', 'Happiness', 'Excitement', 'Fun', 'Proud', 'Thankful',
+    // Trust [6-11)
+    'Safe', 'Calm', 'Trust', 'Friendly', 'Cozy',
+    // Fear [11-16)
+    'Scared', 'Worried', 'Tense', 'Shaky', 'Nervous',
+    // Surprise [16-20)
+    'Shocked', 'Amazed', 'Puzzled', 'Flustered',
+    // Sadness [20-25)
+    'Sad', 'Lonely', 'Missing', 'Upset', 'Tearful',
+    // Disgust [25-29)
+    'Dislike', 'Uneasy', 'Disgusted', 'Uncomfortable',
+    // Anger [29-34)
+    'Angry', 'Wronged', 'Frustrated', 'Annoyed', 'Furious',
+    // Anticipation [34-38)
+    'Hopeful', 'Fluttery', 'Curious', 'Eager',
   ],
   ja: [
-    '喜び', '幸せ', 'ときめき', '感謝', '平和', '希望', '自信', '愛', '満足', '勇気',
-    '悲しみ', '孤独', '懐かしさ', '後悔', '失望', '憂鬱', '虚しさ',
-    '怒り', 'イライラ', 'もどかしさ', '悔しさ', '嫉妬',
-    '不安', '心配', '恐怖', '緊張', '焦り',
-    '驚き', '戸惑い', '混乱', '好奇心',
-    '退屈', '無気力', '疲労', '面倒',
-    '誇り', '安堵', 'ワクワク', '楽しさ', 'ゆとり'
-  ]
+    // Joy [0-6)
+    '嬉しい', '幸せ', 'ワクワク', '楽しい', '誇らしい', 'ありがたい',
+    // Trust [6-11)
+    '安心', '穏やか', '信頼', '親しみ', 'ぬくもり',
+    // Fear [11-16)
+    '怖い', '不安', '緊張', '震える', 'ドキドキ',
+    // Surprise [16-20)
+    'びっくり', '不思議', '戸惑い', '困惑',
+    // Sadness [20-25)
+    '悲しい', '寂しい', '恋しい', '辛い', '泣きたい',
+    // Disgust [25-29)
+    '嫌い', 'モヤモヤ', '不快', '嫌な気持ち',
+    // Anger [29-34)
+    '怒り', '悔しい', 'もどかしい', 'イライラ', '憤り',
+    // Anticipation [34-38)
+    '楽しみ', 'ドキドキ', '好奇心', '待ち遠しい',
+  ],
 };
 
+// 38 colors aligned with the 8 Plutchik categories (same-hue groups)
 const EMOTION_COLORS = [
-  '#FFD700', '#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4',
-  '#FFEAA7', '#DDA0DD', '#98D8C8', '#F7DC6F', '#BB8FCE',
-  '#85C1E9', '#F0B27A', '#82E0AA', '#F1948A', '#AED6F1',
-  '#D7BDE2', '#A3E4D7', '#F9E79F', '#FADBD8', '#D5F5E3'
+  // Joy – yellows [0-6)
+  '#FFD700', '#FFDF30', '#F9CC20', '#FFD840', '#F5D060', '#FFCD00',
+  // Trust – greens [6-11)
+  '#78D878', '#68C868', '#80DC80', '#70D070', '#88E088',
+  // Fear – dark greens [11-16)
+  '#4AA84A', '#3E9C3E', '#56AA56', '#44A044', '#4CAC4C',
+  // Surprise – sky blues [16-20)
+  '#87CEEB', '#76C4E6', '#90D8F4', '#6ABADE',
+  // Sadness – blues [20-25)
+  '#6890D8', '#5880C8', '#7098DC', '#5078C0', '#6888D0',
+  // Disgust – purples [25-29)
+  '#A070CC', '#9060BA', '#A878CC', '#9868C0',
+  // Anger – reds [29-34)
+  '#FF6B5A', '#F05040', '#FF7060', '#F04838', '#E84030',
+  // Anticipation – oranges [34-38)
+  '#FFB347', '#FFA030', '#F09020', '#FFB848',
 ];
+
+const PLUTCHIK_NOTE = {
+  ko: '로버트 플루치크의 감정의 바퀴(Plutchik\'s Wheel of Emotions)를 기반으로 어린이 눈높이에 맞게 구성했습니다',
+  en: 'Emotion categories are based on Plutchik\'s Wheel of Emotions, adapted for children',
+  ja: 'プルチックの感情の輪（Plutchik\'s Wheel of Emotions）を基に、子ども向けにアレンジしました',
+};
 
 function mindChipStyle(item) {
   const sz = Math.min(item.count || 1, 12);
@@ -104,9 +156,17 @@ function renderMind() {
       const sel = selectedEmotions.has(em) ? ' selected' : '';
       return `<button class="chip${sel}" onclick="addMindEmotion('${em}',${gi})" aria-pressed="${sel ? 'true' : 'false'}">${em}</button>`;
     }).join('');
-    return `<div class="emotion-category"><span class="emotion-cat-label">${cat.label}</span><div class="emotion-chips-row">${chips}</div></div>`;
+    return `
+      <div class="emotion-category">
+        <div class="emotion-cat-header">
+          <span class="emotion-cat-dot" style="background:${cat.color};"></span>
+          <span class="emotion-cat-label">${cat.label}</span>
+        </div>
+        <div class="emotion-chips-row">${chips}</div>
+      </div>`;
   }).join('');
 
+  const note = PLUTCHIK_NOTE[currentLang] || PLUTCHIK_NOTE.ko;
   const hintLang = { ko: '탭하여 강도 조절 · 드래그하여 이동', en: 'Tap to adjust · Drag to move', ja: 'タップで調整 · ドラッグで移動' };
   const hint = hintLang[currentLang] || hintLang.ko;
 
@@ -119,6 +179,7 @@ function renderMind() {
       <div class="emotion-picker">
         ${pickerHtml}
       </div>
+      <p class="plutchik-note">* ${note}</p>
       <div class="work-area" style="padding:0;overflow:hidden;">
         <div class="mind-room" id="mind-room">
           ${data.length === 0 ? `
@@ -154,7 +215,6 @@ function addMindEmotion(emotion, colorIndex) {
     renderCurrentPage();
     return;
   }
-  // Use actual DOM chip rects for accurate overlap detection
   const room = document.getElementById('mind-room');
   const rW = room ? room.offsetWidth : 420;
   const rH = room ? room.offsetHeight : 420;
@@ -270,13 +330,11 @@ function startDragMind(e, index) {
   const dragOffsetX = startPointerX - startItemX;
   const dragOffsetY = startPointerY - startItemY;
   let moved = false;
-  // Compute bounds based on actual chip size so chips never overflow the room
   const chipEl = document.querySelector(`.mind-chip-inside[data-index="${index}"]`);
   const chipW = chipEl ? chipEl.offsetWidth : 80;
   const chipH = chipEl ? chipEl.offsetHeight : 40;
   const maxPx = Math.max(0, (1 - chipW / rect.width) * 100);
   const maxPy = Math.max(0, (1 - chipH / rect.height) * 100);
-  // Track cursor offset from chip's top-left to prevent jump on drag start
   const chipElRect = chipEl ? chipEl.getBoundingClientRect() : null;
   const offsetX = chipElRect ? (startX - chipElRect.left) / rect.width * 100 : 0;
   const offsetY = chipElRect ? (startY - chipElRect.top) / rect.height * 100 : 0;
@@ -308,7 +366,6 @@ function startDragMind(e, index) {
           saveModuleData('mind', d);
         }
       } else {
-        // Toggle active (show controls)
         setMindActive(mindDragging === mindActiveIndex ? null : mindDragging);
       }
     }

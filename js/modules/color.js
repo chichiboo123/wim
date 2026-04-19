@@ -28,7 +28,8 @@ const MAX_PALETTE_SPOTS = 30;
 
 // Compute N equally-spaced positions on the palette rim ellipse
 function computePaletteSpots(count) {
-  const cx = 202, cy = 147, rx = 162, ry = 117;
+  // Shifted right+up so spots clear the thumb ellipse at (88,218)
+  const cx = 220, cy = 128, rx = 138, ry = 92;
   const spots = [];
   for (let i = 0; i < count; i++) {
     const angle = (i / count) * Math.PI * 2 - Math.PI / 2;
