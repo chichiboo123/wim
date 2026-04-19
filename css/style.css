@@ -217,7 +217,7 @@ input, textarea, select {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: clamp(16px, 2vw, 28px);
+  gap: clamp(12px, 1.4vw, 20px);
   margin-bottom: 16px;
   padding-top: 6px;
   min-height: calc(100vh - 200px);

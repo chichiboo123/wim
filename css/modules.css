@@ -340,11 +340,12 @@
   word-break: keep-all;
   user-select: none;
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 4px;
+  justify-content: center;
   touch-action: none;
   will-change: left, top;
+  min-height: 38px;
+  box-sizing: border-box;
 }
 
 .mind-chip-inside:active {
@@ -358,12 +359,20 @@
 }
 
 .mind-chip-controls {
-  display: none;
+  position: absolute;
+  left: 50%;
+  top: calc(100% + 6px);
+  transform: translateX(-50%);
+  display: flex;
   gap: 3px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease;
 }
 
 .mind-chip-inside.mind-active .mind-chip-controls {
-  display: flex;
+  opacity: 1;
+  pointer-events: auto;
 }
 
 .mind-chip-inside.mind-active {
@@ -416,16 +425,28 @@
   margin-bottom: 16px;
 }
 
-.emotion-category {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
+.emotion-categories-grid {
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  gap: 8px;
 }
 
-.emotion-cat-header {
+.emotion-category-cell {
   display: flex;
   align-items: center;
   gap: 6px;
+  border: 1px solid var(--border);
+  background: var(--card-bg);
+  border-radius: 10px;
+  min-height: 42px;
+  padding: 7px 8px;
+  cursor: pointer;
+  justify-content: center;
+}
+
+.emotion-category-cell.active {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px rgba(59,130,246,0.22);
 }
 
 .emotion-cat-dot {
@@ -437,10 +458,11 @@
 }
 
 .emotion-cat-label {
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   font-weight: 700;
   color: var(--text-secondary);
   letter-spacing: 0.02em;
+  line-height: 1.1;
 }
 
 .plutchik-note {
@@ -456,6 +478,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
+  justify-content: center;
 }
 
 /* ===== COLOR MODULE ===== */
@@ -1112,6 +1135,11 @@
   /* Mind */
   .mind-room {
     min-height: 320px;
+  }
+
+  .emotion-categories-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 6px;
   }
 
   .emotion-chips-row {
