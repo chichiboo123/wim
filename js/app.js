@@ -102,19 +102,6 @@ function renderDashboard() {
         ${MODULES.slice(4).map(heroBtn).join('')}
       </div>
     </div>
-    <div class="module-grid module-grid-mobile">
-      ${MODULES.map(m => {
-        const count = (allData[m.id] || []).length;
-        return `
-          <button class="module-card" onclick="navigateTo('${m.id}')" aria-label="${t(m.titleKey)}">
-            <span class="material-icons">${m.icon}</span>
-            <h3 data-i18n="${m.titleKey}">${t(m.titleKey)}</h3>
-            <p data-i18n="${m.descKey}">${t(m.descKey)}</p>
-            ${count > 0 ? `<span class="card-badge">${count}</span>` : ''}
-          </button>
-        `;
-      }).join('')}
-    </div>
   `;
 }
 
@@ -181,6 +168,12 @@ function setThemeFromMenu(theme) {
 function triggerBackupDownload() {
   exportJSON();
   closeBackupMenu();
+}
+
+function closeBackupOutside(event) {
+  if (event.target === event.currentTarget) {
+    document.getElementById('backup-modal').style.display = 'none';
+  }
 }
 
 function resetCurrentModule() {
