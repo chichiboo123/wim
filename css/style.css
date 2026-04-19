@@ -252,19 +252,19 @@ input, textarea, select {
 .hero-side-modules {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  width: 156px;
+  gap: 14px;
+  width: 200px;
   flex-shrink: 0;
 }
 
 .hero-module-btn {
   background: var(--card-bg);
-  border-radius: 12px;
-  padding: 14px 10px;
+  border-radius: 16px;
+  padding: 26px 16px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
+  gap: 10px;
   cursor: pointer;
   border: 1px solid var(--border);
   transition: transform 0.15s, box-shadow 0.15s;
@@ -275,17 +275,17 @@ input, textarea, select {
 }
 
 .hero-module-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px var(--shadow);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 18px var(--shadow);
 }
 
 .hero-module-btn .material-icons {
-  font-size: 30px;
+  font-size: 46px;
   color: var(--primary);
 }
 
 .hero-module-btn .btn-label {
-  font-size: 0.86rem;
+  font-size: 1rem;
   font-weight: 600;
   line-height: 1.2;
 }
@@ -846,19 +846,24 @@ button.chip {
     gap: 8px;
   }
 
+  .hero-side-modules {
+    width: 100%;
+  }
+
   .hero-module-btn {
-    flex: 1 0 74px;
-    max-width: 104px;
-    min-height: 84px;
-    padding: 10px 6px;
+    flex: 1 0 80px;
+    max-width: 120px;
+    min-height: 100px;
+    padding: 14px 8px;
+    gap: 8px;
   }
 
   .hero-module-btn .material-icons {
-    font-size: 24px;
+    font-size: 32px;
   }
 
   .hero-module-btn .btn-label {
-    font-size: 0.72rem;
+    font-size: 0.78rem;
   }
 
   /* 모듈 페이지 */
