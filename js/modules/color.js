@@ -176,13 +176,14 @@ function renderColor() {
       <div class="work-area">
         <div class="palette-grid" id="palette-grid">
           ${slotMode
-            ? Array.from({length: Math.min(meta.paletteCount, ALL_PALETTE_SPOTS.length)}, (_, i) => {
+            ? Array.from({length: Math.min(meta.paletteCount, MAX_PALETTE_SPOTS)}, (_, i) => {
                 const item = data[i];
                 const filled = item && item.color;
                 return `
                   <div class="palette-slot${filled ? '' : ' palette-slot-empty'}">
                     <div class="palette-color-area" style="background:${filled ? item.color : 'var(--bg-secondary)'};" onclick="pickColor(${i})">
                       <span class="material-icons">${filled ? 'colorize' : 'add'}</span>
+                      ${filled ? `<span class="delete-btn" onclick="event.stopPropagation();deleteColor(${i})">&times;</span>` : ''}
                     </div>
                     <div class="palette-info">
                       ${filled
@@ -264,7 +265,13 @@ function toggleColorPickerPanel() {
 function addPresetColor(color) {
   colorPickerOpen = false;
   const data = getModuleData('color');
-  data.push({ color, name: t('colorNamePlaceholder') });
+  const slotIndex = getNextAvailableColorSlot(data);
+  if (slotIndex >= 0) {
+    data[slotIndex] = { color, name: t('colorNamePlaceholder') };
+  } else {
+    showToast(t('toastPaletteFull'));
+    return;
+  }
   saveModuleData('color', data);
   renderCurrentPage();
 }
@@ -299,7 +306,14 @@ function applyColor(event) {
   if (editingColorIndex === -2) {
     colorPickerOpen = false;
     const data = getModuleData('color');
-    data.push({ color: event.target.value, name: t('colorNamePlaceholder') });
+    const slotIndex = getNextAvailableColorSlot(data);
+    if (slotIndex >= 0) {
+      data[slotIndex] = { color: event.target.value, name: t('colorNamePlaceholder') };
+    } else {
+      showToast(t('toastPaletteFull'));
+      editingColorIndex = -1;
+      return;
+    }
     saveModuleData('color', data);
     renderCurrentPage();
     editingColorIndex = -1;
@@ -315,6 +329,18 @@ function applyColor(event) {
     renderCurrentPage();
   }
   editingColorIndex = -1;
+}
+
+function getNextAvailableColorSlot(data) {
+  const meta = getColorMeta();
+  if (meta.paletteCount > 0) {
+    const maxCount = Math.min(meta.paletteCount, MAX_PALETTE_SPOTS);
+    for (let i = 0; i < maxCount; i++) {
+      if (!data[i] || !data[i].color) return i;
+    }
+    return -1;
+  }
+  return data.length;
 }
 
 function updateColorName(index, name) {

@@ -591,18 +591,19 @@
 /* ===== MUSIC MODULE ===== */
 .music-playlist-header {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
-  gap: 22px;
+  flex-wrap: wrap;
+  gap: 28px;
   margin-bottom: 20px;
-  padding: 16px;
+  padding: 18px;
   background: var(--card-bg);
   border-radius: 14px;
   border: 1px solid var(--border);
 }
 
 .music-playlist-thumb {
-  width: 200px;
+  width: clamp(280px, 40vw, 420px);
   aspect-ratio: 16 / 9;
   height: auto;
   border-radius: 12px;
@@ -667,6 +668,7 @@
   display: flex;
   flex-direction: column;
   gap: 4px;
+  min-width: 140px;
 }
 
 .music-playlist-title {
@@ -1118,7 +1120,7 @@
   }
 
   .music-playlist-thumb {
-    width: min(52vw, 220px);
+    width: min(86vw, 420px);
   }
 
   .music-item {

@@ -23,7 +23,7 @@ function renderTime() {
               </svg>
             </div>
             <p style="text-align:center;font-size:0.72rem;color:var(--text-secondary);margin-top:4px;opacity:0.8;">
-              원 클릭 → 시작 시간 &nbsp;|&nbsp; 재클릭 → 종료 시간 &nbsp;(30분 단위)
+              ${t('timeChartHint')}
             </p>
           </div>
           <div class="time-list-wrap">
@@ -179,7 +179,7 @@ function handleTimeSvgClick(event) {
     dot.setAttribute('fill', 'var(--primary)');
     dot.setAttribute('id', 'time-start-dot');
     svg.appendChild(dot);
-    showToast(`시작 ${label} → 종료 시간을 클릭하세요`);
+    showToast(t('toastTimeSelectEnd').replace('{time}', label));
   } else {
     const eH = document.getElementById('time-end-h');
     const eM = document.getElementById('time-end-m');
@@ -189,7 +189,7 @@ function handleTimeSvgClick(event) {
     const dot = svg.querySelector('#time-start-dot');
     if (dot) dot.remove();
     setTimeout(() => { const t = document.getElementById('time-task'); if (t) t.focus(); }, 50);
-    showToast(`종료 ${label} — 할 일을 입력하고 추가하세요`);
+    showToast(t('toastTimeFillTask').replace('{time}', label));
   }
 }
 
@@ -240,6 +240,7 @@ function addTimeTask() {
   const maxHour = timeMode24 ? 24 : 12;
 
   if (isNaN(start) || isNaN(rawEnd)) { showToast(t('toastTimeNeedNumber')); return; }
+  if (!isHalfHourStep(start) || !isHalfHourStep(rawEnd)) { showToast(t('toastTimeHalfHour')); return; }
   if (!task) { showToast(t('toastNeedTaskName')); return; }
   if (start < 0 || start >= maxHour || rawEnd < 0 || rawEnd > maxHour) {
     showToast(t('toastTimeOutOfRange')); return;
@@ -251,6 +252,13 @@ function addTimeTask() {
   if (start >= end) { showToast(t('toastTimeRangeInvalid')); return; }
 
   const data = getModuleData('time');
+  if (data.length > 0) {
+    const expectedStart = data[data.length - 1].end % maxHour;
+    if (Math.abs(start - expectedStart) > 0.0001) {
+      showToast(t('toastTimeMustBeContinuous'));
+      return;
+    }
+  }
   data.push({ start, end, task, color: TIME_COLORS[data.length % TIME_COLORS.length] });
   saveModuleData('time', data);
   renderCurrentPage();
@@ -259,8 +267,13 @@ function addTimeTask() {
 function readTimeValue(hourId, minId) {
   const h = parseInt(document.getElementById(hourId).value, 10);
   const m = parseInt(document.getElementById(minId).value, 10);
-  if (isNaN(h) || isNaN(m)) return NaN;
+  if (isNaN(h) || isNaN(m) || m < 0 || m > 59) return NaN;
   return h + (m / 60);
+}
+
+function isHalfHourStep(v) {
+  const minutePart = Math.round((v % 1) * 60);
+  return minutePart === 0 || minutePart === 30;
 }
 
 function deleteTimeTask(index) {
