@@ -42,6 +42,7 @@ async function captureModuleCanvas() {
     allowTaint: true,
     backgroundColor: '#ffffff',
     scale: getExportScale(),
+    foreignObjectRendering: true,
     imageTimeout: 0,
   });
 }
@@ -67,13 +68,15 @@ async function exportPDF() {
     const { jsPDF } = window.jspdf;
     // PNG avoids JPEG artifacts so exported text/UI stays sharp.
     const imgData = canvas.toDataURL('image/png');
+    // 1 CSS px = 0.75 pt (96dpi CSS pixel model)
+    const widthPt = canvas.width * 0.75;
+    const heightPt = canvas.height * 0.75;
     const pdf = new jsPDF({
       orientation: canvas.width > canvas.height ? 'landscape' : 'portrait',
-      unit: 'px',
-      format: [canvas.width, canvas.height],
-      hotfixes: ['px_scaling'],
+      unit: 'pt',
+      format: [widthPt, heightPt],
     });
-    pdf.addImage(imgData, 'PNG', 0, 0, canvas.width, canvas.height);
+    pdf.addImage(imgData, 'PNG', 0, 0, widthPt, heightPt);
     pdf.save(`whats-in-my-${currentPage}-${Date.now()}.pdf`);
     showToast(t('toastExported'));
   } catch {
