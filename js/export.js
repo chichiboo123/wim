@@ -29,11 +29,28 @@ function getCaptureTarget() {
   return document.querySelector('.module-page') || document.querySelector('.work-area') || document.getElementById('app-content');
 }
 
+function getExportScale() {
+  // Higher DPR capture keeps text/vector-like edges crisp in exported files.
+  const dpr = window.devicePixelRatio || 1;
+  return Math.min(4, Math.max(2, dpr));
+}
+
+async function captureModuleCanvas() {
+  const target = getCaptureTarget();
+  return html2canvas(target, {
+    useCORS: true,
+    allowTaint: true,
+    backgroundColor: '#ffffff',
+    scale: getExportScale(),
+    foreignObjectRendering: true,
+    imageTimeout: 0,
+  });
+}
+
 async function exportJPG() {
   closeFab();
   try {
-    const target = getCaptureTarget();
-    const canvas = await html2canvas(target, { useCORS: true, allowTaint: true, backgroundColor: '#ffffff', scale: 2 });
+    const canvas = await captureModuleCanvas();
     const link = document.createElement('a');
     link.download = `whats-in-my-${currentPage}-${Date.now()}.jpg`;
     link.href = canvas.toDataURL('image/jpeg', 0.95);
@@ -47,16 +64,19 @@ async function exportJPG() {
 async function exportPDF() {
   closeFab();
   try {
-    const target = getCaptureTarget();
-    const canvas = await html2canvas(target, { useCORS: true, allowTaint: true, backgroundColor: '#ffffff', scale: 2 });
+    const canvas = await captureModuleCanvas();
     const { jsPDF } = window.jspdf;
-    const imgData = canvas.toDataURL('image/jpeg', 0.95);
+    // PNG avoids JPEG artifacts so exported text/UI stays sharp.
+    const imgData = canvas.toDataURL('image/png');
+    // 1 CSS px = 0.75 pt (96dpi CSS pixel model)
+    const widthPt = canvas.width * 0.75;
+    const heightPt = canvas.height * 0.75;
     const pdf = new jsPDF({
       orientation: canvas.width > canvas.height ? 'landscape' : 'portrait',
-      unit: 'px',
-      format: [canvas.width, canvas.height]
+      unit: 'pt',
+      format: [widthPt, heightPt],
     });
-    pdf.addImage(imgData, 'JPEG', 0, 0, canvas.width, canvas.height);
+    pdf.addImage(imgData, 'PNG', 0, 0, widthPt, heightPt);
     pdf.save(`whats-in-my-${currentPage}-${Date.now()}.pdf`);
     showToast(t('toastExported'));
   } catch {
@@ -67,8 +87,7 @@ async function exportPDF() {
 async function exportClipboard() {
   closeFab();
   try {
-    const target = getCaptureTarget();
-    const canvas = await html2canvas(target, { useCORS: true, allowTaint: true, backgroundColor: '#ffffff', scale: 2 });
+    const canvas = await captureModuleCanvas();
     canvas.toBlob(async (blob) => {
       try {
         await navigator.clipboard.write([
