@@ -79,10 +79,15 @@ function renderDashboard() {
 
   function heroBtn(m) {
     const count = (allData[m.id] || []).length;
+    const label = t(m.titleKey);
+    const splitIdx = label.indexOf(' (');
+    const labelHtml = splitIdx !== -1
+      ? `${escapeHtml(label.slice(0, splitIdx))}<br><span class="btn-label-sub">${escapeHtml(label.slice(splitIdx + 1))}</span>`
+      : escapeHtml(label);
     return `
-      <button class="hero-module-btn" onclick="navigateTo('${m.id}')" aria-label="${t(m.titleKey)}">
+      <button class="hero-module-btn" onclick="navigateTo('${m.id}')" aria-label="${escapeHtml(label)}">
         <span class="material-icons">${m.icon}</span>
-        <span class="btn-label">${t(m.titleKey)}</span>
+        <span class="btn-label">${labelHtml}</span>
         ${count > 0 ? `<span class="card-badge">${count}</span>` : ''}
       </button>
     `;
