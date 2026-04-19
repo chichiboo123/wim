@@ -218,6 +218,13 @@ function startDragMind(e, index) {
   const rect = room.getBoundingClientRect();
   const startX = isTouchEvent ? e.touches[0].clientX : e.clientX;
   const startY = isTouchEvent ? e.touches[0].clientY : e.clientY;
+  const data = getModuleData('mind');
+  const startItemX = data[index]?.x ?? 0;
+  const startItemY = data[index]?.y ?? 0;
+  const startPointerX = ((startX - rect.left) / rect.width) * 100;
+  const startPointerY = ((startY - rect.top) / rect.height) * 100;
+  const dragOffsetX = startPointerX - startItemX;
+  const dragOffsetY = startPointerY - startItemY;
   let moved = false;
   // Compute bounds based on actual chip size so chips never overflow the room
   const chipEl = document.querySelector(`.mind-chip-inside[data-index="${index}"]`);

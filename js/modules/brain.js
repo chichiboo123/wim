@@ -141,6 +141,13 @@ function startDragBrain(e, index) {
   brainDragging = index;
   const canvas = document.getElementById('brain-canvas');
   const rect = canvas.getBoundingClientRect();
+  const data = getModuleData('brain');
+  const startItemX = data[index]?.x ?? 0;
+  const startItemY = data[index]?.y ?? 0;
+  const startPointerX = ((startClientX - rect.left) / rect.width) * 100;
+  const startPointerY = ((startClientY - rect.top) / rect.height) * 100;
+  const dragOffsetX = startPointerX - startItemX;
+  const dragOffsetY = startPointerY - startItemY;
 
   const onMove = (ev) => {
     if (brainDragging === null) return;
@@ -153,10 +160,12 @@ function startDragBrain(e, index) {
     ev.preventDefault();
     const box = document.querySelector(`.brain-text-box[data-index="${brainDragging}"]`);
     if (box) {
-      const px = ((cx - rect.left) / rect.width * 100).toFixed(1);
-      const py = ((cy - rect.top) / rect.height * 100).toFixed(1);
-      box.style.left = Math.max(0, Math.min(parseFloat(px), 90)) + '%';
-      box.style.top = Math.max(0, Math.min(parseFloat(py), 90)) + '%';
+      const pointerX = ((cx - rect.left) / rect.width) * 100;
+      const pointerY = ((cy - rect.top) / rect.height) * 100;
+      const nextX = Math.max(0, Math.min(pointerX - dragOffsetX, 90));
+      const nextY = Math.max(0, Math.min(pointerY - dragOffsetY, 90));
+      box.style.left = nextX.toFixed(1) + '%';
+      box.style.top = nextY.toFixed(1) + '%';
     }
   };
 
