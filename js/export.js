@@ -37,20 +37,50 @@ function getExportScale() {
 
 async function captureModuleCanvas() {
   const target = getCaptureTarget();
+
+  // Temporarily hide chrome outside the module to prevent bleed-through in the capture.
+  const toHide = [
+    document.getElementById('app-header'),
+    document.getElementById('app-footer'),
+    document.getElementById('fab-container'),
+  ].filter(Boolean);
+  toHide.forEach(el => { el.dataset.capVis = el.style.visibility; el.style.visibility = 'hidden'; });
+
+  // backdrop-filter is unsupported by html2canvas; disable it to prevent colour-wash artefacts.
+  // Also freeze any in-progress fadeIn animation so opacity is always 1 during capture.
+  const capStyle = document.createElement('style');
+  capStyle.textContent = [
+    '* { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; }',
+    '.module-page { animation: none !important; opacity: 1 !important; }',
+  ].join('\n');
+  document.head.appendChild(capStyle);
+
+  // Ensure every <img> is fully decoded before html2canvas reads the pixels.
+  await Promise.all(
+    Array.from(target.querySelectorAll('img')).map(img =>
+      img.decode ? img.decode().catch(() => {}) : Promise.resolve()
+    )
+  );
+
   const rect = target.getBoundingClientRect();
-  return html2canvas(target, {
-    useCORS: true,
-    allowTaint: true,
-    backgroundColor: '#ffffff',
-    scale: getExportScale(),
-    width: Math.ceil(rect.width),
-    height: Math.ceil(rect.height),
-    x: 0,
-    y: 0,
-    scrollX: -window.scrollX,
-    scrollY: -window.scrollY,
-    imageTimeout: 0,
-  });
+  try {
+    return await html2canvas(target, {
+      useCORS: true,
+      allowTaint: true,
+      backgroundColor: '#ffffff',
+      scale: getExportScale(),
+      width: Math.ceil(rect.width),
+      height: Math.ceil(rect.height),
+      x: 0,
+      y: 0,
+      scrollX: -window.scrollX,
+      scrollY: -window.scrollY,
+      imageTimeout: 0,
+    });
+  } finally {
+    toHide.forEach(el => { el.style.visibility = el.dataset.capVis || ''; delete el.dataset.capVis; });
+    capStyle.remove();
+  }
 }
 
 async function exportJPG() {
@@ -72,11 +102,11 @@ async function exportPDF() {
   try {
     const canvas = await captureModuleCanvas();
     const { jsPDF } = window.jspdf;
-    // PNG avoids JPEG artifacts so exported text/UI stays sharp.
     const imgData = canvas.toDataURL('image/png');
-    // 1 CSS px = 0.75 pt (96dpi CSS pixel model)
-    const widthPt = canvas.width * 0.75;
-    const heightPt = canvas.height * 0.75;
+    // canvas is scale× the CSS size; divide back to CSS px, then 1 CSS px = 0.75 pt.
+    const scale = getExportScale();
+    const widthPt  = (canvas.width  / scale) * 0.75;
+    const heightPt = (canvas.height / scale) * 0.75;
     const pdf = new jsPDF({
       orientation: canvas.width > canvas.height ? 'landscape' : 'portrait',
       unit: 'pt',
