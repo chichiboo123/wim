@@ -48,10 +48,17 @@ async function captureModuleCanvas() {
 
   // backdrop-filter is unsupported by html2canvas; disable it to prevent colour-wash artefacts.
   // Also freeze any in-progress fadeIn animation so opacity is always 1 during capture.
+  // Hide all interactive/functional buttons and forms so they don't appear in the export.
   const capStyle = document.createElement('style');
   capStyle.textContent = [
     '* { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; }',
     '.module-page { animation: none !important; opacity: 1 !important; }',
+    '.bag-toolbar, .bag-selection-panel, .brain-toolbar, .rel-form,',
+    '.music-form, .word-form-row, .time-form, .emotion-picker,',
+    '.list-item-actions, .music-reorder, .delete-handle,',
+    '.music-playlist-thumb-remove, .mind-chip-controls,',
+    '.rel-node-delete, .delete-btn, .color-top-bar, .color-picker-panel',
+    '{ display: none !important; }',
   ].join('\n');
   document.head.appendChild(capStyle);
 
