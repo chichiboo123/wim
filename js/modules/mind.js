@@ -233,6 +233,7 @@ function renderMind() {
           `).join('')}
         </div>
       </div>
+      ${reflectionBlockHtml('mind')}
     </div>
   `;
 }

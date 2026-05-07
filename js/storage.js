@@ -35,8 +35,44 @@ function getDefaultData() {
     word: [],
     relationship: [],
     money: { budget: 10000, items: [], reflection: '' },
-    app: { icons: [], reflection: '' }
+    app: { icons: [], reflection: '' },
+    reflections: { bag: '', time: '', brain: '', mind: '', color: '', music: '', word: '', relationship: '' },
+    reportName: ''
   };
+}
+
+function getReflection(moduleId) {
+  if (moduleId === 'money' || moduleId === 'app') {
+    const all = loadAllData();
+    const m = all[moduleId];
+    return (m && typeof m === 'object' && !Array.isArray(m)) ? (m.reflection || '') : '';
+  }
+  const all = loadAllData();
+  const r = all.reflections || {};
+  return r[moduleId] || '';
+}
+
+function saveReflection(moduleId, text) {
+  const all = loadAllData();
+  if (moduleId === 'money' || moduleId === 'app') {
+    if (!all[moduleId] || Array.isArray(all[moduleId])) all[moduleId] = (moduleId === 'money') ? { budget: 10000, items: [], reflection: '' } : { icons: [], reflection: '' };
+    all[moduleId].reflection = text;
+  } else {
+    if (!all.reflections || typeof all.reflections !== 'object') all.reflections = {};
+    all.reflections[moduleId] = text;
+  }
+  saveAllData(all);
+}
+
+function getReportName() {
+  const all = loadAllData();
+  return all.reportName || '';
+}
+
+function saveReportName(name) {
+  const all = loadAllData();
+  all.reportName = name;
+  saveAllData(all);
 }
 
 function restoreData() {
@@ -73,6 +109,7 @@ function isValidRestoreData(data) {
     const expected = defaultData[key];
     if (data[key] === undefined) return true; // accept older backups missing newer keys
     if (Array.isArray(expected)) return Array.isArray(data[key]);
+    if (typeof expected === 'string') return typeof data[key] === 'string';
     return typeof data[key] === 'object' && data[key] !== null && !Array.isArray(data[key]);
   });
 }

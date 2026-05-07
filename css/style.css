@@ -381,11 +381,13 @@ button.module-card {
 }
 
 .module-title {
-  font-family: 'Black Han Sans', sans-serif; /* 모듈 페이지 타이틀 */
-  font-size: 1.6rem;
+  font-family: 'Pretendard GOV', 'Pretendard', sans-serif;
+  font-weight: 500;
+  font-size: 1.5rem;
   color: var(--primary);
   margin-bottom: 20px;
   text-align: center;
+  letter-spacing: 0.02em;
 }
 
 .work-area {
@@ -553,6 +555,128 @@ button.module-card {
   display: flex;
   flex-direction: column;
   gap: 10px;
+}
+
+/* ===== Report Modal ===== */
+.report-modal-content {
+  max-width: 720px;
+  width: 92%;
+}
+.report-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+.report-actions .btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.report-body {
+  padding: 0;
+}
+.report-sheet {
+  background: #ffffff;
+  color: #2C3E50;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 28px 28px 30px;
+}
+.report-sheet-header {
+  text-align: center;
+  border-bottom: 2px solid var(--primary-light);
+  padding-bottom: 14px;
+  margin-bottom: 16px;
+}
+.report-sheet-title {
+  font-family: 'Pretendard GOV', 'Pretendard', sans-serif;
+  font-weight: 600;
+  font-size: 1.6rem;
+  color: var(--primary);
+  margin-bottom: 4px;
+}
+.report-sheet-subtitle {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+.report-sheet-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 18px;
+  padding-bottom: 12px;
+  border-bottom: 1px dashed var(--border);
+}
+.report-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  min-width: 200px;
+}
+.report-meta-label {
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: var(--primary);
+  white-space: nowrap;
+}
+.report-meta-value {
+  font-size: 0.9rem;
+  color: var(--text);
+}
+.report-name-input {
+  flex: 1;
+  font-size: 0.9rem;
+  padding: 6px 10px;
+}
+.report-empty {
+  padding: 32px 16px;
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+.report-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.report-section {
+  border-left: 4px solid var(--primary-light);
+  padding: 6px 14px 10px;
+  background: var(--primary-pale);
+  border-radius: 0 10px 10px 0;
+}
+.report-section-head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+.report-section-icon {
+  font-size: 18px;
+  color: var(--primary);
+}
+.report-section-title {
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--primary);
+}
+.report-section-text {
+  font-size: 0.9rem;
+  color: var(--text);
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+@media (max-width: 600px) {
+  .report-sheet {
+    padding: 18px 16px 22px;
+  }
+  .report-sheet-title {
+    font-size: 1.3rem;
+  }
 }
 
 /* ===== Form Elements ===== */

@@ -32,6 +32,7 @@ function renderBrain() {
           `).join('')}
         </div>
       </div>
+      ${reflectionBlockHtml('brain')}
     </div>
   `;
 }

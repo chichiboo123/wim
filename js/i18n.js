@@ -2,12 +2,42 @@
 const TRANSLATIONS = {
   ko: {
     appTitle: "What's In My",
-    subtitle: "나를 탐색하는 8가지 방법",
+    subtitle: "나를 탐색하는 10가지 방법",
     helpTitle: "사용법 안내",
     backupTitle: "백업 / 복원",
     backupDownload: "백업 다운로드 (JSON)",
     backupUpload: "백업 업로드 (JSON)",
     clipboard: "복사",
+    reportTitle: "성찰 보고서",
+    reportNameLabel: "이름",
+    reportNamePh: "이름을 입력하세요",
+    reportEmpty: "아직 작성된 성찰 글이 없어요. 모듈에서 성찰 글쓰기를 채워보세요.",
+    reportDownloadJpg: "JPG 다운로드",
+    reportCopyJpg: "JPG 복사",
+    reportCopyText: "텍스트 복사",
+    reportDownloadTxt: "TXT 다운로드",
+    reportNoName: "이름 없음",
+    reportDate: "작성일",
+
+    // Reflection labels per module
+    bagReflect: "내 가방으로 보는 나",
+    bagReflectPh: "가방 안의 물건들이 나의 어떤 모습을 보여주나요?",
+    timeReflect: "내 시간 사용으로 보는 나",
+    timeReflectPh: "하루 시간을 어떻게 쓰는 나는 어떤 사람인가요?",
+    brainReflect: "내 머릿속으로 보는 나",
+    brainReflectPh: "이 생각들에서 나의 어떤 모습이 보이나요?",
+    mindReflect: "내 감정으로 보는 나",
+    mindReflectPh: "지금 이 감정들이 나에게 무엇을 말해주나요?",
+    colorReflect: "내 색깔로 보는 나",
+    colorReflectPh: "내가 고른 색들은 나의 어떤 면을 닮았나요?",
+    musicReflect: "내 음악으로 보는 나",
+    musicReflectPh: "내가 좋아하는 음악들은 나의 어떤 모습을 보여주나요?",
+    wordReflect: "내 단어로 보는 나",
+    wordReflectPh: "이 단어들이 모여 만들어진 '나'는 어떤 사람인가요?",
+    relReflect: "내 관계로 보는 나",
+    relReflectPh: "내 곁의 사람들 속에서 나는 어떻게 살아가고 있나요?",
+    relationshipReflect: "내 관계로 보는 나",
+    relationshipReflectPh: "내 곁의 사람들 속에서 나는 어떻게 살아가고 있나요?",
 
     // Dashboard
     bagTitle: "가방",
@@ -125,28 +155,31 @@ const TRANSLATIONS = {
 
     // Help
     helpContent: `
-      <h3><span class="material-icons" style="vertical-align:-4px;font-size:1.1em;">apps</span> 테마 선택</h3>
-      <p>메인 화면의 8가지 테마 버튼 중 하나를 클릭하여 해당 탭으로 이동하세요.</p>
-      <h3><span class="material-icons" style="vertical-align:-4px;font-size:1.1em;">shopping_bag</span> 백 (Bag)</h3>
-      <p>텍스트·이모지·이미지를 가방 안에 자유롭게 배치하세요. 요소를 탭하면 크기 조절과 삭제 핸들이 나타나고, 드래그로 위치를 이동할 수 있습니다.</p>
-      <h3><span class="material-icons" style="vertical-align:-4px;font-size:1.1em;">psychology</span> 브레인 (Brain)</h3>
-      <p>[추가] 버튼으로 생각 풍선을 만들고, 탭하면 크기 조절·삭제 툴바가 나타납니다. 드래그로 위치를 자유롭게 이동하세요.</p>
-      <h3><span class="material-icons" style="vertical-align:-4px;font-size:1.1em;">favorite</span> 감정 (Emotion)</h3>
-      <p>로버트 플루치크의 감정의 바퀴를 기반으로 한 8가지 감정 카테고리에서 단어를 선택하면 마음의 방에 칩이 추가됩니다. [+][−]로 감정 강도를 조절하고, [✕]로 삭제합니다. 드래그로 위치도 바꿀 수 있어요.</p>
-      <h3><span class="material-icons" style="vertical-align:-4px;font-size:1.1em;">palette</span> 컬러 (Color)</h3>
-      <p>[+ 색상 추가]를 눌러 60가지 프리셋 색상 또는 직접 지정한 색을 팔레트에 추가하세요. 각 색상 카드를 클릭하면 색을 바꿀 수 있고, 색 이름란을 직접 클릭하여 나만의 이름을 붙일 수 있습니다.</p>
-      <h3><span class="material-icons" style="vertical-align:-4px;font-size:1.1em;">headphones</span> 뮤직 (Music)</h3>
-      <p>상단 커버 이미지를 클릭하여 플레이리스트 대표 이미지를 추가하세요 (원본 비율로 표시됩니다). 각 곡마다 썸네일·곡명·아티스트·추천 이유·YouTube URL을 입력하고, ▲▼ 버튼으로 트랙 순서를 바꿀 수 있습니다.</p>
-      <h3><span class="material-icons" style="vertical-align:-4px;font-size:1.1em;">group</span> 관계 (Relationship)</h3>
-      <p>이름을 입력하고 [추가]하면 관계 맵에 나타납니다. 드래그로 거리를 조절하고, [✕] 버튼으로 삭제하세요.</p>
-      <h3><span class="material-icons" style="vertical-align:-4px;font-size:1.1em;">palette</span> 테마 색상 변경</h3>
-      <p>우측 상단의 컬러 도트를 클릭하여 앱 전체 색상(파랑·초록·분홍·노랑)을 변경할 수 있습니다.</p>
-      <h3><span class="material-icons" style="vertical-align:-4px;font-size:1.1em;">language</span> 언어 변경</h3>
-      <p>우측 상단의 언어 선택 드롭다운으로 한국어/영어/일본어를 전환합니다.</p>
-      <h3><span class="material-icons" style="vertical-align:-4px;font-size:1.1em;">save</span> 데이터 백업 & 복원</h3>
-      <p>우측 상단 저장 아이콘으로 JSON 백업 다운로드 및 업로드 복원이 가능합니다.</p>
-      <h3><span class="material-icons" style="vertical-align:-4px;font-size:1.1em;">ios_share</span> 내보내기</h3>
-      <p>각 모듈 페이지 우측 하단 버튼으로 현재 화면을 JPG, PDF로 저장하거나 클립보드에 복사할 수 있습니다.</p>
+      <h3>10가지 모듈</h3>
+      <p>홈에서 가방·시간·브레인·감정·색깔·음악·단어·관계·돈·앱 모듈을 선택해 나를 탐색하세요.</p>
+      <h3>모듈 사용법</h3>
+      <ul>
+        <li><b>가방</b>: 텍스트·이모지·이미지를 추가하고 드래그로 배치, 클릭으로 크기·색 조정</li>
+        <li><b>시간</b>: 24h 원형 차트를 클릭해 시작/종료 시간을 잡고 할 일 입력</li>
+        <li><b>브레인</b>: 생각 풍선을 추가해 머릿속을 시각화 (드래그·크기조절)</li>
+        <li><b>감정</b>: 플루치크 8감정 중 단어를 선택해 칩 추가, [+/−]로 강도 조절</li>
+        <li><b>색깔</b>: 60가지 프리셋 또는 사용자 색을 팔레트에 추가</li>
+        <li><b>음악</b>: 곡명·아티스트·이유·URL을 입력해 나만의 플레이리스트</li>
+        <li><b>단어</b>: 나를 이루는 단어와 정의를 사전처럼 정리</li>
+        <li><b>관계</b>: 사람을 추가하고 거리를 드래그로 표현</li>
+        <li><b>돈</b>: 예산을 정하고 항목별 지출 계획을 가계부 형식으로 기록</li>
+        <li><b>앱</b>: Top 100 앱 또는 사용자 아이콘을 폰 화면에 배치, 마우스 오버/탭하면 앱 설명이 나타납니다</li>
+      </ul>
+      <h3>성찰 글쓰기</h3>
+      <p>각 모듈 하단의 "~로 보는 나" 칸에 자기 성찰 글을 작성하세요. 자동 저장됩니다.</p>
+      <h3>보고서</h3>
+      <p>상단의 <span class="material-icons" style="vertical-align:-4px;font-size:1.1em;">description</span> 아이콘을 누르면 작성한 성찰 글만 모아 한 페이지로 정리되며, JPG·텍스트로 내보내기/복사할 수 있습니다.</p>
+      <h3>테마·언어·백업</h3>
+      <p>우측 상단에서 색상 테마, 언어(한/영/일), JSON 백업·복원을 관리합니다.</p>
+      <h3>내보내기</h3>
+      <p>모듈 우측 하단 FAB로 현재 화면을 JPG·PDF·클립보드로 내보낼 수 있습니다.</p>
+      <h3>초기화</h3>
+      <p>현재 탭만 또는 전체 데이터를 한 번에 초기화할 수 있습니다.</p>
     `,
 
     // Empty state hints
@@ -183,12 +216,41 @@ const TRANSLATIONS = {
 
   en: {
     appTitle: "What's In My",
-    subtitle: "8 ways to explore yourself",
+    subtitle: "10 ways to explore yourself",
     helpTitle: "How to Use",
     backupTitle: "Backup / Restore",
     backupDownload: "Download Backup (JSON)",
     backupUpload: "Upload Backup (JSON)",
     clipboard: "Copy",
+    reportTitle: "Reflection Report",
+    reportNameLabel: "Name",
+    reportNamePh: "Enter your name",
+    reportEmpty: "No reflections yet. Try writing one in any module.",
+    reportDownloadJpg: "Download JPG",
+    reportCopyJpg: "Copy JPG",
+    reportCopyText: "Copy Text",
+    reportDownloadTxt: "Download TXT",
+    reportNoName: "No name",
+    reportDate: "Date",
+
+    bagReflect: "What my bag says about me",
+    bagReflectPh: "What do the things in your bag reveal about you?",
+    timeReflect: "What my time says about me",
+    timeReflectPh: "What does the way you spend your day say about you?",
+    brainReflect: "What my mind says about me",
+    brainReflectPh: "What do these thoughts reveal about you?",
+    mindReflect: "What my emotions say about me",
+    mindReflectPh: "What are these emotions telling you?",
+    colorReflect: "What my colors say about me",
+    colorReflectPh: "How do your chosen colors reflect you?",
+    musicReflect: "What my music says about me",
+    musicReflectPh: "What do your favorite songs reveal about you?",
+    wordReflect: "What my words say about me",
+    wordReflectPh: "Who are you, made up of these words?",
+    relReflect: "What my relationships say about me",
+    relReflectPh: "Among the people around you, how do you live?",
+    relationshipReflect: "What my relationships say about me",
+    relationshipReflectPh: "Among the people around you, how do you live?",
 
     bagTitle: "Bag",
     bagDesc: "What's in my bag?",
@@ -294,28 +356,31 @@ const TRANSLATIONS = {
     appEditTitle: "Edit App",
 
     helpContent: `
-      <h3><span class="material-icons" style="vertical-align:-4px;font-size:1.1em;">apps</span> Select Theme</h3>
-      <p>Click one of the 8 theme buttons on the main screen to open that section.</p>
-      <h3><span class="material-icons" style="vertical-align:-4px;font-size:1.1em;">shopping_bag</span> Bag</h3>
-      <p>Place text, emoji, or images inside the bag. Tap an item to show resize/delete handles; drag to move. Tap empty space to deselect.</p>
-      <h3><span class="material-icons" style="vertical-align:-4px;font-size:1.1em;">psychology</span> Brain</h3>
-      <p>Use [Add] to create thought bubbles. Tap a bubble to show the resize/delete toolbar. Drag to move freely.</p>
-      <h3><span class="material-icons" style="vertical-align:-4px;font-size:1.1em;">favorite</span> Emotion</h3>
-      <p>Choose words from 8 emotion categories based on Plutchik's Wheel of Emotions. Selected words appear as chips in your mind room. Use [+][−] to adjust intensity and [✕] to remove. Drag to reposition.</p>
-      <h3><span class="material-icons" style="vertical-align:-4px;font-size:1.1em;">palette</span> Color</h3>
-      <p>Press [+ Add Color] to pick from 60 preset swatches or enter a custom color. Click any color card to change it, and click the name to rename it with your own label.</p>
-      <h3><span class="material-icons" style="vertical-align:-4px;font-size:1.1em;">headphones</span> Music</h3>
-      <p>Click the cover image area at the top to upload a playlist thumbnail (shown at its natural proportions). Add each song with a thumbnail, title, artist, reason, and optional YouTube URL. Use ▲▼ to reorder tracks.</p>
-      <h3><span class="material-icons" style="vertical-align:-4px;font-size:1.1em;">group</span> Relationship</h3>
-      <p>Add people by name to build your relationship map. Drag nodes to adjust distance; tap [✕] to remove.</p>
-      <h3><span class="material-icons" style="vertical-align:-4px;font-size:1.1em;">palette</span> Change Theme Color</h3>
-      <p>Click the color dot in the top right to switch the app color (blue, green, pink, or yellow).</p>
-      <h3><span class="material-icons" style="vertical-align:-4px;font-size:1.1em;">language</span> Switch Language</h3>
-      <p>Use the language dropdown to switch between Korean, English, and Japanese.</p>
-      <h3><span class="material-icons" style="vertical-align:-4px;font-size:1.1em;">save</span> Backup & Restore</h3>
-      <p>Use the save icon in the top right to download or restore a JSON backup.</p>
-      <h3><span class="material-icons" style="vertical-align:-4px;font-size:1.1em;">ios_share</span> Export</h3>
-      <p>Use the FAB button on each module page to export the current view as JPG, PDF, or copy it to the clipboard.</p>
+      <h3>10 modules</h3>
+      <p>From the home screen pick Bag, Time, Brain, Emotion, Color, Music, Word, Relationship, Money, or App to explore yourself.</p>
+      <h3>Module guide</h3>
+      <ul>
+        <li><b>Bag</b>: Add text/emoji/image and drag to arrange; click to resize</li>
+        <li><b>Time</b>: Click the 24h clock to set start/end and add a task</li>
+        <li><b>Brain</b>: Add thought bubbles, drag and resize freely</li>
+        <li><b>Emotion</b>: Pick from 8 Plutchik emotion groups; use [+/−] for intensity</li>
+        <li><b>Color</b>: Add from 60 presets or pick a custom color</li>
+        <li><b>Music</b>: Add songs with title/artist/reason/URL</li>
+        <li><b>Word</b>: Define words that make up who you are</li>
+        <li><b>Relationship</b>: Add people and drag to express closeness</li>
+        <li><b>Money</b>: Set a budget and log items in a bankbook style</li>
+        <li><b>App</b>: Place Top 100 app icons on a phone screen — hover/tap shows a short description</li>
+      </ul>
+      <h3>Reflection writing</h3>
+      <p>Each module has a "What ... says about me" box at the bottom. Your text is auto-saved.</p>
+      <h3>Report</h3>
+      <p>Click the <span class="material-icons" style="vertical-align:-4px;font-size:1.1em;">description</span> icon in the header to gather all your reflections into one page; export as JPG or text.</p>
+      <h3>Theme · Language · Backup</h3>
+      <p>Use the icons on the top-right for theme color, language (KO/EN/JP), and JSON backup/restore.</p>
+      <h3>Export</h3>
+      <p>Use the FAB on each module page to export the current view as JPG, PDF, or copy to the clipboard.</p>
+      <h3>Reset</h3>
+      <p>You can reset just the current tab or all data at once.</p>
     `,
 
     // Empty state hints
@@ -351,12 +416,41 @@ const TRANSLATIONS = {
 
   ja: {
     appTitle: "What's In My",
-    subtitle: "自分を探る8つのテーマ",
+    subtitle: "自分を探る10のテーマ",
     helpTitle: "使い方ガイド",
     backupTitle: "バックアップ / 復元",
     backupDownload: "バックアップをダウンロード (JSON)",
     backupUpload: "バックアップをアップロード (JSON)",
     clipboard: "コピー",
+    reportTitle: "ふりかえりレポート",
+    reportNameLabel: "名前",
+    reportNamePh: "名前を入力",
+    reportEmpty: "ふりかえりがまだありません。各モジュールで書いてみましょう。",
+    reportDownloadJpg: "JPGダウンロード",
+    reportCopyJpg: "JPGコピー",
+    reportCopyText: "テキストコピー",
+    reportDownloadTxt: "TXTダウンロード",
+    reportNoName: "名前なし",
+    reportDate: "作成日",
+
+    bagReflect: "私のバッグから見えた私",
+    bagReflectPh: "バッグの中身からあなたのどんな姿が見えますか？",
+    timeReflect: "私の時間の使い方から見えた私",
+    timeReflectPh: "1日の過ごし方からあなたはどんな人ですか？",
+    brainReflect: "私の頭の中から見えた私",
+    brainReflectPh: "これらの考えからあなたの何が見えますか？",
+    mindReflect: "私の感情から見えた私",
+    mindReflectPh: "今の感情はあなたに何を伝えていますか？",
+    colorReflect: "私の色から見えた私",
+    colorReflectPh: "選んだ色たちはあなたのどんな面を表していますか？",
+    musicReflect: "私の音楽から見えた私",
+    musicReflectPh: "好きな音楽からあなたのどんな姿が見えますか？",
+    wordReflect: "私の言葉から見えた私",
+    wordReflectPh: "これらの言葉でできた「私」はどんな人ですか？",
+    relReflect: "私の人間関係から見えた私",
+    relReflectPh: "周りの人々の中であなたはどう生きていますか？",
+    relationshipReflect: "私の人間関係から見えた私",
+    relationshipReflectPh: "周りの人々の中であなたはどう生きていますか？",
 
     bagTitle: "バッグ (Bag)",
     bagDesc: "バッグの中には何がある？",
@@ -462,28 +556,31 @@ const TRANSLATIONS = {
     appEditTitle: "アプリ編集",
 
     helpContent: `
-      <h3><span class="material-icons" style="vertical-align:-4px;font-size:1.1em;">apps</span> テーマ選択</h3>
-      <p>メイン画面の8つのテーマボタンの一つをクリックして、各セクションに移動してください。</p>
-      <h3><span class="material-icons" style="vertical-align:-4px;font-size:1.1em;">shopping_bag</span> バッグ (Bag)</h3>
-      <p>テキスト・絵文字・画像をバッグに配置できます。タップするとサイズ調整・削除ハンドルが表示されます。ドラッグで移動し、空白をタップすると選択解除されます。</p>
-      <h3><span class="material-icons" style="vertical-align:-4px;font-size:1.1em;">psychology</span> ブレイン (Brain)</h3>
-      <p>[追加]ボタンで思考バブルを作成します。タップするとサイズ調整・削除ツールバーが表示されます。ドラッグで自由に移動できます。</p>
-      <h3><span class="material-icons" style="vertical-align:-4px;font-size:1.1em;">favorite</span> 感情 (Emotion)</h3>
-      <p>プルチックの感情の輪に基づく8つのカテゴリから感情の言葉を選んでチップを追加します。[+][−]で強度を調整し、[✕]で削除します。ドラッグで位置を移動できます。</p>
-      <h3><span class="material-icons" style="vertical-align:-4px;font-size:1.1em;">palette</span> カラー (Color)</h3>
-      <p>[+ 色を追加]を押して60色のプリセットまたは自由入力で色をパレットに追加します。色カードをクリックして色を変更し、名前欄をクリックして自分だけの名前をつけましょう。</p>
-      <h3><span class="material-icons" style="vertical-align:-4px;font-size:1.1em;">headphones</span> ミュージック (Music)</h3>
-      <p>上部のカバー画像エリアをクリックしてプレイリストのサムネイルを追加できます（元の縦横比で表示されます）。曲ごとにサムネイル・曲名・アーティスト・推薦理由・YouTube URLを入力し、▲▼でトラック順を変更できます。</p>
-      <h3><span class="material-icons" style="vertical-align:-4px;font-size:1.1em;">group</span> 関係 (Relationship)</h3>
-      <p>名前を入力して[追加]すると関係マップに表示されます。ドラッグで距離を調整し、[✕]で削除します。</p>
-      <h3><span class="material-icons" style="vertical-align:-4px;font-size:1.1em;">palette</span> カラー変更</h3>
-      <p>右上のカラードットをクリックしてアプリのテーマ（青・緑・ピンク・黄）を変更できます。</p>
-      <h3><span class="material-icons" style="vertical-align:-4px;font-size:1.1em;">language</span> 言語切替</h3>
-      <p>言語ドロップダウンで韓国語/英語/日本語を切り替えます。</p>
-      <h3><span class="material-icons" style="vertical-align:-4px;font-size:1.1em;">save</span> バックアップ＆復元</h3>
-      <p>右上の保存アイコンでJSONバックアップのダウンロードと復元ができます。</p>
-      <h3><span class="material-icons" style="vertical-align:-4px;font-size:1.1em;">ios_share</span> エクスポート</h3>
-      <p>各モジュールページのFABボタンで現在の画面をJPG、PDFで保存したり、クリップボードにコピーしたりできます。</p>
+      <h3>10のモジュール</h3>
+      <p>ホームでバッグ・タイム・ブレイン・感情・カラー・ミュージック・ワード・関係・お金・アプリを選んで自分を探りましょう。</p>
+      <h3>モジュールガイド</h3>
+      <ul>
+        <li><b>バッグ</b>: テキスト・絵文字・画像を追加してドラッグで配置</li>
+        <li><b>タイム</b>: 24h円形チャートで開始/終了を選び、タスクを入力</li>
+        <li><b>ブレイン</b>: 思考バブルを追加・ドラッグ・サイズ調整</li>
+        <li><b>感情</b>: プルチックの8感情から言葉を選び、[+/−]で強度調整</li>
+        <li><b>カラー</b>: 60プリセットまたは自由色をパレットに追加</li>
+        <li><b>ミュージック</b>: 曲名・アーティスト・理由・URLでプレイリスト作成</li>
+        <li><b>ワード</b>: 自分を作る言葉と定義を辞書のように整理</li>
+        <li><b>関係</b>: 人を追加し距離をドラッグで表現</li>
+        <li><b>お金</b>: 予算を決めて項目別の支出計画を家計簿形式で記録</li>
+        <li><b>アプリ</b>: Top 100アプリをスマホ画面に配置、ホバー/タップで簡単な説明が表示されます</li>
+      </ul>
+      <h3>ふりかえり書き込み</h3>
+      <p>各モジュール下部の「〜から見えた私」欄にふりかえりを書きます。自動保存されます。</p>
+      <h3>レポート</h3>
+      <p>ヘッダーの<span class="material-icons" style="vertical-align:-4px;font-size:1.1em;">description</span>アイコンを押すと、ふりかえりだけを集めた1ページに整理され、JPG・テキストでエクスポート/コピーできます。</p>
+      <h3>テーマ・言語・バックアップ</h3>
+      <p>右上のアイコンでテーマ色、言語、JSONバックアップ・復元ができます。</p>
+      <h3>エクスポート</h3>
+      <p>右下のFABボタンで現在の画面をJPG・PDF・クリップボードにエクスポートできます。</p>
+      <h3>リセット</h3>
+      <p>現在のタブだけ、または全データを一度にリセットできます。</p>
     `,
 
     // Empty state hints

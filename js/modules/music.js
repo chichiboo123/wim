@@ -131,6 +131,7 @@ function renderMusic() {
         </div>
 
       </div>
+      ${reflectionBlockHtml('music')}
     </div>
   `;
 }

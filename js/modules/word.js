@@ -31,6 +31,7 @@ function renderWord() {
           ` : ''}
         </div>
       </div>
+      ${reflectionBlockHtml('word')}
     </div>
   `;
 }
