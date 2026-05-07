@@ -204,7 +204,7 @@ input, textarea, select {
 /* ===== Main Content ===== */
 #app-content {
   flex: 1;
-  padding: 20px 20px 88px;
+  padding: 16px 20px 24px;
   max-width: 1240px;
   width: 100%;
   margin: 0 auto;
@@ -220,7 +220,7 @@ input, textarea, select {
   gap: clamp(12px, 1.4vw, 20px);
   margin-bottom: 16px;
   padding-top: 6px;
-  min-height: calc(100vh - 200px);
+  min-height: calc(100dvh - 150px);
 }
 
 .hero-center {
@@ -395,7 +395,7 @@ button.module-card {
   border-radius: 16px;
   border: 1px solid var(--border);
   padding: 24px;
-  min-height: 400px;
+  min-height: 320px;
   position: relative;
 }
 
