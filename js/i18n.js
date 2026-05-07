@@ -89,17 +89,23 @@ const TRANSLATIONS = {
     // Money
     moneyPageTitle: "나의 소비 계획",
     moneyBudget: "예산",
-    moneyRemaining: "남은 잔액",
-    moneyUsed: "사용",
+    moneyRemaining: "잔액",
+    moneyUsed: "지출",
     moneyItemLabel: "항목 이름",
     moneyItemAmount: "금액",
-    moneyItemIcon: "아이콘 (이모지)",
-    moneyAdd: "캔버스에 추가",
+    moneyItemIcon: "아이콘",
+    moneyAdd: "추가",
     moneyReflect: "나의 돈 사용 계획을 통해 본 나",
     moneyReflectPh: "이번 예산을 어떻게 나누면서 어떤 가치관이 보였나요?",
     moneyOverBudget: "예산을 초과했어요",
     moneyNeedAmount: "유효한 금액을 입력해 주세요",
     moneyNeedLabel: "항목 이름을 입력해 주세요",
+    moneyCustomBudget: "직접 입력",
+    moneyCustomApply: "적용",
+    moneyEmptyHint: "항목을 추가해 나만의 소비 계획을 세워보세요",
+    moneyLedgerTitle: "소비 내역",
+    edit: "수정",
+    delete: "삭제",
 
     // App (smartphone module)
     appPageTitle: "나의 스마트폰 라이프",
@@ -115,6 +121,7 @@ const TRANSLATIONS = {
     appReflectPh: "내가 자주 쓰는 앱들은 나의 어떤 모습을 보여주나요?",
     appSearch: "검색",
     appCancel: "취소",
+    appEditTitle: "앱 수정",
 
     // Help
     helpContent: `
@@ -254,16 +261,22 @@ const TRANSLATIONS = {
     moneyPageTitle: "My Spending Plan",
     moneyBudget: "Budget",
     moneyRemaining: "Remaining",
-    moneyUsed: "Used",
+    moneyUsed: "Spent",
     moneyItemLabel: "Item name",
     moneyItemAmount: "Amount",
-    moneyItemIcon: "Icon (emoji)",
-    moneyAdd: "Add to canvas",
+    moneyItemIcon: "Icon",
+    moneyAdd: "Add",
     moneyReflect: "What my spending plan tells about me",
     moneyReflectPh: "What values came up while dividing this budget?",
     moneyOverBudget: "You went over budget",
     moneyNeedAmount: "Please enter a valid amount",
     moneyNeedLabel: "Please enter an item name",
+    moneyCustomBudget: "Custom amount",
+    moneyCustomApply: "Apply",
+    moneyEmptyHint: "Add items to build your spending plan",
+    moneyLedgerTitle: "Transaction Log",
+    edit: "Edit",
+    delete: "Delete",
 
     appPageTitle: "My Smartphone Life",
     appAddIcon: "Add app",
@@ -278,6 +291,7 @@ const TRANSLATIONS = {
     appReflectPh: "What do your most-used apps reveal about you?",
     appSearch: "Search",
     appCancel: "Cancel",
+    appEditTitle: "Edit App",
 
     helpContent: `
       <h3><span class="material-icons" style="vertical-align:-4px;font-size:1.1em;">apps</span> Select Theme</h3>
@@ -415,16 +429,22 @@ const TRANSLATIONS = {
     moneyPageTitle: "私の消費プラン",
     moneyBudget: "予算",
     moneyRemaining: "残額",
-    moneyUsed: "使用",
+    moneyUsed: "支出",
     moneyItemLabel: "項目名",
     moneyItemAmount: "金額",
-    moneyItemIcon: "アイコン (絵文字)",
-    moneyAdd: "キャンバスに追加",
+    moneyItemIcon: "アイコン",
+    moneyAdd: "追加",
     moneyReflect: "お金の使い方から見えた私",
     moneyReflectPh: "予算を分けながらどんな価値観が見えましたか？",
     moneyOverBudget: "予算を超えました",
     moneyNeedAmount: "有効な金額を入力してください",
     moneyNeedLabel: "項目名を入力してください",
+    moneyCustomBudget: "直接入力",
+    moneyCustomApply: "適用",
+    moneyEmptyHint: "項目を追加して消費プランを作りましょう",
+    moneyLedgerTitle: "取引明細",
+    edit: "編集",
+    delete: "削除",
 
     appPageTitle: "私のスマホ生活",
     appAddIcon: "アプリ追加",
@@ -439,6 +459,7 @@ const TRANSLATIONS = {
     appReflectPh: "よく使うアプリは私のどんな姿を映しますか？",
     appSearch: "検索",
     appCancel: "キャンセル",
+    appEditTitle: "アプリ編集",
 
     helpContent: `
       <h3><span class="material-icons" style="vertical-align:-4px;font-size:1.1em;">apps</span> テーマ選択</h3>
