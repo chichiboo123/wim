@@ -32,6 +32,7 @@ function renderRelationship() {
           `).join('')}
         </div>
       </div>
+      ${reflectionBlockHtml('relationship')}
     </div>
   `;
 }

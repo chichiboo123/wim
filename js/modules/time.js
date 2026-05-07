@@ -70,6 +70,7 @@ function renderTime() {
           </div>
         </div>
       </div>
+      ${reflectionBlockHtml('time')}
     </div>
   `;
 }

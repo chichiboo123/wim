@@ -68,6 +68,9 @@
       <button class="icon-btn" id="reset-all-btn" onclick="resetAllData()" title="전체 초기화">
         <span class="material-icons">delete_sweep</span>
       </button>
+      <button class="icon-btn" onclick="showReport()" title="보고서">
+        <span class="material-icons">description</span>
+      </button>
       <button class="icon-btn" onclick="showHelp()" title="도움말">
         <span class="material-icons">help_outline</span>
       </button>
@@ -119,6 +122,35 @@
         <button class="icon-btn" onclick="closeHelp()"><span class="material-icons">close</span></button>
       </div>
       <div class="modal-body" id="help-body"></div>
+    </div>
+  </div>
+
+  <!-- Report Modal -->
+  <div id="report-modal" class="modal-overlay" style="display:none;" onclick="closeReportOutside(event)">
+    <div class="modal-content report-modal-content">
+      <div class="modal-header">
+        <h2 data-i18n="reportTitle">성찰 보고서</h2>
+        <button class="icon-btn" onclick="closeReport()"><span class="material-icons">close</span></button>
+      </div>
+      <div class="report-actions">
+        <button class="btn btn-primary btn-sm" onclick="reportDownloadJpg()">
+          <span class="material-icons" style="font-size:16px;vertical-align:-3px;">image</span>
+          <span data-i18n="reportDownloadJpg">JPG 다운로드</span>
+        </button>
+        <button class="btn btn-secondary btn-sm" onclick="reportCopyJpg()">
+          <span class="material-icons" style="font-size:16px;vertical-align:-3px;">photo_library</span>
+          <span data-i18n="reportCopyJpg">JPG 복사</span>
+        </button>
+        <button class="btn btn-secondary btn-sm" onclick="reportCopyText()">
+          <span class="material-icons" style="font-size:16px;vertical-align:-3px;">content_copy</span>
+          <span data-i18n="reportCopyText">텍스트 복사</span>
+        </button>
+        <button class="btn btn-secondary btn-sm" onclick="reportDownloadTxt()">
+          <span class="material-icons" style="font-size:16px;vertical-align:-3px;">description</span>
+          <span data-i18n="reportDownloadTxt">TXT 다운로드</span>
+        </button>
+      </div>
+      <div class="modal-body report-body" id="report-body"></div>
     </div>
   </div>
 

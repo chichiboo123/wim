@@ -29,6 +29,28 @@ function escapeHtml(str) {
   return div.innerHTML;
 }
 
+/* Shared reflection block (used by every module).
+ * For money/app the reflection is stored inside the module object
+ * (handled by their own save functions). For all other modules,
+ * we use the unified `reflections` map on the root data. */
+function reflectionBlockHtml(moduleId) {
+  const labelKey = moduleId + 'Reflect';
+  const phKey = moduleId + 'ReflectPh';
+  const text = (typeof getReflection === 'function') ? getReflection(moduleId) : '';
+  return `
+    <div class="reflection-block">
+      <label class="reflection-label" for="reflect-${moduleId}">${t(labelKey)}</label>
+      <textarea class="form-input reflection-textarea" id="reflect-${moduleId}"
+                placeholder="${t(phKey)}"
+                oninput="onReflectionInput('${moduleId}', this.value)">${escapeHtml(text)}</textarea>
+    </div>
+  `;
+}
+
+function onReflectionInput(moduleId, text) {
+  saveReflection(moduleId, text);
+}
+
 function showToast(message) {
   let toast = document.querySelector('.toast');
   if (!toast) {
@@ -201,6 +223,11 @@ function resetCurrentModule() {
   if (!confirm(t('confirmResetCurrent'))) return;
   const defaults = getDefaultData();
   saveModuleData(currentPage, defaults[currentPage] !== undefined ? defaults[currentPage] : []);
+  // Also clear this module's reflection (money/app store it inside their object,
+  // which is already covered by the line above).
+  if (currentPage !== 'money' && currentPage !== 'app') {
+    saveReflection(currentPage, '');
+  }
   showToast(t('toastResetDone'));
   renderCurrentPage();
 }
@@ -210,6 +237,170 @@ function resetAllData() {
   saveAllData(getDefaultData());
   showToast(t('toastResetAllDone'));
   renderCurrentPage();
+}
+
+/* ===== Report Modal ===== */
+function reportCollect() {
+  return MODULES.map(m => ({
+    id: m.id,
+    icon: m.icon,
+    title: t(m.titleKey),
+    text: getReflection(m.id) || ''
+  }));
+}
+
+function showReport() {
+  const modal = document.getElementById('report-modal');
+  const body = document.getElementById('report-body');
+  if (!modal || !body) return;
+
+  const items = reportCollect();
+  const filled = items.filter(i => i.text.trim());
+  const today = new Date();
+  const dateStr = `${today.getFullYear()}.${String(today.getMonth() + 1).padStart(2, '0')}.${String(today.getDate()).padStart(2, '0')}`;
+  const savedName = getReportName();
+
+  body.innerHTML = `
+    <div class="report-sheet" id="report-sheet">
+      <div class="report-sheet-header">
+        <h1 class="report-sheet-title">${t('reportTitle')}</h1>
+        <p class="report-sheet-subtitle">${t('subtitle')}</p>
+      </div>
+      <div class="report-sheet-meta">
+        <div class="report-meta-row">
+          <label class="report-meta-label">${t('reportNameLabel')}</label>
+          <input type="text" class="form-input report-name-input" id="report-name-input"
+                 placeholder="${t('reportNamePh')}" maxlength="30"
+                 value="${escapeHtml(savedName)}"
+                 oninput="onReportNameInput(this.value)">
+        </div>
+        <div class="report-meta-row">
+          <span class="report-meta-label">${t('reportDate')}</span>
+          <span class="report-meta-value">${dateStr}</span>
+        </div>
+      </div>
+      ${filled.length === 0 ? `
+        <div class="report-empty">${t('reportEmpty')}</div>
+      ` : `
+        <div class="report-sections">
+          ${filled.map(it => `
+            <div class="report-section">
+              <div class="report-section-head">
+                <span class="material-icons report-section-icon">${it.icon}</span>
+                <span class="report-section-title">${escapeHtml(it.title)}</span>
+              </div>
+              <div class="report-section-text">${escapeHtml(it.text).replace(/\n/g, '<br>')}</div>
+            </div>
+          `).join('')}
+        </div>
+      `}
+    </div>
+  `;
+  modal.style.display = 'flex';
+}
+
+function closeReport() {
+  const modal = document.getElementById('report-modal');
+  if (modal) modal.style.display = 'none';
+}
+
+function closeReportOutside(event) {
+  if (event.target === event.currentTarget) closeReport();
+}
+
+function onReportNameInput(name) {
+  saveReportName(name);
+}
+
+function reportPlainText() {
+  const items = reportCollect().filter(i => i.text.trim());
+  const today = new Date();
+  const dateStr = `${today.getFullYear()}.${String(today.getMonth() + 1).padStart(2, '0')}.${String(today.getDate()).padStart(2, '0')}`;
+  const name = (getReportName() || '').trim() || t('reportNoName');
+  const lines = [];
+  lines.push(`[${t('reportTitle')}]`);
+  lines.push(`${t('reportNameLabel')}: ${name}`);
+  lines.push(`${t('reportDate')}: ${dateStr}`);
+  lines.push('');
+  if (items.length === 0) {
+    lines.push(t('reportEmpty'));
+  } else {
+    items.forEach(it => {
+      lines.push(`■ ${it.title}`);
+      lines.push(it.text);
+      lines.push('');
+    });
+  }
+  return lines.join('\n').trim() + '\n';
+}
+
+async function captureReportCanvas() {
+  const sheet = document.getElementById('report-sheet');
+  if (!sheet) throw new Error('no sheet');
+  const rect = sheet.getBoundingClientRect();
+  return await html2canvas(sheet, {
+    useCORS: true,
+    allowTaint: true,
+    backgroundColor: '#ffffff',
+    scale: Math.min(3, Math.max(2, window.devicePixelRatio || 2)),
+    width: Math.ceil(rect.width),
+    height: Math.ceil(sheet.scrollHeight),
+    windowWidth: Math.ceil(rect.width),
+    windowHeight: Math.ceil(sheet.scrollHeight),
+    imageTimeout: 0,
+  });
+}
+
+async function reportDownloadJpg() {
+  try {
+    const canvas = await captureReportCanvas();
+    const link = document.createElement('a');
+    link.download = `reflection-report-${Date.now()}.jpg`;
+    link.href = canvas.toDataURL('image/jpeg', 0.95);
+    link.click();
+    showToast(t('toastExported'));
+  } catch {
+    showToast(t('toastError'));
+  }
+}
+
+async function reportCopyJpg() {
+  try {
+    const canvas = await captureReportCanvas();
+    canvas.toBlob(async (blob) => {
+      try {
+        await navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
+        showToast(t('toastCopied'));
+      } catch {
+        showToast(t('toastError'));
+      }
+    }, 'image/png');
+  } catch {
+    showToast(t('toastError'));
+  }
+}
+
+async function reportCopyText() {
+  try {
+    await navigator.clipboard.writeText(reportPlainText());
+    showToast(t('toastCopied'));
+  } catch {
+    showToast(t('toastError'));
+  }
+}
+
+function reportDownloadTxt() {
+  try {
+    const blob = new Blob([reportPlainText()], { type: 'text/plain;charset=utf-8' });
+    const link = document.createElement('a');
+    link.download = `reflection-report-${Date.now()}.txt`;
+    link.href = URL.createObjectURL(blob);
+    link.click();
+    URL.revokeObjectURL(link.href);
+    showToast(t('toastExported'));
+  } catch {
+    showToast(t('toastError'));
+  }
 }
 
 /* ===== Init ===== */
@@ -226,8 +417,11 @@ function initApp() {
   // ESC 키로 모달/FAB 닫기
   document.addEventListener('keydown', (e) => {
     if (e.key !== 'Escape') return;
-    const modal = document.getElementById('help-modal');
-    if (modal && modal.style.display !== 'none') {
+    const help = document.getElementById('help-modal');
+    const report = document.getElementById('report-modal');
+    if (report && report.style.display !== 'none') {
+      closeReport();
+    } else if (help && help.style.display !== 'none') {
       closeHelp();
     } else if (fabOpen) {
       closeFab();

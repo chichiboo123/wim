@@ -52,6 +52,7 @@ function renderBag() {
         </div>
       </div>
       ${data.length > 0 && !hasSelection ? `<p class="bag-hint">요소를 클릭하면 크기 조절 및 삭제가 가능합니다</p>` : ''}
+      ${reflectionBlockHtml('bag')}
     </div>
   `;
 }

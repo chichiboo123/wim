@@ -158,6 +158,7 @@ function renderColor() {
         </div>
       </div>
       <input type="color" id="hidden-color-picker" style="position:absolute;opacity:0;pointer-events:none;" onchange="applyColor(event)">
+      ${reflectionBlockHtml('color')}
     </div>
   `;
 }

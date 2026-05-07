@@ -1619,6 +1619,50 @@
 }
 .app-icon-del  { background: #f87171; }
 .app-icon-edit { background: var(--primary); }
+.app-icon-info { background: #6b7280; font-style: italic; font-family: 'Times New Roman', serif; font-weight: 700; }
+
+/* App icon tooltip */
+.app-icon-tip {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%) translateY(4px);
+  background: rgba(17,24,39,0.95);
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 500;
+  padding: 6px 10px;
+  border-radius: 8px;
+  white-space: normal;
+  width: max-content;
+  max-width: 180px;
+  text-align: center;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+  z-index: 50;
+  line-height: 1.35;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+}
+.app-icon-tip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 5px solid transparent;
+  border-top-color: rgba(17,24,39,0.95);
+}
+@media (hover: hover) {
+  .app-icon.has-tip:hover .app-icon-tip {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+.app-icon-tip.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
 
 .app-box {
   position: absolute;

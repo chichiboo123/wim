@@ -1,109 +1,114 @@
 /* ===== APP (Smartphone) MODULE ===== */
 
-/* Brand data: en name, ko name, brand hex color */
+/* Brand data: en name, ko name, brand hex color, ko/en short descriptions */
 const APP_TOP100 = [
-  { en:'YouTube',         ko:'유튜브',           brand:'#FF0000' },
-  { en:'KakaoTalk',       ko:'카카오톡',          brand:'#FEE500' },
-  { en:'Instagram',       ko:'인스타그램',        brand:'#E1306C' },
-  { en:'TikTok',          ko:'틱톡',              brand:'#69C9D0' },
-  { en:'WhatsApp',        ko:'왓츠앱',            brand:'#25D366' },
-  { en:'Facebook',        ko:'페이스북',          brand:'#1877F2' },
-  { en:'Messenger',       ko:'메신저',            brand:'#0084FF' },
-  { en:'Snapchat',        ko:'스냅챗',            brand:'#FFFC00' },
-  { en:'X (Twitter)',     ko:'X (트위터)',         brand:'#1DA1F2' },
-  { en:'Threads',         ko:'스레드',            brand:'#8E8E8E' },
-  { en:'Discord',         ko:'디스코드',          brand:'#5865F2' },
-  { en:'Telegram',        ko:'텔레그램',          brand:'#2AABEE' },
-  { en:'LINE',            ko:'라인',              brand:'#00B900' },
-  { en:'WeChat',          ko:'위챗',              brand:'#07C160' },
-  { en:'Reddit',          ko:'레딧',              brand:'#FF4500' },
-  { en:'Pinterest',       ko:'핀터레스트',        brand:'#E60023' },
-  { en:'LinkedIn',        ko:'링크드인',          brand:'#0A66C2' },
-  { en:'Tumblr',          ko:'텀블러',            brand:'#35465C' },
-  { en:'Spotify',         ko:'스포티파이',        brand:'#1DB954' },
-  { en:'Apple Music',     ko:'애플 뮤직',         brand:'#FC3C44' },
-  { en:'SoundCloud',      ko:'사운드클라우드',    brand:'#FF5500' },
-  { en:'YouTube Music',   ko:'유튜브 뮤직',       brand:'#FF0000' },
-  { en:'Melon',           ko:'멜론',              brand:'#00CD3C' },
-  { en:'Genie Music',     ko:'지니뮤직',          brand:'#00C4FF' },
-  { en:'Bugs',            ko:'벅스',              brand:'#FF4F00' },
-  { en:'Netflix',         ko:'넷플릭스',          brand:'#E50914' },
-  { en:'Disney+',         ko:'디즈니+',           brand:'#113CCF' },
-  { en:'Tving',           ko:'티빙',              brand:'#FF153C' },
-  { en:'Wavve',           ko:'웨이브',            brand:'#1A40C8' },
-  { en:'Coupang Play',    ko:'쿠팡플레이',        brand:'#C0392B' },
-  { en:'Watcha',          ko:'왓챠',              brand:'#E30C1C' },
-  { en:'Prime Video',     ko:'프라임 비디오',     brand:'#00A8E0' },
-  { en:'HBO Max',         ko:'Max',               brand:'#5822B5' },
-  { en:'Hulu',            ko:'훌루',              brand:'#1CE783' },
-  { en:'Twitch',          ko:'트위치',            brand:'#9146FF' },
-  { en:'Naver',           ko:'네이버',            brand:'#03C75A' },
-  { en:'Daum',            ko:'다음',              brand:'#006EB4' },
-  { en:'Google',          ko:'구글',              brand:'#4285F4' },
-  { en:'Chrome',          ko:'크롬',              brand:'#4285F4' },
-  { en:'Safari',          ko:'사파리',            brand:'#006CFF' },
-  { en:'Edge',            ko:'엣지',              brand:'#0078D4' },
-  { en:'Firefox',         ko:'파이어폭스',        brand:'#FF7139' },
-  { en:'Gmail',           ko:'지메일',            brand:'#EA4335' },
-  { en:'Outlook',         ko:'아웃룩',            brand:'#0078D4' },
-  { en:'Naver Mail',      ko:'네이버 메일',       brand:'#03C75A' },
-  { en:'Google Maps',     ko:'구글 지도',         brand:'#4285F4' },
-  { en:'Naver Map',       ko:'네이버 지도',       brand:'#03C75A' },
-  { en:'Kakao Map',       ko:'카카오맵',          brand:'#FEE500' },
-  { en:'Apple Maps',      ko:'애플 지도',         brand:'#007AFF' },
-  { en:'Waze',            ko:'웨이즈',            brand:'#33CCFF' },
-  { en:'Uber',            ko:'우버',              brand:'#000000' },
-  { en:'Kakao T',         ko:'카카오T',           brand:'#FEE500' },
-  { en:'Tada',            ko:'타다',              brand:'#0D1B2A' },
-  { en:'Lyft',            ko:'리프트',            brand:'#FF00BF' },
-  { en:'Grab',            ko:'그랩',              brand:'#00B14F' },
-  { en:'Coupang',         ko:'쿠팡',              brand:'#C0392B' },
-  { en:'Gmarket',         ko:'G마켓',             brand:'#FF6000' },
-  { en:'11st',            ko:'11번가',            brand:'#FF0000' },
-  { en:'Auction',         ko:'옥션',              brand:'#E10A14' },
-  { en:'SSG',             ko:'SSG닷컴',           brand:'#CC0000' },
-  { en:'AliExpress',      ko:'알리익스프레스',    brand:'#FF6A00' },
-  { en:'Amazon',          ko:'아마존',            brand:'#FF9900' },
-  { en:'Shopee',          ko:'쇼피',              brand:'#EE4D2D' },
-  { en:'eBay',            ko:'이베이',            brand:'#E53238' },
-  { en:'Temu',            ko:'테무',              brand:'#FF5A1F' },
-  { en:'Daiso',           ko:'다이소',            brand:'#E40012' },
-  { en:'Musinsa',         ko:'무신사',            brand:'#3D3D3D' },
-  { en:'Zigzag',          ko:'지그재그',          brand:'#FF6AC1' },
-  { en:'Toss',            ko:'토스',              brand:'#0064FF' },
-  { en:'Kakao Pay',       ko:'카카오페이',        brand:'#FEE500' },
-  { en:'Naver Pay',       ko:'네이버페이',        brand:'#03C75A' },
-  { en:'Samsung Pay',     ko:'삼성페이',          brand:'#1428A0' },
-  { en:'Apple Pay',       ko:'애플페이',          brand:'#555555' },
-  { en:'PayPal',          ko:'페이팔',            brand:'#003087' },
-  { en:'Venmo',           ko:'벤모',              brand:'#3D95CE' },
-  { en:'Wise',            ko:'와이즈',            brand:'#9FE870' },
-  { en:'Robinhood',       ko:'로빈후드',          brand:'#00C805' },
-  { en:'Banksalad',       ko:'뱅크샐러드',        brand:'#B124FF' },
-  { en:'Notion',          ko:'노션',              brand:'#505050' },
-  { en:'Evernote',        ko:'에버노트',          brand:'#00A82D' },
-  { en:'OneNote',         ko:'원노트',            brand:'#7719AA' },
-  { en:'Google Keep',     ko:'구글 킵',           brand:'#FBBC04' },
-  { en:'Slack',           ko:'슬랙',              brand:'#4A154B' },
-  { en:'Teams',           ko:'MS 팀즈',           brand:'#6264A7' },
-  { en:'Zoom',            ko:'줌',                brand:'#2D8CFF' },
-  { en:'Google Meet',     ko:'구글 미트',         brand:'#00897B' },
-  { en:'Webex',           ko:'웹엑스',            brand:'#00BCEB' },
-  { en:'ChatGPT',         ko:'ChatGPT',           brand:'#10A37F' },
-  { en:'Claude',          ko:'Claude',            brand:'#D4763B' },
-  { en:'Gemini',          ko:'Gemini',            brand:'#4285F4' },
-  { en:'Copilot',         ko:'Copilot',           brand:'#0078D4' },
-  { en:'Perplexity',      ko:'퍼플렉시티',        brand:'#1FB8CD' },
-  { en:'Canva',           ko:'캔바',              brand:'#8B3DFF' },
-  { en:'Figma',           ko:'피그마',            brand:'#F24E1E' },
-  { en:'Adobe Express',   ko:'어도비 익스프레스', brand:'#FF0000' },
-  { en:'VSCO',            ko:'VSCO',              brand:'#3A3A3A' },
-  { en:'Lightroom',       ko:'라이트룸',          brand:'#31A8FF' },
-  { en:'GoodNotes',       ko:'굿노트',            brand:'#FFCA2F' },
-  { en:'Procreate',       ko:'프로크리에이트',    brand:'#5C7AEA' },
-  { en:'Duolingo',        ko:'듀오링고',          brand:'#58CC02' },
-  { en:'Class101',        ko:'클래스101',         brand:'#7C3AED' },
+  { en:'YouTube',         ko:'유튜브',           brand:'#FF0000', descKo:'세계 최대 동영상 플랫폼', descEn:"World's biggest video platform" },
+  { en:'KakaoTalk',       ko:'카카오톡',          brand:'#FEE500', descKo:'한국 대표 메신저 앱', descEn:'Top messenger in Korea' },
+  { en:'Instagram',       ko:'인스타그램',        brand:'#E1306C', descKo:'사진·릴스 공유 SNS', descEn:'Photo & reels social network' },
+  { en:'TikTok',          ko:'틱톡',              brand:'#69C9D0', descKo:'짧은 영상 공유 SNS', descEn:'Short-form video social app' },
+  { en:'WhatsApp',        ko:'왓츠앱',            brand:'#25D366', descKo:'글로벌 메시징 앱', descEn:'Global messaging app' },
+  { en:'Facebook',        ko:'페이스북',          brand:'#1877F2', descKo:'대표 SNS 플랫폼', descEn:'Classic social network' },
+  { en:'Messenger',       ko:'메신저',            brand:'#0084FF', descKo:'페이스북의 채팅 앱', descEn:"Facebook's chat app" },
+  { en:'Snapchat',        ko:'스냅챗',            brand:'#FFFC00', descKo:'사라지는 사진/영상 SNS', descEn:'Disappearing photo/video chat' },
+  { en:'X (Twitter)',     ko:'X (트위터)',         brand:'#1DA1F2', descKo:'짧은 글 SNS (구 트위터)', descEn:'Microblogging (formerly Twitter)' },
+  { en:'Threads',         ko:'스레드',            brand:'#8E8E8E', descKo:'인스타가 만든 텍스트 SNS', descEn:'Text-based SNS by Instagram' },
+  { en:'Discord',         ko:'디스코드',          brand:'#5865F2', descKo:'커뮤니티·게임 채팅', descEn:'Community & gaming chat' },
+  { en:'Telegram',        ko:'텔레그램',          brand:'#2AABEE', descKo:'보안 메시징 앱', descEn:'Secure messaging app' },
+  { en:'LINE',            ko:'라인',              brand:'#00B900', descKo:'일본·아시아 메신저', descEn:'Messenger popular in Japan/Asia' },
+  { en:'WeChat',          ko:'위챗',              brand:'#07C160', descKo:'중국 종합 메신저 앱', descEn:'All-in-one Chinese messenger' },
+  { en:'Reddit',          ko:'레딧',              brand:'#FF4500', descKo:'주제별 커뮤니티 게시판', descEn:'Topic-based community forum' },
+  { en:'Pinterest',       ko:'핀터레스트',        brand:'#E60023', descKo:'이미지 영감 보드', descEn:'Visual inspiration board' },
+  { en:'LinkedIn',        ko:'링크드인',          brand:'#0A66C2', descKo:'직장인 네트워크 SNS', descEn:'Professional networking' },
+  { en:'Tumblr',          ko:'텀블러',            brand:'#35465C', descKo:'블로그형 SNS', descEn:'Microblogging platform' },
+  { en:'Spotify',         ko:'스포티파이',        brand:'#1DB954', descKo:'글로벌 음악 스트리밍', descEn:'Global music streaming' },
+  { en:'Apple Music',     ko:'애플 뮤직',         brand:'#FC3C44', descKo:'애플의 음악 스트리밍', descEn:"Apple's music streaming" },
+  { en:'SoundCloud',      ko:'사운드클라우드',    brand:'#FF5500', descKo:'아티스트 음원 공유', descEn:'Artist music sharing' },
+  { en:'YouTube Music',   ko:'유튜브 뮤직',       brand:'#FF0000', descKo:'유튜브의 음악 스트리밍', descEn:"YouTube's music streaming" },
+  { en:'Melon',           ko:'멜론',              brand:'#00CD3C', descKo:'국내 1위 음악 스트리밍', descEn:'Top Korean music streaming' },
+  { en:'Genie Music',     ko:'지니뮤직',          brand:'#00C4FF', descKo:'KT의 음악 스트리밍', descEn:"KT's music streaming" },
+  { en:'Bugs',            ko:'벅스',              brand:'#FF4F00', descKo:'고음질 음악 스트리밍', descEn:'High-quality music streaming' },
+  { en:'Netflix',         ko:'넷플릭스',          brand:'#E50914', descKo:'글로벌 OTT 영화·드라마', descEn:'Global OTT movies & shows' },
+  { en:'Disney+',         ko:'디즈니+',           brand:'#113CCF', descKo:'디즈니·마블·픽사 OTT', descEn:'Disney·Marvel·Pixar OTT' },
+  { en:'Tving',           ko:'티빙',              brand:'#FF153C', descKo:'CJ ENM 국내 OTT', descEn:"CJ ENM's Korean OTT" },
+  { en:'Wavve',           ko:'웨이브',            brand:'#1A40C8', descKo:'국내 방송사 OTT', descEn:'Korean broadcasters OTT' },
+  { en:'Coupang Play',    ko:'쿠팡플레이',        brand:'#C0392B', descKo:'쿠팡의 OTT 서비스', descEn:"Coupang's OTT service" },
+  { en:'Watcha',          ko:'왓챠',              brand:'#E30C1C', descKo:'영화 평점·OTT 서비스', descEn:'Movie rating & OTT' },
+  { en:'Prime Video',     ko:'프라임 비디오',     brand:'#00A8E0', descKo:'아마존의 OTT 서비스', descEn:"Amazon's OTT service" },
+  { en:'HBO Max',         ko:'Max',               brand:'#5822B5', descKo:'HBO·워너 콘텐츠 OTT', descEn:'HBO/Warner content OTT' },
+  { en:'Hulu',            ko:'훌루',              brand:'#1CE783', descKo:'미국 OTT 서비스', descEn:'US OTT service' },
+  { en:'Twitch',          ko:'트위치',            brand:'#9146FF', descKo:'게임·라이브 스트리밍', descEn:'Live game streaming' },
+  { en:'Naver',           ko:'네이버',            brand:'#03C75A', descKo:'한국 1위 포털 검색', descEn:'Top Korean portal & search' },
+  { en:'Daum',            ko:'다음',              brand:'#006EB4', descKo:'카카오의 포털 사이트', descEn:"Kakao's web portal" },
+  { en:'Google',          ko:'구글',              brand:'#4285F4', descKo:'세계 1위 검색 엔진', descEn:'Top global search engine' },
+  { en:'Chrome',          ko:'크롬',              brand:'#4285F4', descKo:'구글의 웹 브라우저', descEn:"Google's web browser" },
+  { en:'Safari',          ko:'사파리',            brand:'#006CFF', descKo:'애플의 웹 브라우저', descEn:"Apple's web browser" },
+  { en:'Edge',            ko:'엣지',              brand:'#0078D4', descKo:'MS의 웹 브라우저', descEn:"Microsoft's web browser" },
+  { en:'Firefox',         ko:'파이어폭스',        brand:'#FF7139', descKo:'개방형 웹 브라우저', descEn:'Open-source web browser' },
+  { en:'Gmail',           ko:'지메일',            brand:'#EA4335', descKo:'구글의 이메일 서비스', descEn:"Google's email service" },
+  { en:'Outlook',         ko:'아웃룩',            brand:'#0078D4', descKo:'MS의 이메일 서비스', descEn:"Microsoft's email" },
+  { en:'Naver Mail',      ko:'네이버 메일',       brand:'#03C75A', descKo:'네이버의 이메일', descEn:"Naver's email service" },
+  { en:'Google Maps',     ko:'구글 지도',         brand:'#4285F4', descKo:'세계 표준 지도/길찾기', descEn:'Global maps & directions' },
+  { en:'Naver Map',       ko:'네이버 지도',       brand:'#03C75A', descKo:'국내 1위 지도 앱', descEn:'Top map app in Korea' },
+  { en:'Kakao Map',       ko:'카카오맵',          brand:'#FEE500', descKo:'카카오의 지도/길찾기', descEn:"Kakao's map & directions" },
+  { en:'Apple Maps',      ko:'애플 지도',         brand:'#007AFF', descKo:'애플의 지도 앱', descEn:"Apple's map app" },
+  { en:'Waze',            ko:'웨이즈',            brand:'#33CCFF', descKo:'운전자 실시간 내비', descEn:'Real-time driver navigation' },
+  { en:'Uber',            ko:'우버',              brand:'#000000', descKo:'글로벌 차량 호출', descEn:'Global ride-hailing' },
+  { en:'Kakao T',         ko:'카카오T',           brand:'#FEE500', descKo:'국내 택시 호출 앱', descEn:'Korean taxi-hailing app' },
+  { en:'Tada',            ko:'타다',              brand:'#0D1B2A', descKo:'국내 모빌리티 앱', descEn:'Korean mobility app' },
+  { en:'Lyft',            ko:'리프트',            brand:'#FF00BF', descKo:'미국 차량 호출', descEn:'US ride-hailing' },
+  { en:'Grab',            ko:'그랩',              brand:'#00B14F', descKo:'동남아 슈퍼 앱', descEn:'Southeast Asia super app' },
+  { en:'Coupang',         ko:'쿠팡',              brand:'#C0392B', descKo:'국내 1위 이커머스', descEn:'Top Korean e-commerce' },
+  { en:'Gmarket',         ko:'G마켓',             brand:'#FF6000', descKo:'국내 오픈마켓 쇼핑', descEn:'Korean open-market shopping' },
+  { en:'11st',            ko:'11번가',            brand:'#FF0000', descKo:'SK의 오픈마켓 쇼핑', descEn:"SK's open-market shopping" },
+  { en:'Auction',         ko:'옥션',              brand:'#E10A14', descKo:'국내 경매·쇼핑', descEn:'Korean auction & shopping' },
+  { en:'SSG',             ko:'SSG닷컴',           brand:'#CC0000', descKo:'신세계의 종합 쇼핑', descEn:"Shinsegae's online mall" },
+  { en:'AliExpress',      ko:'알리익스프레스',    brand:'#FF6A00', descKo:'중국발 글로벌 직구', descEn:'Global shopping from China' },
+  { en:'Amazon',          ko:'아마존',            brand:'#FF9900', descKo:'세계 최대 이커머스', descEn:"World's largest e-commerce" },
+  { en:'Shopee',          ko:'쇼피',              brand:'#EE4D2D', descKo:'동남아 인기 쇼핑몰', descEn:'Popular Southeast Asia shop' },
+  { en:'eBay',            ko:'이베이',            brand:'#E53238', descKo:'글로벌 경매·쇼핑', descEn:'Global auction & shopping' },
+  { en:'Temu',            ko:'테무',              brand:'#FF5A1F', descKo:'초저가 글로벌 쇼핑', descEn:'Ultra-low-price shopping' },
+  { en:'Daiso',           ko:'다이소',            brand:'#E40012', descKo:'생활용품 균일가 매장', descEn:'Daily goods value shop' },
+  { en:'Musinsa',         ko:'무신사',            brand:'#3D3D3D', descKo:'국내 패션 쇼핑몰', descEn:'Korean fashion store' },
+  { en:'Zigzag',          ko:'지그재그',          brand:'#FF6AC1', descKo:'여성 패션 쇼핑 앱', descEn:"Women's fashion shop app" },
+  { en:'Toss',            ko:'토스',              brand:'#0064FF', descKo:'국내 간편 송금·금융', descEn:'Korean fintech & transfer' },
+  { en:'Kakao Pay',       ko:'카카오페이',        brand:'#FEE500', descKo:'카카오의 간편 결제', descEn:"Kakao's easy payment" },
+  { en:'Naver Pay',       ko:'네이버페이',        brand:'#03C75A', descKo:'네이버의 간편 결제', descEn:"Naver's easy payment" },
+  { en:'Samsung Pay',     ko:'삼성페이',          brand:'#1428A0', descKo:'삼성의 모바일 결제', descEn:"Samsung's mobile pay" },
+  { en:'Apple Pay',       ko:'애플페이',          brand:'#555555', descKo:'애플의 모바일 결제', descEn:"Apple's mobile pay" },
+  { en:'PayPal',          ko:'페이팔',            brand:'#003087', descKo:'글로벌 송금·결제', descEn:'Global payments' },
+  { en:'Venmo',           ko:'벤모',              brand:'#3D95CE', descKo:'미국 친구간 송금 앱', descEn:'US peer-to-peer pay' },
+  { en:'Wise',            ko:'와이즈',            brand:'#9FE870', descKo:'저렴한 해외 송금', descEn:'Low-fee global transfer' },
+  { en:'Robinhood',       ko:'로빈후드',          brand:'#00C805', descKo:'미국 무료 주식 거래', descEn:'US free stock trading' },
+  { en:'Banksalad',       ko:'뱅크샐러드',        brand:'#B124FF', descKo:'자산·가계부 통합 관리', descEn:'Personal finance manager' },
+  { en:'Notion',          ko:'노션',              brand:'#505050', descKo:'올인원 메모·문서·DB', descEn:'All-in-one notes & docs' },
+  { en:'Evernote',        ko:'에버노트',          brand:'#00A82D', descKo:'클라우드 메모·노트', descEn:'Cloud notes app' },
+  { en:'OneNote',         ko:'원노트',            brand:'#7719AA', descKo:'MS의 디지털 노트', descEn:"Microsoft's digital notebook" },
+  { en:'Google Keep',     ko:'구글 킵',           brand:'#FBBC04', descKo:'구글의 간단 메모', descEn:"Google's quick notes" },
+  { en:'Slack',           ko:'슬랙',              brand:'#4A154B', descKo:'팀 채팅·협업 도구', descEn:'Team chat & collab tool' },
+  { en:'Teams',           ko:'MS 팀즈',           brand:'#6264A7', descKo:'MS의 협업 메신저', descEn:"Microsoft's team collab" },
+  { en:'Zoom',            ko:'줌',                brand:'#2D8CFF', descKo:'화상회의 솔루션', descEn:'Video meeting platform' },
+  { en:'Google Meet',     ko:'구글 미트',         brand:'#00897B', descKo:'구글의 화상회의', descEn:"Google's video meet" },
+  { en:'Webex',           ko:'웹엑스',            brand:'#00BCEB', descKo:'시스코의 화상회의', descEn:"Cisco's video conferencing" },
+  { en:'ChatGPT',         ko:'ChatGPT',           brand:'#10A37F', descKo:'OpenAI의 대화형 AI', descEn:"OpenAI's chat AI" },
+  { en:'Claude',          ko:'Claude',            brand:'#D4763B', descKo:'Anthropic의 AI 챗봇', descEn:"Anthropic's AI chatbot" },
+  { en:'Gemini',          ko:'Gemini',            brand:'#4285F4', descKo:'구글의 대화형 AI', descEn:"Google's chat AI" },
+  { en:'Copilot',         ko:'Copilot',           brand:'#0078D4', descKo:'MS의 AI 보조 도구', descEn:"Microsoft's AI assistant" },
+  { en:'Perplexity',      ko:'퍼플렉시티',        brand:'#1FB8CD', descKo:'검색 기반 AI 답변', descEn:'AI search & answers' },
+  { en:'Canva',           ko:'캔바',              brand:'#8B3DFF', descKo:'쉬운 디자인 도구', descEn:'Easy design tool' },
+  { en:'Figma',           ko:'피그마',            brand:'#F24E1E', descKo:'협업 UI 디자인 도구', descEn:'Collaborative UI design' },
+  { en:'Adobe Express',   ko:'어도비 익스프레스', brand:'#FF0000', descKo:'어도비 빠른 디자인', descEn:"Adobe's quick design" },
+  { en:'VSCO',            ko:'VSCO',              brand:'#3A3A3A', descKo:'감성 사진 편집 앱', descEn:'Aesthetic photo editing' },
+  { en:'Lightroom',       ko:'라이트룸',          brand:'#31A8FF', descKo:'어도비 사진 보정', descEn:"Adobe's photo editor" },
+  { en:'GoodNotes',       ko:'굿노트',            brand:'#FFCA2F', descKo:'아이패드 필기 노트 앱', descEn:'iPad handwriting notes' },
+  { en:'Procreate',       ko:'프로크리에이트',    brand:'#5C7AEA', descKo:'아이패드 그림 앱', descEn:'iPad drawing app' },
+  { en:'Duolingo',        ko:'듀오링고',          brand:'#58CC02', descKo:'게임처럼 배우는 외국어', descEn:'Gamified language learning' },
+  { en:'Class101',        ko:'클래스101',         brand:'#7C3AED', descKo:'국내 온라인 클래스', descEn:'Korean online classes' },
 ];
+
+function appDescFor(entry) {
+  if (!entry) return '';
+  return (currentLang === 'ko' && entry.descKo) ? entry.descKo : (entry.descEn || '');
+}
 
 let appResizeHandler = null;
 let appDragging = null;
@@ -172,14 +177,21 @@ function renderAppModule() {
 
   const iconsHtml = state.icons.map((ic) => {
     const inner = renderAppIconInner(ic);
+    const presetEntry = ic.enName ? APP_TOP100.find(e => e.en === ic.enName) : null;
+    const desc = presetEntry ? appDescFor(presetEntry) : '';
+    const tipAttr = desc ? ` data-tip="${escapeHtml(desc)}"` : '';
     return `
-      <div class="app-icon" data-id="${ic.id}"
+      <div class="app-icon${desc ? ' has-tip' : ''}" data-id="${ic.id}"${tipAttr}
            style="left:${ic.x}%;top:${ic.y}%;"
            onmousedown="startAppDrag(event,'${ic.id}','icon')"
            ontouchstart="startAppDrag(event,'${ic.id}','icon')">
         ${inner}
         <div class="app-icon-label">${escapeHtml(ic.label)}</div>
+        ${desc ? `<div class="app-icon-tip">${escapeHtml(desc)}</div>` : ''}
         <div class="app-icon-controls">
+          ${desc ? `<button class="app-icon-ctrl-btn app-icon-info"
+                  onclick="event.stopPropagation();showAppIconTip('${ic.id}')"
+                  ontouchend="event.stopPropagation();event.preventDefault();showAppIconTip('${ic.id}')">i</button>` : ''}
           <button class="app-icon-ctrl-btn app-icon-edit"
                   onclick="event.stopPropagation();openAppEditModal('${ic.id}')"
                   ontouchend="event.stopPropagation();event.preventDefault();openAppEditModal('${ic.id}')">✏️</button>
@@ -528,6 +540,17 @@ function saveAppReflection(text) {
   saveAppState(state);
 }
 
+function showAppIconTip(id) {
+  const node = document.querySelector(`.app-icon[data-id="${id}"]`);
+  if (!node) return;
+  const tip = node.querySelector('.app-icon-tip');
+  if (!tip) return;
+  document.querySelectorAll('.app-icon-tip.show').forEach(el => { if (el !== tip) el.classList.remove('show'); });
+  tip.classList.add('show');
+  clearTimeout(node._tipTimer);
+  node._tipTimer = setTimeout(() => tip.classList.remove('show'), 3000);
+}
+
 /* ----- Drag ----- */
 function startAppDrag(e, id, kind) {
   if (kind === 'icon' && (e.target.closest('.app-icon-del') || e.target.closest('.app-icon-edit') || e.target.closest('.app-icon-controls'))) return;
@@ -583,6 +606,12 @@ function startAppDrag(e, id, kind) {
           else { target.boxX = parseFloat(node.style.left); target.boxY = parseFloat(node.style.top); }
           saveAppState(s);
         }
+      }
+    } else if (appDragging && !moved && kind === 'icon') {
+      // Tap (no drag) on icon → show tooltip if available
+      const node = document.querySelector(sel);
+      if (node && node.classList.contains('has-tip')) {
+        showAppIconTip(id);
       }
     }
     appDragging = null;
