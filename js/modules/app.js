@@ -263,8 +263,19 @@ function renderAppModule() {
           <div class="app-tab-panel" data-panel="image" style="display:none;">
             <p class="app-modal-hint">${t('appUploadHint')}</p>
             <input type="text" class="form-input" id="app-image-name" placeholder="${t('appNamePh')}" maxlength="20" style="margin-bottom:8px;">
-            <input type="file" id="app-image-file" accept="image/*" style="margin-bottom:8px;">
-            <button class="btn btn-primary" onclick="addAppImageIcon()">${t('appAdd')}</button>
+            <div class="app-file-row">
+              <label class="btn btn-secondary btn-sm app-file-label" for="app-image-file">
+                <span class="material-icons" style="font-size:16px;vertical-align:-3px;">folder_open</span>
+                ${t('appFileSelect')}
+              </label>
+              <span class="app-file-name" id="app-file-name">${t('appNoFile')}</span>
+              <input type="file" id="app-image-file" accept="image/*" style="display:none;"
+                     onchange="updateAppFileName(this)">
+            </div>
+            <button class="btn btn-primary app-upload-add-btn" onclick="addAppImageIcon()">
+              <span class="material-icons" style="font-size:16px;vertical-align:-3px;">add_circle_outline</span>
+              ${t('appAdd')}
+            </button>
           </div>
           <div class="app-tab-panel" data-panel="text" style="display:none;">
             <input type="text" class="form-input" id="app-text-name" placeholder="${t('appNamePh')}" maxlength="20"
@@ -403,7 +414,15 @@ function openAppEditModal(id) {
   const imageExtra = ic.type === 'image' ? `
     <div style="margin-bottom:10px;">
       <p class="app-modal-hint">${t('appUploadHint')}</p>
-      <input type="file" id="app-edit-image-file" accept="image/*">
+      <div class="app-file-row">
+        <label class="btn btn-secondary btn-sm app-file-label" for="app-edit-image-file">
+          <span class="material-icons" style="font-size:16px;vertical-align:-3px;">folder_open</span>
+          ${t('appFileSelect')}
+        </label>
+        <span class="app-file-name" id="app-edit-file-name">${t('appNoFile')}</span>
+        <input type="file" id="app-edit-image-file" accept="image/*" style="display:none;"
+               onchange="document.getElementById('app-edit-file-name').textContent=this.files[0]?this.files[0].name:t('appNoFile')">
+      </div>
     </div>` : '';
 
   body.innerHTML = `
@@ -468,6 +487,11 @@ function addAppTextIcon() {
   if (!name) { showToast(t('moneyNeedLabel')); return; }
   appPushIcon({ type: 'text', label: name });
   closeAppAddModal();
+}
+
+function updateAppFileName(input) {
+  const el = document.getElementById('app-file-name');
+  if (el) el.textContent = input.files[0] ? input.files[0].name : t('appNoFile');
 }
 
 function addAppImageIcon() {

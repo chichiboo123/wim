@@ -106,10 +106,14 @@ const TRANSLATIONS = {
     // Word
     wordPageTitle: "나를 이루는 단어",
     wordTerm: "나를 이루는 단어",
-    wordDef: "나만의 정의",
+    wordDef: "나만의 뜻 풀이",
     addWord: "추가",
     saveEdit: "수정 저장",
     cancelEdit: "취소",
+
+    // App file upload
+    appFileSelect: "파일 선택",
+    appNoFile: "선택된 파일 없음",
 
     // Relationship
     relPageTitle: "나의 인간관계",
@@ -166,7 +170,7 @@ const TRANSLATIONS = {
         <li><b>감정</b>: 플루치크 8감정 중 단어를 선택해 칩 추가, [+/−]로 강도 조절</li>
         <li><b>색깔</b>: 60가지 프리셋 또는 사용자 색을 팔레트에 추가</li>
         <li><b>음악</b>: 곡명·아티스트·이유·URL을 입력해 나만의 플레이리스트</li>
-        <li><b>단어</b>: 나를 이루는 단어와 정의를 사전처럼 정리</li>
+        <li><b>단어</b>: 나를 이루는 단어와 나만의 뜻 풀이를 사전처럼 정리</li>
         <li><b>관계</b>: 사람을 추가하고 거리를 드래그로 표현</li>
         <li><b>돈</b>: 예산을 정하고 항목별 지출 계획을 가계부 형식으로 기록</li>
         <li><b>앱</b>: Top 100 앱 또는 사용자 아이콘을 폰 화면에 배치, 목록에서 미리 설명을 확인할 수 있어요!</li>
@@ -185,7 +189,7 @@ const TRANSLATIONS = {
 
     // Empty state hints
     emptyMusicHint: "음악을 추가해서 나만의 플레이리스트를 만들어 보세요",
-    emptyWordHint: "나를 이루는 단어와 나만의 정의를 추가해 보세요",
+    emptyWordHint: "나를 이루는 단어와 나만의 뜻 풀이를 추가해 보세요",
     emptyMindHint: "위에서 감정 단어를 선택하여 마음의 방을 채워 보세요",
 
     // Toast messages
@@ -200,7 +204,7 @@ const TRANSLATIONS = {
     toastTimeHalfHour: "시간은 30분 단위(00, 30)로 입력해 주세요",
     toastTimeMustBeContinuous: "시간은 앞 일정 종료 시각부터 이어서 입력해 주세요",
     toastNeedTaskName: "할 일을 입력해 주세요",
-    toastNeedWordFields: "단어와 정의를 모두 입력해 주세요",
+    toastNeedWordFields: "단어와 뜻 풀이를 모두 입력해 주세요",
     toastNeedSongName: "곡명을 입력해 주세요",
     toastAlreadyAdded: "이미 추가된 항목입니다",
     toastPaletteFull: "팔레트 슬롯이 가득 찼습니다. 슬롯 수를 늘리거나 기존 색상을 수정해 주세요",
@@ -312,10 +316,14 @@ const TRANSLATIONS = {
 
     wordPageTitle: "My Dictionary",
     wordTerm: "A word that defines me",
-    wordDef: "My definition",
+    wordDef: "My own meaning",
     addWord: "Add",
     saveEdit: "Save Edit",
     cancelEdit: "Cancel",
+
+    // App file upload
+    appFileSelect: "Choose file",
+    appNoFile: "No file chosen",
 
     relPageTitle: "My Relationships",
     personName: "Name",
@@ -387,7 +395,7 @@ const TRANSLATIONS = {
 
     // Empty state hints
     emptyMusicHint: "Add songs to build your playlist",
-    emptyWordHint: "Add words and definitions that describe you",
+    emptyWordHint: "Add words and your own meanings that describe you",
     emptyMindHint: "Select emotion words above to fill your mind room",
 
     toastSaved: "Saved",
@@ -513,10 +521,14 @@ const TRANSLATIONS = {
 
     wordPageTitle: "マイ辞書",
     wordTerm: "自分を作る言葉",
-    wordDef: "自分だけの定義",
+    wordDef: "自分なりの意味",
     addWord: "追加",
     saveEdit: "編集を保存",
     cancelEdit: "キャンセル",
+
+    // App file upload
+    appFileSelect: "ファイルを選択",
+    appNoFile: "ファイルが選択されていません",
 
     relPageTitle: "人間関係マップ",
     personName: "名前",
@@ -569,7 +581,7 @@ const TRANSLATIONS = {
         <li><b>感情</b>: プルチックの8感情から言葉を選び、[+/−]で強度調整</li>
         <li><b>カラー</b>: 60プリセットまたは自由色をパレットに追加</li>
         <li><b>ミュージック</b>: 曲名・アーティスト・理由・URLでプレイリスト作成</li>
-        <li><b>ワード</b>: 自分を作る言葉と定義を辞書のように整理</li>
+        <li><b>ワード</b>: 自分を作る言葉と自分なりの意味を辞書のように整理</li>
         <li><b>関係</b>: 人を追加し距離をドラッグで表現</li>
         <li><b>お金</b>: 予算を決めて項目別の支出計画を家計簿形式で記録</li>
         <li><b>アプリ</b>: リストで説明を確認してからTop 100アプリをスマホ画面に配置！</li>
@@ -588,7 +600,7 @@ const TRANSLATIONS = {
 
     // Empty state hints
     emptyMusicHint: "曲を追加してプレイリストを作ろう",
-    emptyWordHint: "自分を作る言葉と定義を追加しよう",
+    emptyWordHint: "自分を作る言葉と自分なりの意味を追加しよう",
     emptyMindHint: "上の感情の言葉を選んで心の部屋を埋めよう",
 
     toastSaved: "保存しました",
@@ -602,7 +614,7 @@ const TRANSLATIONS = {
     toastTimeHalfHour: "時刻は30分単位（00/30）で入力してください",
     toastTimeMustBeContinuous: "時間は前の終了時刻から連続して入力してください",
     toastNeedTaskName: "タスク名を入力してください",
-    toastNeedWordFields: "言葉と定義の両方を入力してください",
+    toastNeedWordFields: "言葉と意味の両方を入力してください",
     toastNeedSongName: "曲名を入力してください",
     toastAlreadyAdded: "すでに追加されています",
     toastPaletteFull: "パレットのスロットがいっぱいです。数を増やすか既存色を編集してください",

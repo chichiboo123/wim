@@ -182,12 +182,12 @@
 .time-container {
   display: flex;
   flex-direction: row;
-  gap: 24px;
+  gap: 20px;
   align-items: flex-start;
 }
 
 .time-chart-wrap {
-  width: min(400px, 45%);
+  width: min(520px, 62%);
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
@@ -207,7 +207,7 @@
 
 .time-list-wrap {
   flex: 1;
-  min-width: 0;
+  min-width: 220px;
 }
 
 .time-form {
@@ -223,7 +223,7 @@
 
 .time-input-group {
   flex: 1;
-  min-width: 170px;
+  min-width: 100px;
 }
 
 .time-input-group label {
@@ -760,8 +760,16 @@
 
 .music-form-fields {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+  min-width: 0;
+}
+.music-form-name-row {
+  display: flex;
   gap: 8px;
+}
+.music-form-name-row .form-input {
   flex: 1;
   min-width: 0;
 }
@@ -1197,7 +1205,7 @@
     width: min(92vw, 480px);
   }
 
-  .music-form-fields {
+  .music-form-name-row {
     flex-direction: column;
     gap: 6px;
   }
@@ -1386,17 +1394,19 @@
 }
 .money-emoji-grid {
   display: grid;
-  grid-template-columns: repeat(10, 1fr);
+  grid-template-columns: repeat(8, 1fr);
   gap: 4px;
 }
 .money-emoji-cell {
-  font-size: 1.3rem;
-  padding: 4px;
+  font-size: 1.25rem;
+  padding: 5px 2px;
   border-radius: 8px;
   border: 1px solid transparent;
   text-align: center;
   transition: background 0.15s;
   cursor: pointer;
+  line-height: 1;
+  overflow: hidden;
 }
 .money-emoji-cell:hover { background: var(--hover); }
 .money-emoji-cell.selected {
@@ -1734,6 +1744,35 @@
 
 /* App add modal */
 .app-modal-content { max-width: 460px; }
+.app-file-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+.app-file-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+.app-file-name {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
+.app-upload-add-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
 .app-modal-tabs {
   display: flex;
   gap: 6px;
