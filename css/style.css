@@ -382,12 +382,12 @@ button.module-card {
 
 .module-title {
   font-family: 'Pretendard GOV', 'Pretendard', sans-serif;
-  font-weight: 500;
-  font-size: 1.5rem;
+  font-weight: 800;
+  font-size: 1.9rem;
   color: var(--primary);
   margin-bottom: 20px;
   text-align: center;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.01em;
 }
 
 .work-area {
@@ -562,11 +562,45 @@ button.module-card {
   max-width: 720px;
   width: 92%;
 }
+.report-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.report-modal-header-left {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.report-modal-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text);
+}
 .report-actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 14px;
+  gap: 10px;
+  margin: 12px 0 14px;
+  padding: 12px 14px;
+  background: var(--primary-pale);
+  border-radius: 12px;
+  border: 1px solid var(--border);
+}
+.report-actions-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.report-actions-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  padding-right: 2px;
 }
 .report-actions .btn {
   display: inline-flex;
@@ -585,20 +619,26 @@ button.module-card {
 }
 .report-sheet-header {
   text-align: center;
-  border-bottom: 2px solid var(--primary-light);
   padding-bottom: 14px;
   margin-bottom: 16px;
 }
 .report-sheet-title {
   font-family: 'Pretendard GOV', 'Pretendard', sans-serif;
-  font-weight: 600;
-  font-size: 1.6rem;
+  font-weight: 800;
+  font-size: 1.7rem;
   color: var(--primary);
   margin-bottom: 4px;
 }
 .report-sheet-subtitle {
   font-size: 0.85rem;
   color: var(--text-secondary);
+  margin-bottom: 12px;
+}
+.report-sheet-divider {
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--primary-light), transparent);
+  border-radius: 1px;
 }
 .report-sheet-meta {
   display: flex;
@@ -994,7 +1034,7 @@ button.chip {
 
   /* 모듈 페이지 */
   .module-title {
-    font-size: 1.3rem;
+    font-size: 1.5rem;
     margin-bottom: 14px;
   }
 

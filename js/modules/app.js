@@ -370,17 +370,22 @@ function renderAppPresetList(filter) {
   const filtered = APP_TOP100.filter(entry => {
     const name = appLabelFor(entry).toLowerCase();
     const enName = entry.en.toLowerCase();
-    return !q || name.includes(q) || enName.includes(q);
+    const desc = (entry.descKo || '').toLowerCase();
+    return !q || name.includes(q) || enName.includes(q) || desc.includes(q);
   });
   list.innerHTML = filtered.map(entry => {
     const label = appLabelFor(entry);
     const bg = lightenBrand(entry.brand);
     const initial = appInitial(label);
     const enc = encodeURIComponent(entry.en);
+    const desc = appDescFor(entry);
     return `
       <button class="app-preset-item" onclick="addAppPresetIcon('${enc}')">
         <span class="app-preset-icon" style="background:${bg}">${escapeHtml(initial)}</span>
-        <span class="app-preset-name">${escapeHtml(label)}</span>
+        <span class="app-preset-item-info">
+          <span class="app-preset-name">${escapeHtml(label)}</span>
+          ${desc ? `<span class="app-preset-desc">${escapeHtml(desc)}</span>` : ''}
+        </span>
       </button>`;
   }).join('') || `<div class="app-preset-empty">—</div>`;
 }

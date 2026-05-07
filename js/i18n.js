@@ -9,9 +9,10 @@ const TRANSLATIONS = {
     backupUpload: "백업 업로드 (JSON)",
     clipboard: "복사",
     reportTitle: "성찰 보고서",
+    reportExportTitle: "보고서 내보내기",
     reportNameLabel: "이름",
     reportNamePh: "이름을 입력하세요",
-    reportEmpty: "아직 작성된 성찰 글이 없어요. 모듈에서 성찰 글쓰기를 채워보세요.",
+    reportEmpty: "아직 작성된 성찰 글이 없어요. 각 활동에서 성찰 글쓰기를 채워보세요.",
     reportDownloadJpg: "JPG 다운로드",
     reportCopyJpg: "JPG 복사",
     reportCopyText: "텍스트 복사",
@@ -155,9 +156,9 @@ const TRANSLATIONS = {
 
     // Help
     helpContent: `
-      <h3>10가지 모듈</h3>
-      <p>홈에서 가방·시간·브레인·감정·색깔·음악·단어·관계·돈·앱 모듈을 선택해 나를 탐색하세요.</p>
-      <h3>모듈 사용법</h3>
+      <h3>10가지 활동</h3>
+      <p>홈에서 가방·시간·브레인·감정·색깔·음악·단어·관계·돈·앱 활동을 선택해 나를 탐색하세요.</p>
+      <h3>활동별 사용 방법</h3>
       <ul>
         <li><b>가방</b>: 텍스트·이모지·이미지를 추가하고 드래그로 배치, 클릭으로 크기·색 조정</li>
         <li><b>시간</b>: 24h 원형 차트를 클릭해 시작/종료 시간을 잡고 할 일 입력</li>
@@ -168,16 +169,16 @@ const TRANSLATIONS = {
         <li><b>단어</b>: 나를 이루는 단어와 정의를 사전처럼 정리</li>
         <li><b>관계</b>: 사람을 추가하고 거리를 드래그로 표현</li>
         <li><b>돈</b>: 예산을 정하고 항목별 지출 계획을 가계부 형식으로 기록</li>
-        <li><b>앱</b>: Top 100 앱 또는 사용자 아이콘을 폰 화면에 배치, 마우스 오버/탭하면 앱 설명이 나타납니다</li>
+        <li><b>앱</b>: Top 100 앱 또는 사용자 아이콘을 폰 화면에 배치, 목록에서 미리 설명을 확인할 수 있어요!</li>
       </ul>
       <h3>성찰 글쓰기</h3>
-      <p>각 모듈 하단의 "~로 보는 나" 칸에 자기 성찰 글을 작성하세요. 자동 저장됩니다.</p>
+      <p>각 활동 하단의 "~로 보는 나" 칸에 자기 성찰 글을 작성하세요. 자동 저장됩니다.</p>
       <h3>보고서</h3>
       <p>상단의 <span class="material-icons" style="vertical-align:-4px;font-size:1.1em;">description</span> 아이콘을 누르면 작성한 성찰 글만 모아 한 페이지로 정리되며, JPG·텍스트로 내보내기/복사할 수 있습니다.</p>
       <h3>테마·언어·백업</h3>
       <p>우측 상단에서 색상 테마, 언어(한/영/일), JSON 백업·복원을 관리합니다.</p>
       <h3>내보내기</h3>
-      <p>모듈 우측 하단 FAB로 현재 화면을 JPG·PDF·클립보드로 내보낼 수 있습니다.</p>
+      <p>각 활동 화면 오른쪽 아래 버튼으로 현재 화면을 JPG·PDF·클립보드로 내보낼 수 있습니다.</p>
       <h3>초기화</h3>
       <p>현재 탭만 또는 전체 데이터를 한 번에 초기화할 수 있습니다.</p>
     `,
@@ -223,9 +224,10 @@ const TRANSLATIONS = {
     backupUpload: "Upload Backup (JSON)",
     clipboard: "Copy",
     reportTitle: "Reflection Report",
+    reportExportTitle: "Export Report",
     reportNameLabel: "Name",
     reportNamePh: "Enter your name",
-    reportEmpty: "No reflections yet. Try writing one in any module.",
+    reportEmpty: "No reflections yet. Try writing one in any activity.",
     reportDownloadJpg: "Download JPG",
     reportCopyJpg: "Copy JPG",
     reportCopyText: "Copy Text",
@@ -356,9 +358,9 @@ const TRANSLATIONS = {
     appEditTitle: "Edit App",
 
     helpContent: `
-      <h3>10 modules</h3>
+      <h3>10 activities</h3>
       <p>From the home screen pick Bag, Time, Brain, Emotion, Color, Music, Word, Relationship, Money, or App to explore yourself.</p>
-      <h3>Module guide</h3>
+      <h3>Activity guide</h3>
       <ul>
         <li><b>Bag</b>: Add text/emoji/image and drag to arrange; click to resize</li>
         <li><b>Time</b>: Click the 24h clock to set start/end and add a task</li>
@@ -369,16 +371,16 @@ const TRANSLATIONS = {
         <li><b>Word</b>: Define words that make up who you are</li>
         <li><b>Relationship</b>: Add people and drag to express closeness</li>
         <li><b>Money</b>: Set a budget and log items in a bankbook style</li>
-        <li><b>App</b>: Place Top 100 app icons on a phone screen — hover/tap shows a short description</li>
+        <li><b>App</b>: See app descriptions in the list before adding — place icons on a phone screen!</li>
       </ul>
       <h3>Reflection writing</h3>
-      <p>Each module has a "What ... says about me" box at the bottom. Your text is auto-saved.</p>
+      <p>Each activity has a "What ... says about me" box at the bottom. Your text is auto-saved.</p>
       <h3>Report</h3>
       <p>Click the <span class="material-icons" style="vertical-align:-4px;font-size:1.1em;">description</span> icon in the header to gather all your reflections into one page; export as JPG or text.</p>
       <h3>Theme · Language · Backup</h3>
       <p>Use the icons on the top-right for theme color, language (KO/EN/JP), and JSON backup/restore.</p>
       <h3>Export</h3>
-      <p>Use the FAB on each module page to export the current view as JPG, PDF, or copy to the clipboard.</p>
+      <p>Use the export button on each activity page to save as JPG, PDF, or copy to clipboard.</p>
       <h3>Reset</h3>
       <p>You can reset just the current tab or all data at once.</p>
     `,
@@ -423,9 +425,10 @@ const TRANSLATIONS = {
     backupUpload: "バックアップをアップロード (JSON)",
     clipboard: "コピー",
     reportTitle: "ふりかえりレポート",
+    reportExportTitle: "レポートを出力",
     reportNameLabel: "名前",
     reportNamePh: "名前を入力",
-    reportEmpty: "ふりかえりがまだありません。各モジュールで書いてみましょう。",
+    reportEmpty: "ふりかえりがまだありません。各活動で書いてみましょう。",
     reportDownloadJpg: "JPGダウンロード",
     reportCopyJpg: "JPGコピー",
     reportCopyText: "テキストコピー",
@@ -556,9 +559,9 @@ const TRANSLATIONS = {
     appEditTitle: "アプリ編集",
 
     helpContent: `
-      <h3>10のモジュール</h3>
+      <h3>10の活動</h3>
       <p>ホームでバッグ・タイム・ブレイン・感情・カラー・ミュージック・ワード・関係・お金・アプリを選んで自分を探りましょう。</p>
-      <h3>モジュールガイド</h3>
+      <h3>活動ガイド</h3>
       <ul>
         <li><b>バッグ</b>: テキスト・絵文字・画像を追加してドラッグで配置</li>
         <li><b>タイム</b>: 24h円形チャートで開始/終了を選び、タスクを入力</li>
@@ -569,16 +572,16 @@ const TRANSLATIONS = {
         <li><b>ワード</b>: 自分を作る言葉と定義を辞書のように整理</li>
         <li><b>関係</b>: 人を追加し距離をドラッグで表現</li>
         <li><b>お金</b>: 予算を決めて項目別の支出計画を家計簿形式で記録</li>
-        <li><b>アプリ</b>: Top 100アプリをスマホ画面に配置、ホバー/タップで簡単な説明が表示されます</li>
+        <li><b>アプリ</b>: リストで説明を確認してからTop 100アプリをスマホ画面に配置！</li>
       </ul>
       <h3>ふりかえり書き込み</h3>
-      <p>各モジュール下部の「〜から見えた私」欄にふりかえりを書きます。自動保存されます。</p>
+      <p>各活動下部の「〜から見えた私」欄にふりかえりを書きます。自動保存されます。</p>
       <h3>レポート</h3>
       <p>ヘッダーの<span class="material-icons" style="vertical-align:-4px;font-size:1.1em;">description</span>アイコンを押すと、ふりかえりだけを集めた1ページに整理され、JPG・テキストでエクスポート/コピーできます。</p>
       <h3>テーマ・言語・バックアップ</h3>
       <p>右上のアイコンでテーマ色、言語、JSONバックアップ・復元ができます。</p>
       <h3>エクスポート</h3>
-      <p>右下のFABボタンで現在の画面をJPG・PDF・クリップボードにエクスポートできます。</p>
+      <p>各活動画面右下のボタンで現在の画面をJPG・PDF・クリップボードにエクスポートできます。</p>
       <h3>リセット</h3>
       <p>現在のタブだけ、または全データを一度にリセットできます。</p>
     `,

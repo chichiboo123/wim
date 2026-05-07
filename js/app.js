@@ -265,6 +265,7 @@ function showReport() {
       <div class="report-sheet-header">
         <h1 class="report-sheet-title">${t('reportTitle')}</h1>
         <p class="report-sheet-subtitle">${t('subtitle')}</p>
+        <div class="report-sheet-divider"></div>
       </div>
       <div class="report-sheet-meta">
         <div class="report-meta-row">
@@ -337,18 +338,33 @@ function reportPlainText() {
 async function captureReportCanvas() {
   const sheet = document.getElementById('report-sheet');
   if (!sheet) throw new Error('no sheet');
-  const rect = sheet.getBoundingClientRect();
-  return await html2canvas(sheet, {
-    useCORS: true,
-    allowTaint: true,
-    backgroundColor: '#ffffff',
-    scale: Math.min(3, Math.max(2, window.devicePixelRatio || 2)),
-    width: Math.ceil(rect.width),
-    height: Math.ceil(sheet.scrollHeight),
-    windowWidth: Math.ceil(rect.width),
-    windowHeight: Math.ceil(sheet.scrollHeight),
-    imageTimeout: 0,
-  });
+
+  // Clone into a fixed-width off-screen container so modal scroll-clipping
+  // does not distort the output dimensions.
+  const CAPTURE_WIDTH = 720;
+  const wrapper = document.createElement('div');
+  wrapper.style.cssText = [
+    'position:fixed', 'top:-9999px', 'left:-9999px',
+    `width:${CAPTURE_WIDTH}px`, 'background:#ffffff', 'z-index:-1',
+  ].join(';');
+  const clone = sheet.cloneNode(true);
+  clone.style.cssText = 'width:100%;border-radius:0;box-shadow:none;';
+  wrapper.appendChild(clone);
+  document.body.appendChild(wrapper);
+
+  try {
+    return await html2canvas(wrapper, {
+      useCORS: true,
+      allowTaint: true,
+      backgroundColor: '#ffffff',
+      scale: 2,
+      width: CAPTURE_WIDTH,
+      windowWidth: CAPTURE_WIDTH,
+      imageTimeout: 0,
+    });
+  } finally {
+    document.body.removeChild(wrapper);
+  }
 }
 
 async function reportDownloadJpg() {
