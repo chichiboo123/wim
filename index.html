@@ -128,27 +128,36 @@
   <!-- Report Modal -->
   <div id="report-modal" class="modal-overlay" style="display:none;" onclick="closeReportOutside(event)">
     <div class="modal-content report-modal-content">
-      <div class="modal-header">
-        <h2 data-i18n="reportTitle">성찰 보고서</h2>
-        <button class="icon-btn" onclick="closeReport()"><span class="material-icons">close</span></button>
+      <div class="modal-header report-modal-header">
+        <div class="report-modal-header-left">
+          <span class="material-icons" style="color:var(--primary);font-size:20px;">description</span>
+          <span class="report-modal-title" data-i18n="reportExportTitle">보고서 내보내기</span>
+        </div>
+        <button class="icon-btn" onclick="closeReport()" aria-label="닫기"><span class="material-icons">close</span></button>
       </div>
       <div class="report-actions">
-        <button class="btn btn-primary btn-sm" onclick="reportDownloadJpg()">
-          <span class="material-icons" style="font-size:16px;vertical-align:-3px;">image</span>
-          <span data-i18n="reportDownloadJpg">JPG 다운로드</span>
-        </button>
-        <button class="btn btn-secondary btn-sm" onclick="reportCopyJpg()">
-          <span class="material-icons" style="font-size:16px;vertical-align:-3px;">photo_library</span>
-          <span data-i18n="reportCopyJpg">JPG 복사</span>
-        </button>
-        <button class="btn btn-secondary btn-sm" onclick="reportCopyText()">
-          <span class="material-icons" style="font-size:16px;vertical-align:-3px;">content_copy</span>
-          <span data-i18n="reportCopyText">텍스트 복사</span>
-        </button>
-        <button class="btn btn-secondary btn-sm" onclick="reportDownloadTxt()">
-          <span class="material-icons" style="font-size:16px;vertical-align:-3px;">description</span>
-          <span data-i18n="reportDownloadTxt">TXT 다운로드</span>
-        </button>
+        <div class="report-actions-group">
+          <span class="report-actions-label">이미지</span>
+          <button class="btn btn-primary btn-sm" onclick="reportDownloadJpg()">
+            <span class="material-icons" style="font-size:15px;vertical-align:-3px;">download</span>
+            <span data-i18n="reportDownloadJpg">JPG 다운로드</span>
+          </button>
+          <button class="btn btn-secondary btn-sm" onclick="reportCopyJpg()">
+            <span class="material-icons" style="font-size:15px;vertical-align:-3px;">content_copy</span>
+            <span data-i18n="reportCopyJpg">JPG 복사</span>
+          </button>
+        </div>
+        <div class="report-actions-group">
+          <span class="report-actions-label">텍스트</span>
+          <button class="btn btn-secondary btn-sm" onclick="reportCopyText()">
+            <span class="material-icons" style="font-size:15px;vertical-align:-3px;">content_copy</span>
+            <span data-i18n="reportCopyText">텍스트 복사</span>
+          </button>
+          <button class="btn btn-secondary btn-sm" onclick="reportDownloadTxt()">
+            <span class="material-icons" style="font-size:15px;vertical-align:-3px;">download</span>
+            <span data-i18n="reportDownloadTxt">TXT 다운로드</span>
+          </button>
+        </div>
       </div>
       <div class="modal-body report-body" id="report-body"></div>
     </div>

@@ -181,12 +181,14 @@
 /* ===== TIME MODULE ===== */
 .time-container {
   display: flex;
-  flex-direction: column;
-  gap: 20px;
+  flex-direction: row;
+  gap: 24px;
+  align-items: flex-start;
 }
 
 .time-chart-wrap {
-  width: 100%;
+  width: min(400px, 45%);
+  flex-shrink: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -194,7 +196,7 @@
 
 .time-chart {
   position: relative;
-  width: min(600px, 100%);
+  width: 100%;
   aspect-ratio: 1;
 }
 
@@ -204,7 +206,8 @@
 }
 
 .time-list-wrap {
-  width: 100%;
+  flex: 1;
+  min-width: 0;
 }
 
 .time-form {
@@ -757,8 +760,10 @@
 
 .music-form-fields {
   display: flex;
-  flex-direction: column;
-  gap: 6px;
+  flex-direction: row;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
 }
 
 .music-thumb-sm {
@@ -1094,6 +1099,15 @@
 
 /* ===== Module-specific responsive ===== */
 @media (max-width: 768px) {
+  .time-container {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .time-chart-wrap {
+    width: 100%;
+  }
+
   .time-chart {
     width: min(480px, 100%);
   }
@@ -1109,6 +1123,9 @@
 
 @media (max-width: 600px) {
   /* Time */
+  .time-chart-wrap {
+    width: 100%;
+  }
   .time-chart {
     width: min(380px, 100%);
   }
@@ -1178,6 +1195,11 @@
 
   .music-playlist-thumb {
     width: min(92vw, 480px);
+  }
+
+  .music-form-fields {
+    flex-direction: column;
+    gap: 6px;
   }
 
   .music-item {
@@ -1747,27 +1769,28 @@
 .app-preset-list {
   max-height: 320px;
   overflow-y: auto;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-  gap: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
   padding-right: 4px;
 }
 .app-preset-item {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 6px 8px;
+  gap: 10px;
+  padding: 8px 10px;
   border-radius: 10px;
   background: var(--bg);
   border: 1px solid var(--border);
   text-align: left;
   transition: background 0.15s;
+  width: 100%;
 }
 .app-preset-item:hover { background: var(--hover); }
 .app-preset-icon {
-  width: 30px;
-  height: 30px;
-  border-radius: 8px;
+  width: 34px;
+  height: 34px;
+  border-radius: 9px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1775,10 +1798,24 @@
   color: var(--text);
   flex-shrink: 0;
 }
+.app-preset-item-info {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
+  flex: 1;
+}
 .app-preset-name {
-  font-size: 0.8rem;
-  font-weight: 600;
+  font-size: 0.85rem;
+  font-weight: 700;
   color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.app-preset-desc {
+  font-size: 0.72rem;
+  color: var(--text-secondary);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
