@@ -10,7 +10,18 @@ const MODULES = [
   { id: 'music',        icon: 'headphones',       titleKey: 'musicTitle', descKey: 'musicDesc' },
   { id: 'word',         icon: 'menu_book',        titleKey: 'wordTitle',  descKey: 'wordDesc' },
   { id: 'relationship', icon: 'group',            titleKey: 'relTitle',   descKey: 'relDesc' },
+  { id: 'money',        icon: 'payments',         titleKey: 'moneyTitle', descKey: 'moneyDesc' },
+  { id: 'app',          icon: 'smartphone',       titleKey: 'appTitleMod', descKey: 'appDesc' },
 ];
+
+function getModuleCount(id, allData) {
+  const d = allData[id];
+  if (!d) return 0;
+  if (Array.isArray(d)) return d.length;
+  if (id === 'money') return (d.items || []).length;
+  if (id === 'app') return (d.icons || []).length;
+  return 0;
+}
 
 function escapeHtml(str) {
   const div = document.createElement('div');
@@ -66,6 +77,8 @@ function renderCurrentPage() {
     // Module-specific init
     if (currentPage === 'brain') {
       initBrainCanvas();
+    } else if (currentPage === 'app') {
+      initAppModule();
     }
   }
 
@@ -78,7 +91,7 @@ function renderDashboard() {
   const allData = loadAllData();
 
   function heroBtn(m) {
-    const count = (allData[m.id] || []).length;
+    const count = getModuleCount(m.id, allData);
     const label = t(m.titleKey);
     const splitIdx = label.indexOf(' (');
     const labelHtml = splitIdx !== -1
@@ -96,7 +109,7 @@ function renderDashboard() {
   return `
     <div class="hero-layout">
       <div class="hero-side-modules">
-        ${MODULES.slice(0, 4).map(heroBtn).join('')}
+        ${MODULES.slice(0, 5).map(heroBtn).join('')}
       </div>
       <div class="hero-center">
         <h1 class="hero-title" data-i18n="appTitle">What's In My</h1>
@@ -104,7 +117,7 @@ function renderDashboard() {
         <img class="hero-image" src="https://i.ibb.co/n88DvYjk/Chat-GPT-Image-2026-4-18-08-49-39.png" alt="">
       </div>
       <div class="hero-side-modules">
-        ${MODULES.slice(4).map(heroBtn).join('')}
+        ${MODULES.slice(5).map(heroBtn).join('')}
       </div>
     </div>
   `;
@@ -121,6 +134,8 @@ function renderModule(id) {
     case 'music': return renderMusic();
     case 'word': return renderWord();
     case 'relationship': return renderRelationship();
+    case 'money': return renderMoney();
+    case 'app': return renderAppModule();
     default: return renderDashboard();
   }
 }
@@ -184,7 +199,8 @@ function closeBackupOutside(event) {
 function resetCurrentModule() {
   if (currentPage === 'home') return;
   if (!confirm(t('confirmResetCurrent'))) return;
-  saveModuleData(currentPage, []);
+  const defaults = getDefaultData();
+  saveModuleData(currentPage, defaults[currentPage] !== undefined ? defaults[currentPage] : []);
   showToast(t('toastResetDone'));
   renderCurrentPage();
 }

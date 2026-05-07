@@ -33,7 +33,9 @@ function getDefaultData() {
     color: [],
     music: [],
     word: [],
-    relationship: []
+    relationship: [],
+    money: { budget: 10000, items: [], reflection: '' },
+    app: { icons: [], reflection: '' }
   };
 }
 
@@ -67,5 +69,10 @@ function handleRestore(event) {
 function isValidRestoreData(data) {
   if (!data || typeof data !== 'object' || Array.isArray(data)) return false;
   const defaultData = getDefaultData();
-  return Object.keys(defaultData).every((key) => Array.isArray(data[key]));
+  return Object.keys(defaultData).every((key) => {
+    const expected = defaultData[key];
+    if (data[key] === undefined) return true; // accept older backups missing newer keys
+    if (Array.isArray(expected)) return Array.isArray(data[key]);
+    return typeof data[key] === 'object' && data[key] !== null && !Array.isArray(data[key]);
+  });
 }
