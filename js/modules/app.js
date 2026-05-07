@@ -374,13 +374,17 @@ function renderAppPresetList(filter) {
   });
   list.innerHTML = filtered.map(entry => {
     const label = appLabelFor(entry);
+    const desc = appDescFor(entry);
     const bg = lightenBrand(entry.brand);
     const initial = appInitial(label);
     const enc = encodeURIComponent(entry.en);
     return `
       <button class="app-preset-item" onclick="addAppPresetIcon('${enc}')">
         <span class="app-preset-icon" style="background:${bg}">${escapeHtml(initial)}</span>
-        <span class="app-preset-name">${escapeHtml(label)}</span>
+        <span class="app-preset-meta">
+          <span class="app-preset-name">${escapeHtml(label)}</span>
+          ${desc ? `<span class="app-preset-desc">${escapeHtml(desc)}</span>` : ''}
+        </span>
       </button>`;
   }).join('') || `<div class="app-preset-empty">—</div>`;
 }
