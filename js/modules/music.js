@@ -78,17 +78,19 @@ function renderMusic() {
             </div>
             <input type="file" id="music-thumb-input" accept="image/*" style="display:none" onchange="setMusicThumb(event)">
             <div class="music-form-fields">
-              <input type="text" class="form-input" id="music-song"
-                     placeholder="${t('songName')}" maxlength="60"
-                     onkeydown="if(event.key==='Enter') document.getElementById('music-artist').focus()">
-              <input type="text" class="form-input" id="music-artist"
-                     placeholder="${t('artistName')}" maxlength="40"
-                     onkeydown="if(event.key==='Enter') document.getElementById('music-reason').focus()">
+              <div class="music-form-name-row">
+                <input type="text" class="form-input" id="music-song"
+                       placeholder="${t('songName')}" maxlength="60"
+                       onkeydown="if(event.key==='Enter') document.getElementById('music-artist').focus()">
+                <input type="text" class="form-input" id="music-artist"
+                       placeholder="${t('artistName')}" maxlength="40"
+                       onkeydown="if(event.key==='Enter') document.getElementById('music-reason').focus()">
+              </div>
+              <input type="text" class="form-input" id="music-reason"
+                     placeholder="${t('reason')}" maxlength="100"
+                     onkeydown="if(event.key==='Enter') document.getElementById('music-url').focus()">
             </div>
           </div>
-          <input type="text" class="form-input" id="music-reason"
-                 placeholder="${t('reason')}" maxlength="100"
-                 onkeydown="if(event.key==='Enter') document.getElementById('music-url').focus()">
           <input type="text" class="form-input" id="music-url"
                  placeholder="${t('youtubeUrl')}" maxlength="200"
                  onkeydown="if(event.key==='Enter') addMusic()">
