@@ -212,7 +212,7 @@ function renderAppModule() {
         <span class="app-box-title">${escapeHtml(ic.label)}</span>
       </div>
       <textarea class="app-box-text" placeholder="${t('appBoxPh')}"
-                oninput="updateAppBoxText('${ic.id}', this.value)">${escapeHtml(ic.boxText || '')}</textarea>
+                oninput="onAppBoxInput('${ic.id}', this)">${escapeHtml(ic.boxText || '')}</textarea>
     </div>
   `).join('');
 
@@ -239,7 +239,7 @@ function renderAppModule() {
         <label class="reflection-label">${t('appReflect')}</label>
         <textarea class="form-input reflection-textarea" id="app-reflect"
                   placeholder="${t('appReflectPh')}"
-                  oninput="saveAppReflection(this.value)">${escapeHtml(state.reflection)}</textarea>
+                  oninput="onAppReflectionInput(this)">${escapeHtml(state.reflection)}</textarea>
       </div>
 
       <!-- ADD modal -->
@@ -311,10 +311,36 @@ function renderAppIconInner(ic) {
 
 /* ----- Init / lines ----- */
 function initAppModule() {
+  autoSizeAppArea();
   drawAppLines();
   if (appResizeHandler) window.removeEventListener('resize', appResizeHandler);
-  appResizeHandler = () => scheduleAppLines();
+  appResizeHandler = () => { autoSizeAppArea(); scheduleAppLines(); };
   window.addEventListener('resize', appResizeHandler);
+  // Re-run once layout/fonts settle so initial box heights are measured correctly
+  setTimeout(() => { autoSizeAppArea(); drawAppLines(); }, 120);
+}
+
+function autoGrowAppText(el) {
+  if (!el) return;
+  el.style.height = 'auto';
+  el.style.height = el.scrollHeight + 'px';
+}
+
+function autoSizeAppArea() {
+  const wrap = document.getElementById('app-work-area');
+  if (!wrap) return;
+  // Let every description box grow to fit its text (no inner scrollbar while typing)
+  wrap.querySelectorAll('.app-box-text').forEach(autoGrowAppText);
+  // Mobile uses a static stacked layout that flows naturally
+  if (window.innerWidth <= 760) { wrap.style.minHeight = ''; return; }
+  // Grow the work area so taller boxes are never clipped (keeps the JPG export complete)
+  const wRect = wrap.getBoundingClientRect();
+  let maxBottom = 0;
+  wrap.querySelectorAll('.app-box, .app-phone').forEach((el) => {
+    const r = el.getBoundingClientRect();
+    maxBottom = Math.max(maxBottom, r.bottom - wRect.top);
+  });
+  wrap.style.minHeight = Math.ceil(maxBottom + 24) + 'px';
 }
 
 function scheduleAppLines() {
@@ -569,6 +595,18 @@ function saveAppReflection(text) {
   saveAppState(state);
 }
 
+function onAppBoxInput(id, el) {
+  updateAppBoxText(id, el.value);
+  autoGrowAppText(el);
+  autoSizeAppArea();
+  scheduleAppLines();
+}
+
+function onAppReflectionInput(el) {
+  saveAppReflection(el.value);
+  autoGrowAppText(el);
+}
+
 function showAppIconTip(id) {
   const node = document.querySelector(`.app-icon[data-id="${id}"]`);
   if (!node) return;
@@ -589,7 +627,7 @@ function startAppDrag(e, id, kind) {
 
   const refEl = kind === 'icon'
     ? document.getElementById('app-phone-screen')
-    : document.getElementById('app-work-area');
+    : document.getElementById('app-boxes-layer');
   if (!refEl) { appDragging = null; return; }
   const refRect = refEl.getBoundingClientRect();
 
