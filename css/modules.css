@@ -1502,7 +1502,7 @@
   position: relative;
   padding: 24px 0;
   min-height: 540px;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .app-svg {
@@ -1516,7 +1516,10 @@
 
 .app-boxes-layer {
   position: absolute;
-  inset: 0;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 540px;
   z-index: 2;
   pointer-events: none;
 }
@@ -1620,7 +1623,7 @@
 }
 .app-icon-label {
   font-size: 0.65rem;
-  color: var(--text-dark);
+  color: var(--text);
   font-weight: 600;
   text-shadow: 0 1px 2px rgba(255,255,255,0.7);
   text-align: center;
@@ -1735,6 +1738,7 @@
   outline: none;
   background: transparent;
   resize: none;
+  overflow: hidden;
   padding: 8px 10px;
   font-family: inherit;
   font-size: 0.82rem;
@@ -1880,6 +1884,7 @@
   .app-boxes-layer {
     position: static;
     inset: auto;
+    height: auto;
     width: 100%;
     display: flex;
     flex-direction: column;
