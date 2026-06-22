@@ -39,12 +39,37 @@ function reflectionBlockHtml(moduleId) {
   const text = (typeof getReflection === 'function') ? getReflection(moduleId) : '';
   return `
     <div class="reflection-block">
-      <label class="reflection-label" for="reflect-${moduleId}">${t(labelKey)}</label>
-      <textarea class="form-input reflection-textarea" id="reflect-${moduleId}"
+      <div class="reflection-head">
+        <label class="reflection-label" for="reflect-${moduleId}">${t(labelKey)}</label>
+        ${reflectionModeToggleHtml()}
+      </div>
+      <textarea class="form-input reflection-textarea${reflectionModeClass()}" id="reflect-${moduleId}"
                 placeholder="${t(phKey)}"
                 oninput="onReflectionInput('${moduleId}', this)">${escapeHtml(text)}</textarea>
     </div>
   `;
+}
+
+// Extra class applied to reflection fields when manuscript (원고지) mode is on.
+function reflectionModeClass() {
+  return (typeof getManuscriptMode === 'function' && getManuscriptMode()) ? ' manuscript' : '';
+}
+
+// The "plain / 원고지" toggle shown above every reflection field.
+function reflectionModeToggleHtml() {
+  const on = (typeof getManuscriptMode === 'function') && getManuscriptMode();
+  return `
+    <button type="button" class="manuscript-toggle${on ? ' active' : ''}"
+            onclick="toggleManuscriptMode()" aria-pressed="${on}">
+      <span class="material-icons">grid_on</span>
+      <span>${t('manuscriptMode')}</span>
+    </button>`;
+}
+
+// Flip manuscript mode for all reflection fields and re-render the page.
+function toggleManuscriptMode() {
+  setManuscriptMode(!getManuscriptMode());
+  renderCurrentPage();
 }
 
 // Grow a textarea to fit its content so long entries stay fully visible while
@@ -60,8 +85,34 @@ function autoGrowAllTextareas() {
   document.querySelectorAll('.reflection-textarea').forEach(autoGrowTextarea);
 }
 
-// Text wrapping changes with viewport width, so re-fit the reflection fields.
-window.addEventListener('resize', autoGrowAllTextareas);
+// Lay out manuscript fields as a grid: a fixed square cell, a whole number of
+// columns across the available width, so each character lands in one cell.
+const MANUSCRIPT_CELL = 34;       // desktop cell size (px)
+const MANUSCRIPT_CELL_SM = 28;    // narrow-screen cell size (px)
+
+function layoutManuscript() {
+  const cell = window.innerWidth <= 600 ? MANUSCRIPT_CELL_SM : MANUSCRIPT_CELL;
+  document.querySelectorAll('.reflection-textarea.manuscript').forEach((el) => {
+    const avail = (el.parentElement ? el.parentElement.clientWidth : el.clientWidth);
+    const cols = Math.max(6, Math.floor((avail - 2) / cell)); // -2 for the 1px borders
+    el.style.setProperty('--ms-cell', cell + 'px');
+    el.style.width = (cols * cell) + 'px';
+    autoGrowTextarea(el);
+  });
+}
+
+// Re-fit reflection fields after layout changes (render, viewport resize).
+function refitReflectionFields() {
+  autoGrowAllTextareas();
+  layoutManuscript();
+}
+
+window.addEventListener('resize', refitReflectionFields);
+
+// The manuscript font changes glyph advance once it loads; re-fit when ready.
+if (document.fonts && document.fonts.ready) {
+  document.fonts.ready.then(refitReflectionFields);
+}
 
 function onReflectionInput(moduleId, el) {
   saveReflection(moduleId, el.value);
@@ -121,7 +172,7 @@ function renderCurrentPage() {
     }
 
     // Fit reflection fields to any saved text so nothing is hidden behind a scrollbar.
-    autoGrowAllTextareas();
+    refitReflectionFields();
   }
 
   applyI18n();

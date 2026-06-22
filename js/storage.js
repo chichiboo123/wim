@@ -64,6 +64,18 @@ function saveReflection(moduleId, text) {
   saveAllData(all);
 }
 
+/* Manuscript (원고지) writing mode is a UI preference, kept out of the data
+   backup so it never interferes with restore validation. */
+const MANUSCRIPT_KEY = 'wim-manuscript';
+
+function getManuscriptMode() {
+  return localStorage.getItem(MANUSCRIPT_KEY) === '1';
+}
+
+function setManuscriptMode(on) {
+  localStorage.setItem(MANUSCRIPT_KEY, on ? '1' : '0');
+}
+
 function getReportName() {
   const all = loadAllData();
   return all.reportName || '';

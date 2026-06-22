@@ -52,7 +52,9 @@ async function captureModuleCanvas() {
   const capStyle = document.createElement('style');
   capStyle.textContent = [
     '* { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; }',
-    '.module-page { animation: none !important; opacity: 1 !important; }',
+    // Give the exported sheet a comfortable margin on all sides.
+    '.module-page { animation: none !important; opacity: 1 !important;',
+    '  padding: 48px !important; background: #ffffff !important; box-sizing: border-box !important; }',
     '.bag-toolbar, .bag-selection-panel, .brain-toolbar, .rel-form,',
     '.music-form, .word-form-row, .time-form, .emotion-picker,',
     '.list-item-actions, .music-reorder, .delete-handle,',
@@ -85,7 +87,8 @@ async function captureModuleCanvas() {
     div.style.cssText = ta.style.cssText;
     div.style.height = 'auto';
     div.style.whiteSpace = 'pre-wrap';
-    div.style.wordBreak = 'break-word';
+    // Manuscript fields break per character (one glyph per cell); plain fields per word.
+    div.style.wordBreak = ta.classList.contains('manuscript') ? 'break-all' : 'break-word';
     div.style.overflow = 'visible';
     ta.style.display = 'none';
     ta.parentNode.insertBefore(div, ta);

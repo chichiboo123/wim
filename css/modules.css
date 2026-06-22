@@ -1244,12 +1244,67 @@
   color: var(--primary);
   font-size: 0.95rem;
 }
+.reflection-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.manuscript-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 12px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--card-bg);
+  color: var(--text-secondary);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+.manuscript-toggle .material-icons { font-size: 16px; }
+.manuscript-toggle:hover { background: var(--hover); }
+.manuscript-toggle.active {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #fff;
+}
 .reflection-textarea {
   min-height: 100px;
   resize: none;
   overflow: hidden;
   padding: 12px 14px;
   line-height: 1.5;
+}
+
+/* 원고지 (manuscript) writing grid: one character per square cell. */
+.reflection-textarea.manuscript {
+  box-sizing: content-box;
+  max-width: 100%;
+  font-family: 'Nanum Gothic Coding', 'Courier New', monospace;
+  font-size: var(--ms-cell, 34px);
+  line-height: var(--ms-cell, 34px);
+  letter-spacing: 0;
+  padding: 0;
+  min-height: calc(var(--ms-cell, 34px) * 3);
+  border: 1px solid var(--ms-grid, #d8a3a3);
+  border-radius: 4px;
+  color: #333;
+  background-color: #fff;
+  background-image:
+    repeating-linear-gradient(to right, var(--ms-grid, #e7bcbc) 0 1px, transparent 1px var(--ms-cell, 34px)),
+    repeating-linear-gradient(to bottom, var(--ms-grid, #e7bcbc) 0 1px, transparent 1px var(--ms-cell, 34px));
+  background-origin: content-box;
+  background-clip: content-box;
+  white-space: pre-wrap;
+  word-break: break-all;
+  overflow: hidden;
+}
+.reflection-textarea.manuscript:focus {
+  border-color: var(--primary);
 }
 
 /* ===== MONEY MODULE ===== */
