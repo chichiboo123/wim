@@ -29,6 +29,19 @@ function getCaptureTarget() {
   return document.querySelector('.module-page') || document.querySelector('.work-area') || document.getElementById('app-content');
 }
 
+// Map ASCII (and the space) to their full-width forms so manuscript text lines
+// up one glyph per cell. Non-ASCII (Hangul, emoji, punctuation) is left as-is.
+function toFullWidthForGrid(str) {
+  let out = '';
+  for (const ch of str) {
+    const code = ch.codePointAt(0);
+    if (code === 0x20) out += '　';
+    else if (code >= 0x21 && code <= 0x7e) out += String.fromCharCode(code + 0xfee0);
+    else out += ch;
+  }
+  return out;
+}
+
 function getExportScale() {
   // Higher DPR capture keeps text/vector-like edges crisp in exported files.
   const dpr = window.devicePixelRatio || 1;
@@ -80,15 +93,18 @@ async function captureModuleCanvas() {
   const textareaSwaps = [];
   target.querySelectorAll('textarea').forEach((ta) => {
     const div = document.createElement('div');
+    const isManuscript = ta.classList.contains('manuscript');
     // Reuse the textarea's classes so the proxy keeps identical box styling, and
     // sit it in the same flow position so width/layout match exactly.
     div.className = ta.className;
-    div.textContent = ta.value;
+    // Manuscript fields render every glyph full-width; pre-convert so the grid
+    // stays aligned even if html2canvas ignores `text-transform: full-width`.
+    div.textContent = isManuscript ? toFullWidthForGrid(ta.value) : ta.value;
     div.style.cssText = ta.style.cssText;
     div.style.height = 'auto';
     div.style.whiteSpace = 'pre-wrap';
     // Manuscript fields break per character (one glyph per cell); plain fields per word.
-    div.style.wordBreak = ta.classList.contains('manuscript') ? 'break-all' : 'break-word';
+    div.style.wordBreak = isManuscript ? 'break-all' : 'break-word';
     div.style.overflow = 'visible';
     ta.style.display = 'none';
     ta.parentNode.insertBefore(div, ta);

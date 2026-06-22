@@ -1288,15 +1288,18 @@
   font-size: var(--ms-cell, 34px);
   line-height: var(--ms-cell, 34px);
   letter-spacing: 0;
+  /* Force every glyph (Latin, digits, spaces) to full width so each occupies
+     exactly one cell and characters never drift off the grid. */
+  text-transform: full-width;
   padding: 0;
   min-height: calc(var(--ms-cell, 34px) * 3);
-  border: 1px solid var(--ms-grid, #d8a3a3);
+  border: 1px solid var(--primary);
   border-radius: 4px;
-  color: #333;
-  background-color: #fff;
+  color: var(--text);
+  background-color: var(--card-bg);
   background-image:
-    repeating-linear-gradient(to right, var(--ms-grid, #e7bcbc) 0 1px, transparent 1px var(--ms-cell, 34px)),
-    repeating-linear-gradient(to bottom, var(--ms-grid, #e7bcbc) 0 1px, transparent 1px var(--ms-cell, 34px));
+    repeating-linear-gradient(to right, var(--primary-light) 0 1px, transparent 1px var(--ms-cell, 34px)),
+    repeating-linear-gradient(to bottom, var(--primary-light) 0 1px, transparent 1px var(--ms-cell, 34px));
   background-origin: content-box;
   background-clip: content-box;
   white-space: pre-wrap;
