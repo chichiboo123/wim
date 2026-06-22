@@ -195,7 +195,7 @@ function renderMoney() {
         <label class="reflection-label">${t('moneyReflect')}</label>
         <textarea class="form-input reflection-textarea" id="money-reflect"
                   placeholder="${t('moneyReflectPh')}"
-                  oninput="saveMoneyReflection(this.value)">${escapeHtml(state.reflection)}</textarea>
+                  oninput="saveMoneyReflection(this.value); autoGrowTextarea(this)">${escapeHtml(state.reflection)}</textarea>
       </div>
     </div>
   `;
