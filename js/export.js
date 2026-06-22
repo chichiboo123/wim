@@ -59,8 +59,29 @@ async function captureModuleCanvas() {
     '.music-playlist-thumb-remove, .mind-chip-controls,',
     '.rel-node-delete, .delete-btn, .color-top-bar, .color-picker-panel',
     '{ display: none !important; }',
+    // Text-clipping rules cut off long entries in the exported image. During
+    // capture, let every truncated label wrap and show in full instead.
+    '.rel-node-name, .app-icon-label, .app-box-title, .app-file-name,',
+    '.bag-selection-label, .app-preset-name, .app-preset-desc {',
+    '  white-space: normal !important; overflow: visible !important;',
+    '  text-overflow: clip !important; max-width: none !important; }',
+    // Textareas are expanded to fit their content below; keep them scrollbar-free.
+    '.module-page textarea { overflow: hidden !important; }',
+    // Containers that clip absolutely-positioned text (brain clouds, mind chips)
+    // must not crop long entries that reach the edge.
+    '.module-page .work-area, .brain-canvas, .mind-room { overflow: visible !important; }',
   ].join('\n');
   document.head.appendChild(capStyle);
+
+  // Grow every textarea to its full content height so long reflections/notes are
+  // captured completely instead of being clipped to the visible (scrollable) box.
+  // This affects all 10 modules' reflection fields plus the app module note boxes.
+  const expandedTextareas = [];
+  target.querySelectorAll('textarea').forEach((ta) => {
+    expandedTextareas.push({ el: ta, height: ta.style.height });
+    ta.style.height = 'auto';
+    ta.style.height = ta.scrollHeight + 'px';
+  });
 
   // Ensure every <img> is fully decoded before html2canvas reads the pixels.
   await Promise.all(
@@ -86,6 +107,7 @@ async function captureModuleCanvas() {
     });
   } finally {
     toHide.forEach(el => { el.style.visibility = el.dataset.capVis || ''; delete el.dataset.capVis; });
+    expandedTextareas.forEach(({ el, height }) => { el.style.height = height; });
     capStyle.remove();
   }
 }
