@@ -236,8 +236,11 @@ function renderAppModule() {
       </div>
 
       <div class="reflection-block">
-        <label class="reflection-label">${t('appReflect')}</label>
-        <textarea class="form-input reflection-textarea" id="app-reflect"
+        <div class="reflection-head">
+          <label class="reflection-label">${t('appReflect')}</label>
+          ${reflectionModeToggleHtml()}
+        </div>
+        <textarea class="form-input reflection-textarea${reflectionModeClass()}" id="app-reflect"
                   placeholder="${t('appReflectPh')}"
                   oninput="onAppReflectionInput(this)">${escapeHtml(state.reflection)}</textarea>
       </div>

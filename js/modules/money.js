@@ -192,8 +192,11 @@ function renderMoney() {
       </div>
 
       <div class="reflection-block">
-        <label class="reflection-label">${t('moneyReflect')}</label>
-        <textarea class="form-input reflection-textarea" id="money-reflect"
+        <div class="reflection-head">
+          <label class="reflection-label">${t('moneyReflect')}</label>
+          ${reflectionModeToggleHtml()}
+        </div>
+        <textarea class="form-input reflection-textarea${reflectionModeClass()}" id="money-reflect"
                   placeholder="${t('moneyReflectPh')}"
                   oninput="saveMoneyReflection(this.value); autoGrowTextarea(this)">${escapeHtml(state.reflection)}</textarea>
       </div>

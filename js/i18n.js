@@ -19,6 +19,7 @@ const TRANSLATIONS = {
     reportDownloadTxt: "TXT 다운로드",
     reportNoName: "이름 없음",
     reportDate: "작성일",
+    manuscriptMode: "원고지 모드",
 
     // Reflection labels per module
     bagReflect: "내 가방으로 보는 나",
@@ -238,6 +239,7 @@ const TRANSLATIONS = {
     reportDownloadTxt: "Download TXT",
     reportNoName: "No name",
     reportDate: "Date",
+    manuscriptMode: "Grid paper",
 
     bagReflect: "What my bag says about me",
     bagReflectPh: "What do the things in your bag reveal about you?",
@@ -443,6 +445,7 @@ const TRANSLATIONS = {
     reportDownloadTxt: "TXTダウンロード",
     reportNoName: "名前なし",
     reportDate: "作成日",
+    manuscriptMode: "原稿用紙",
 
     bagReflect: "私のバッグから見えた私",
     bagReflectPh: "バッグの中身からあなたのどんな姿が見えますか？",
