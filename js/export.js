@@ -65,22 +65,31 @@ async function captureModuleCanvas() {
     '.bag-selection-label, .app-preset-name, .app-preset-desc {',
     '  white-space: normal !important; overflow: visible !important;',
     '  text-overflow: clip !important; max-width: none !important; }',
-    // Textareas are expanded to fit their content below; keep them scrollbar-free.
-    '.module-page textarea { overflow: hidden !important; }',
     // Containers that clip absolutely-positioned text (brain clouds, mind chips)
     // must not crop long entries that reach the edge.
     '.module-page .work-area, .brain-canvas, .mind-room { overflow: visible !important; }',
   ].join('\n');
   document.head.appendChild(capStyle);
 
-  // Grow every textarea to its full content height so long reflections/notes are
-  // captured completely instead of being clipped to the visible (scrollable) box.
-  // This affects all 10 modules' reflection fields plus the app module note boxes.
-  const expandedTextareas = [];
+  // html2canvas renders a <textarea> as a single, non-wrapping clipped line, so
+  // long reflections/notes come out cut off. Swap each textarea for an equivalent
+  // <div> that wraps and grows to its full height, then restore it afterwards.
+  // This covers all 10 modules' reflection fields plus the app module note boxes.
+  const textareaSwaps = [];
   target.querySelectorAll('textarea').forEach((ta) => {
-    expandedTextareas.push({ el: ta, height: ta.style.height });
-    ta.style.height = 'auto';
-    ta.style.height = ta.scrollHeight + 'px';
+    const div = document.createElement('div');
+    // Reuse the textarea's classes so the proxy keeps identical box styling, and
+    // sit it in the same flow position so width/layout match exactly.
+    div.className = ta.className;
+    div.textContent = ta.value;
+    div.style.cssText = ta.style.cssText;
+    div.style.height = 'auto';
+    div.style.whiteSpace = 'pre-wrap';
+    div.style.wordBreak = 'break-word';
+    div.style.overflow = 'visible';
+    ta.style.display = 'none';
+    ta.parentNode.insertBefore(div, ta);
+    textareaSwaps.push({ ta, div });
   });
 
   // Ensure every <img> is fully decoded before html2canvas reads the pixels.
@@ -107,7 +116,7 @@ async function captureModuleCanvas() {
     });
   } finally {
     toHide.forEach(el => { el.style.visibility = el.dataset.capVis || ''; delete el.dataset.capVis; });
-    expandedTextareas.forEach(({ el, height }) => { el.style.height = height; });
+    textareaSwaps.forEach(({ ta, div }) => { ta.style.display = ''; div.remove(); });
     capStyle.remove();
   }
 }

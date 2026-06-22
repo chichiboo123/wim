@@ -1246,7 +1246,8 @@
 }
 .reflection-textarea {
   min-height: 100px;
-  resize: vertical;
+  resize: none;
+  overflow: hidden;
   padding: 12px 14px;
   line-height: 1.5;
 }

@@ -42,13 +42,30 @@ function reflectionBlockHtml(moduleId) {
       <label class="reflection-label" for="reflect-${moduleId}">${t(labelKey)}</label>
       <textarea class="form-input reflection-textarea" id="reflect-${moduleId}"
                 placeholder="${t(phKey)}"
-                oninput="onReflectionInput('${moduleId}', this.value)">${escapeHtml(text)}</textarea>
+                oninput="onReflectionInput('${moduleId}', this)">${escapeHtml(text)}</textarea>
     </div>
   `;
 }
 
-function onReflectionInput(moduleId, text) {
-  saveReflection(moduleId, text);
+// Grow a textarea to fit its content so long entries stay fully visible while
+// typing (no inner scrollbar) and are captured completely on export.
+function autoGrowTextarea(el) {
+  if (!el) return;
+  el.style.height = 'auto';
+  el.style.height = el.scrollHeight + 'px';
+}
+
+// Size every reflection/auto-grow textarea on the current page after a render.
+function autoGrowAllTextareas() {
+  document.querySelectorAll('.reflection-textarea').forEach(autoGrowTextarea);
+}
+
+// Text wrapping changes with viewport width, so re-fit the reflection fields.
+window.addEventListener('resize', autoGrowAllTextareas);
+
+function onReflectionInput(moduleId, el) {
+  saveReflection(moduleId, el.value);
+  autoGrowTextarea(el);
 }
 
 function showToast(message) {
@@ -102,6 +119,9 @@ function renderCurrentPage() {
     } else if (currentPage === 'app') {
       initAppModule();
     }
+
+    // Fit reflection fields to any saved text so nothing is hidden behind a scrollbar.
+    autoGrowAllTextareas();
   }
 
   applyI18n();
