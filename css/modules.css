@@ -1273,6 +1273,10 @@
   color: #fff;
 }
 .reflection-textarea {
+  /* Inside the flex-column reflection block, `.form-input { flex: 1 }` forces
+     flex-basis:0, which makes the browser ignore the height we set while
+     auto-growing. Pin flex so the JS-driven height (grow-to-content) wins. */
+  flex: 0 0 auto;
   min-height: 100px;
   resize: none;
   overflow: hidden;
@@ -1288,6 +1292,10 @@
   font-size: var(--ms-cell, 34px);
   line-height: var(--ms-cell, 34px);
   letter-spacing: 0;
+  /* Characters are converted to full-width (CJK) forms in JS so every glyph —
+     Hangul, latin, digit, punctuation and the space bar — advances exactly one
+     square cell. (`text-transform: full-width` is Firefox-only, so we can't rely
+     on it.) The stored/exported value is normalised back to normal width. */
   padding: 0;
   min-height: calc(var(--ms-cell, 34px) * 3);
   border: 1px solid var(--ms-grid, #d8a3a3);

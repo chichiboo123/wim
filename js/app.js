@@ -29,6 +29,47 @@ function escapeHtml(str) {
   return div.innerHTML;
 }
 
+/* ===== 원고지 (manuscript) full-width conversion =====
+ * Korean manuscript paper puts one character per square cell. To make every
+ * glyph advance exactly one cell — including the space bar, latin letters,
+ * digits and punctuation, which are normally half-width — we display the text
+ * using full-width (CJK) Unicode forms. Hangul is already full-width. The value
+ * stored/exported is always normalised back to normal width, so plain mode,
+ * reports and backups are unaffected. The mapping is 1:1 per character, so the
+ * caret index is preserved when we rewrite a field's value in place. */
+function toFullWidth(s) {
+  return String(s).replace(/[ -~]/g, (c) =>
+    c === ' ' ? '　' : String.fromCharCode(c.charCodeAt(0) + 0xFEE0));
+}
+function toHalfWidth(s) {
+  return String(s).replace(/[　！-～]/g, (c) =>
+    c === '　' ? ' ' : String.fromCharCode(c.charCodeAt(0) - 0xFEE0));
+}
+
+// Text to show inside a reflection field: full-width while manuscript mode is on.
+function manuscriptDisplay(text) {
+  const on = (typeof getManuscriptMode === 'function') && getManuscriptMode();
+  return on ? toFullWidth(text || '') : (text || '');
+}
+
+// Handle typing in a manuscript field: rewrite the visible value to full-width
+// (keeping the caret put) and return the normal-width text to persist. Skips the
+// rewrite mid-IME-composition so Hangul input isn't interrupted. Returns the
+// plain value to store for any field/mode.
+function reflectionStoreValue(el, isComposing) {
+  const on = (typeof getManuscriptMode === 'function') && getManuscriptMode();
+  if (on && !isComposing) {
+    const start = el.selectionStart, end = el.selectionEnd;
+    const full = toFullWidth(el.value);
+    if (full !== el.value) {
+      el.value = full;
+      el.selectionStart = start;
+      el.selectionEnd = end;
+    }
+  }
+  return on ? toHalfWidth(el.value) : el.value;
+}
+
 /* Shared reflection block (used by every module).
  * For money/app the reflection is stored inside the module object
  * (handled by their own save functions). For all other modules,
@@ -45,7 +86,7 @@ function reflectionBlockHtml(moduleId) {
       </div>
       <textarea class="form-input reflection-textarea${reflectionModeClass()}" id="reflect-${moduleId}"
                 placeholder="${t(phKey)}"
-                oninput="onReflectionInput('${moduleId}', this)">${escapeHtml(text)}</textarea>
+                oninput="onReflectionInput('${moduleId}', this, event)">${escapeHtml(manuscriptDisplay(text))}</textarea>
     </div>
   `;
 }
@@ -114,8 +155,8 @@ if (document.fonts && document.fonts.ready) {
   document.fonts.ready.then(refitReflectionFields);
 }
 
-function onReflectionInput(moduleId, el) {
-  saveReflection(moduleId, el.value);
+function onReflectionInput(moduleId, el, ev) {
+  saveReflection(moduleId, reflectionStoreValue(el, ev && ev.isComposing));
   autoGrowTextarea(el);
 }
 
