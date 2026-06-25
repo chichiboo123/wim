@@ -198,7 +198,7 @@ function renderMoney() {
         </div>
         <textarea class="form-input reflection-textarea${reflectionModeClass()}" id="money-reflect"
                   placeholder="${t('moneyReflectPh')}"
-                  oninput="saveMoneyReflection(this.value); autoGrowTextarea(this)">${escapeHtml(state.reflection)}</textarea>
+                  oninput="saveMoneyReflection(reflectionStoreValue(this, event && event.isComposing)); autoGrowTextarea(this)">${escapeHtml(manuscriptDisplay(state.reflection))}</textarea>
       </div>
     </div>
   `;

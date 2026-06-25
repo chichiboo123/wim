@@ -59,7 +59,9 @@ async function captureModuleCanvas() {
     '.music-form, .word-form-row, .time-form, .emotion-picker,',
     '.list-item-actions, .music-reorder, .delete-handle,',
     '.music-playlist-thumb-remove, .mind-chip-controls,',
-    '.rel-node-delete, .delete-btn, .color-top-bar, .color-picker-panel',
+    '.rel-node-delete, .delete-btn, .color-top-bar, .color-picker-panel,',
+    // The "원고지 모드" toggle is an editing control, not content — keep it out of exports.
+    '.manuscript-toggle',
     '{ display: none !important; }',
     // Text-clipping rules cut off long entries in the exported image. During
     // capture, let every truncated label wrap and show in full instead.

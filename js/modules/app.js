@@ -242,7 +242,7 @@ function renderAppModule() {
         </div>
         <textarea class="form-input reflection-textarea${reflectionModeClass()}" id="app-reflect"
                   placeholder="${t('appReflectPh')}"
-                  oninput="onAppReflectionInput(this)">${escapeHtml(state.reflection)}</textarea>
+                  oninput="onAppReflectionInput(this, event)">${escapeHtml(manuscriptDisplay(state.reflection))}</textarea>
       </div>
 
       <!-- ADD modal -->
@@ -605,8 +605,8 @@ function onAppBoxInput(id, el) {
   scheduleAppLines();
 }
 
-function onAppReflectionInput(el) {
-  saveAppReflection(el.value);
+function onAppReflectionInput(el, ev) {
+  saveAppReflection(reflectionStoreValue(el, ev && ev.isComposing));
   autoGrowAppText(el);
 }
 
